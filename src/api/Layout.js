@@ -30,6 +30,7 @@ export var Layout = function(refs, c, applyConfig, forceApplyConfig) {
     t.showRowSubTotals = isBoolean(c.rowSubTotals) ? c.rowSubTotals : (isBoolean(c.showRowSubTotals) ? c.showRowSubTotals : true);
     t.showDimensionLabels = isBoolean(c.showDimensionLabels) ? c.showDimensionLabels : (isBoolean(c.showDimensionLabels) ? c.showDimensionLabels : true);
     t.showDataItemPrefix = isBoolean(c.showDataItemPrefix) ? c.showDataItemPrefix : (isBoolean(c.showDataItemPrefix) ? c.showDataItemPrefix : true);
+    t.hideEmptyColumns = isBoolean(c.hideEmptyColumns) ? c.hideEmptyColumns : false;
     t.hideEmptyRows = isBoolean(c.hideEmptyRows) ? c.hideEmptyRows : false;
     t.hideNaData = isBoolean(c.hideNaData) ? c.hideNaData : false;
     t.collapseDataDimensions = isBoolean(c.collapseDataDimensions) ? c.collapseDataDimensions : false;
