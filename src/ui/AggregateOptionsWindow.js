@@ -54,9 +54,14 @@ AggregateOptionsWindow = function(refs) {
         checked: true
     });
 
+    var hideEmptyColumns = Ext.create('Ext.form.field.Checkbox', {
+        boxLabel: i18n.hide_empty_columns,
+        style: 'margin-top:' + separatorTopMargin + 'px;' + 'margin-bottom:' + checkboxBottomMargin + 'px'
+    });
+    
     var hideEmptyRows = Ext.create('Ext.form.field.Checkbox', {
         boxLabel: i18n.hide_empty_rows,
-        style: 'margin-top:' + separatorTopMargin + 'px; margin-bottom:' + checkboxBottomMargin + 'px',
+        style: 'margin-bottom:' + checkboxBottomMargin + 'px',
     });
 
     var hideNaData = Ext.create('Ext.form.field.Checkbox', {
@@ -177,6 +182,7 @@ AggregateOptionsWindow = function(refs) {
             showRowTotals,
             showRowSubTotals,
             showDimensionLabels,
+            hideEmptyColumns,
             hideEmptyRows,
             hideNaData,
             completedOnly,
@@ -225,6 +231,7 @@ AggregateOptionsWindow = function(refs) {
                 showRowTotals: showRowTotals.getValue(),
                 showRowSubTotals: showRowSubTotals.getValue(),
                 showDimensionLabels: showDimensionLabels.getValue(),
+                hideEmptyColumns: hideEmptyColumns.getValue(),
                 hideEmptyRows: hideEmptyRows.getValue(),
                 hideNaData: hideNaData.getValue(),
                 completedOnly: completedOnly.getValue(),
@@ -249,6 +256,7 @@ AggregateOptionsWindow = function(refs) {
             showRowTotals.setValue(isBoolean(layout.showRowTotals) ? layout.showRowTotals : true);
             showRowSubTotals.setValue(isBoolean(layout.showRowSubTotals) ? layout.showRowSubTotals : true);
             showDimensionLabels.setValue(isBoolean(layout.showDimensionLabels) ? layout.showDimensionLabels : true);
+            hideEmptyColumns.setValue(isBoolean(layout.hideEmptyColumns) ? layout.hideEmptyColumns : false);
             hideEmptyRows.setValue(isBoolean(layout.hideEmptyRows) ? layout.hideEmptyRows : false);
             hideNaData.setValue(isBoolean(layout.hideNaData) ? layout.hideNaData : false);
             completedOnly.setValue(isBoolean(layout.completedOnly) ? layout.completedOnly : false);
@@ -322,6 +330,7 @@ AggregateOptionsWindow = function(refs) {
                 w.showColSubTotals = showColSubTotals
                 w.showRowSubTotals = showRowSubTotals;
                 w.showDimensionLabels = showDimensionLabels;
+                w.hideEmptyColumns = hideEmptyColumns;
                 w.hideEmptyRows = hideEmptyRows;
                 w.hideNaData = hideNaData;
                 w.completedOnly = completedOnly;
