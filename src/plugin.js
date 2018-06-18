@@ -78,8 +78,19 @@ appManager.applyTo([].concat(arrayTo(api), arrayTo(table)));
 dimensionConfig.applyTo(arrayTo(table));
 optionConfig.applyTo([].concat(arrayTo(api), arrayTo(table)));
 
+const isTargetDiv = elId => !!document.getElementById(elId);
+
+const logNoTargetDiv = (id, name) => {
+    console.log(`Event report suspended (${id}, ${name})`);
+};
+
 // plugin
 function render(plugin, layout) {
+    if (!isTargetDiv(layout.el)) {
+        logNoTargetDiv(layout.id, layout.name || layout.displayName);
+        return;
+    }
+
     var instanceRefs = Object.assign({}, refs);
 
     // ui manager
@@ -105,6 +116,11 @@ function render(plugin, layout) {
     uiManager.setInstanceManager(instanceManager);
 
     instanceManager.setFn(function(_layout) {
+        if (!isTargetDiv(_layout.el)) {
+            logNoTargetDiv(_layout.id, _layout.name || _layout.displayName);
+            return;
+        }
+
         var sortingId = _layout.sorting ? _layout.sorting.id : null,
             html = '',
             tableObject;
