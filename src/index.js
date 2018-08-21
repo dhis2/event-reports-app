@@ -210,14 +210,21 @@ function initialize() {
 
     function renderTable(layout, response) {
 
-        var sortingId = layout.sorting ? layout.sorting.id : null,
-            _table;
+        let sortingId = layout.sorting ? layout.sorting.id : null;
+        let _table;
 
-        var getTable = function() {
-            var colAxis = new table.PivotTableAxis(refs, layout, response, 'col');
-            var rowAxis = new table.PivotTableAxis(refs, layout, response, 'row');
+        let getTable = function() {
+            let colAxis = new table.PivotTableAxis(refs, layout, response, 'col');
+            let rowAxis = new table.PivotTableAxis(refs, layout, response, 'row');
+
+            let pivotTable = new table.PivotTable(refs, layout, response, colAxis, rowAxis, { unclickable: true, trueTotals: false });
+
+            pivotTable.setViewportSize(
+                uiManager.get('centerRegion').getWidth(),
+                uiManager.get('centerRegion').getHeight()
+            );
             
-            return new table.PivotTable(refs, layout, response, colAxis, rowAxis, { unclickable: true, trueTotals: false });
+            return pivotTable;
         };
 
         // pre-sort if id
@@ -227,21 +234,16 @@ function initialize() {
 
         // table
         _table = getTable();
+        _table.initialize();
+        _table.build();
 
         // sort if total
         if (sortingId && sortingId === 'total') {
             layout.sort(_table);
             _table = getTable();
+            _table.initialize();
+            _table.build();
         }
-
-        _table.initialize();
-
-        _table.setViewportSize(
-            uiManager.get('centerRegion').getWidth(),
-            uiManager.get('centerRegion').getHeight()
-        );
-
-        _table.build();
 
         // render
         uiManager.update(_table.render());

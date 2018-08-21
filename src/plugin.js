@@ -138,15 +138,16 @@ function render(plugin, layout) {
 
             // table
             tableObject = getTable();
+            tableObject.initialize();
+            tableObject.build();
 
             // sort if total
             if (sortingId && sortingId === 'total') {
                 __layout.sort(tableObject);
                 tableObject = getTable();
+                tableObject.initialize();
+                tableObject.build();
             }
-
-            tableObject.initialize();
-            tableObject.build();
 
             html += eventReportPlugin.showTitles ? uiManager.getTitleHtml(title) : '';
             html += tableObject.render();
