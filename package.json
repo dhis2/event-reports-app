@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/dhis2/event-reports-app#readme",
   "dependencies": {
-    "d2-analysis": "29.0.41",
+    "d2-analysis": "29.0.44",
     "d2-utilizr": "0.2.13"
   },
   "devDependencies": {
@@ -44,7 +44,7 @@
     "eslint-plugin-react": "3.3.1",
     "file-loader": "0.8.5",
     "img-loader": "^1.2.2",
-    "node-sass": "3.4.2",
+    "node-sass": "^3.4.2",
     "sass-loader": "2.0.1",
     "style-loader": "0.12.3",
     "susy": "2.2.5",
