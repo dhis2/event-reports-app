@@ -1324,9 +1324,10 @@ currently-unhandled@^0.4.1:
   dependencies:
     array-find-index "^1.0.1"
 
-d2-analysis@30.0.27:
-  version "30.0.27"
-  resolved "https://registry.yarnpkg.com/d2-analysis/-/d2-analysis-30.0.27.tgz#9e036ef275f5f81b3aef5d85c03fa1088dcc6320"
+d2-analysis@30.0.28:
+  version "30.0.28"
+  resolved "https://registry.yarnpkg.com/d2-analysis/-/d2-analysis-30.0.28.tgz#c18e1a9abc072dcd3279460cc09fcb81677a6325"
+  integrity sha512-eytPNNHqCzgclsuBPBZ65H5vtDDZ/htwvW1IZFKA2PoBmjXXu6XlfJ4B6TLbvGYLvLgtAiVAJltvvUwPzaMVnQ==
   dependencies:
     d2-utilizr "^0.2.16"
     jquery "2.1.4"
@@ -1357,6 +1358,7 @@ d2-utilizr@0.2.13:
 d2-utilizr@^0.2.16:
   version "0.2.16"
   resolved "https://registry.yarnpkg.com/d2-utilizr/-/d2-utilizr-0.2.16.tgz#b71df7ca8c7ab5125ca8bdb4899611bc6782a754"
+  integrity sha512-8Cqwe/3TIsHeLfRVsWFKYqRrY3ZzuHAJqkEMCPGW9gyNCAAnTPVjROFwBwonv0zodQhVntn1DlJCay/GTBPj1A==
   dependencies:
     lodash.isboolean "^3.0.3"
     lodash.isfunction "^3.0.8"
@@ -2871,6 +2873,7 @@ jpegtran-bin@^3.0.0:
 jquery@2.1.4:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-2.1.4.tgz#228bde698a0c61431dc2630a6a154f15890d2317"
+  integrity sha1-IoveaYoMYUMdwmMKahVPFYkNIxc=
 
 js-base64@^2.1.8:
   version "2.4.5"
