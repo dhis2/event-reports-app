@@ -180,8 +180,8 @@ body,
 	float: none;
 	clear: none;
 	display: block;
-	margin-bottom: 2px !important;
-    color: #333;
+	margin-bottom: 3px !important;
+    color: #222;
 }
 .ns-form-item-label-top-padding {
     padding-top: 3px;
