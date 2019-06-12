@@ -27,11 +27,15 @@ DataTypeToolbar = function(refs) {
         uiManager.get('accordion').onOutputTypeSelect(value || outputType.getValue());
     };
 
-    var getCombobox = function(data, value, onSelect) {
+    var getCombobox = function(data, value, labelText, onSelect) {
         return Ext.create('Ext.form.field.ComboBox', {
             editable: false,
             valueField: 'id',
             displayField: 'name',
+            fieldLabel: labelText,
+            labelAlign: 'top',
+            labelCls: 'ns-form-item-label-top bold',
+            labelSeparator: '',
             queryMode: 'local',
             lastQuery: '',
             width: comboBoxWidth + (scrollbarWidth / 2),
@@ -51,14 +55,14 @@ DataTypeToolbar = function(refs) {
     var dataType = getCombobox([
         { id: DATA_TYPE_PIVOT_ID, name: 'Pivot table' },
         { id: DATA_TYPE_LIST_ID, name: 'Line list' },
-    ], DATA_TYPE_PIVOT_ID, cmp => onDataTypeSelect(cmp.getValue()));
+    ], DATA_TYPE_PIVOT_ID, 'Table style', cmp => onDataTypeSelect(cmp.getValue()));
 
     uiManager.reg(dataType, 'dataType');
 
     var outputType = getCombobox([
         { id: OUTPUT_TYPE_EVENT_ID, name: 'Event' },
         { id: OUTPUT_TYPE_ENROLLMENT_ID, name: 'Enrollment' },
-    ], OUTPUT_TYPE_EVENT_ID, cmp => onOutputTypeSelect(cmp.getValue()));
+    ], OUTPUT_TYPE_EVENT_ID, 'Output type', cmp => onOutputTypeSelect(cmp.getValue()));
 
     uiManager.reg(outputType, 'outputType');
 
@@ -68,14 +72,14 @@ DataTypeToolbar = function(refs) {
         getDataType: function() {
             return dataType.getValue();
         },
-        setDataType: function(dataType) {
-            dataType.setValue(dataType);
+        setDataType: function(type) {
+            dataType.setValue(type);
         },
         getOutputType: function() {
             return outputType.getValue();
         },
-        setOutputType: function(outputType) {
-            outputType.setValue(outputType);
+        setOutputType: function(type) {
+            outputType.setValue(type);
         },
         items: [
             dataType,

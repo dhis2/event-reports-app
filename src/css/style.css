@@ -183,6 +183,9 @@ body,
 	margin-bottom: 3px !important;
     color: #222;
 }
+.ns-form-item-label-top.bold {
+	font-weight: 600;
+}
 .ns-form-item-label-top-padding {
     padding-top: 3px;
 }
