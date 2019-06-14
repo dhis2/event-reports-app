@@ -165,13 +165,20 @@ Layout.prototype.getDataTypeUrl = function() {
     var t = this,
         refs = t.getRefs();
 
-    var { dimensionConfig } = refs;
+    var { dimensionConfig, optionConfig } = refs;
 
-    var defaultDataTypeUrl = dimensionConfig.dataTypeUrl[dimensionConfig.getDefaultDataType()];
+    var DATA_TYPE_AGG = dimensionConfig.dataType['aggregated_values'];
+    var DATA_TYPE_EVENT = dimensionConfig.dataType['individual_cases'];
+    var OUTPUT_TYPE_EVENT = optionConfig.getOutputType('event').id;
+    var OUTPUT_TYPE_ENROLLMENT = optionConfig.getOutputType('enrollment').id;
+console.log("--", DATA_TYPE_AGG, DATA_TYPE_EVENT, OUTPUT_TYPE_EVENT, OUTPUT_TYPE_ENROLLMENT);
 
-    var url = dimensionConfig.dataTypeUrl[this.dataType] || defaultDataTypeUrl;
+    var url = this.dataType === DATA_TYPE_AGG ? '/events/aggregate' :
+              this.outputType === OUTPUT_TYPE_EVENT ? '/events/query' :
+              '/enrollments/query';
 
-    return url || '';
+console.log("url: ", url);
+    return url || dimensionConfig.dataTypeUrl[dimensionConfig.getDefaultDataType()] || '';
 };
 
 Layout.prototype.getProgramUrl = function() {
