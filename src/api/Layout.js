@@ -205,6 +205,7 @@ Layout.prototype.req = function(source, format, isSorted, isTableLayout, isFilte
 
     // dimensions
     this.getDimensions(false, isSorted).forEach(function(dimension) {
+        console.log("dimension.url(isSorted)", dimension.url(isSorted));
         request.add(dimension.url(isSorted));
     });
 

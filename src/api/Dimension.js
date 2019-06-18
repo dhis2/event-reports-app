@@ -50,12 +50,40 @@ Dimension.prototype.isIgnoreDimension = function() {
 
 // dep 1
 
+const stageMap = {
+    a3kGcGDCuk6: 'A03MvHHogjR',
+    H6uSAMO5WLD: 'A03MvHHogjR',
+    UXz7xuGCEhU: 'A03MvHHogjR',
+    wQLfBvPrXqq: 'A03MvHHogjR',
+    bx6fsa0t90x: 'A03MvHHogjR',
+    ebaJjqltK5N: 'A03MvHHogjR',
+    X8zyunlgUfM: 'A03MvHHogjR',
+    uf3svrmp8Oj: 'A03MvHHogjR',
+
+    GQY2lXrypjO: 'ZzYYXq4fJie',
+    X8zyunlgUfM: 'ZzYYXq4fJie',
+    FqlgKAG8HOu: 'ZzYYXq4fJie',
+    vTUhAUZFoys: 'ZzYYXq4fJie',
+    rxBfISxXS2U: 'ZzYYXq4fJie',
+    lNNb3truQoi: 'ZzYYXq4fJie',
+    pOe0ogW4OWd: 'ZzYYXq4fJie',
+    HLmTEmupdX0: 'ZzYYXq4fJie',
+    cYGaxwK615G: 'ZzYYXq4fJie',
+    hDZbpskhqDd: 'ZzYYXq4fJie',
+    sj3j9Hwc7so: 'ZzYYXq4fJie',
+    aei1xRjSU2l: 'ZzYYXq4fJie',
+    BeynU4L6VCQ: 'ZzYYXq4fJie',
+    OuJ6sgPyAbC: 'ZzYYXq4fJie',
+};
+
+const getFullId = dim => stageMap[dim] ? stageMap[dim] + '.' + dim : dim;
+
 Dimension.prototype.url = function(isSorted, response, isFilter) {
     if (this.isIgnoreDimension()) {
         return '';
     }
 
-    var url = (isFilter ? 'filter' : 'dimension') + '=' + this.dimension;
+    var url = (isFilter ? 'filter' : 'dimension') + '=' + getFullId(this.dimension);
 
     if (isObject(this.legendSet)) {
         url += '-' + this.legendSet.id;
