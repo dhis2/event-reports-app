@@ -171,15 +171,25 @@ Layout.prototype.getDataTypeUrl = function() {
     var DATA_TYPE_EVENT = dimensionConfig.dataType['individual_cases'];
     var OUTPUT_TYPE_EVENT = optionConfig.getOutputType('event').id;
     var OUTPUT_TYPE_ENROLLMENT = optionConfig.getOutputType('enrollment').id;
-console.log("--", DATA_TYPE_AGG, DATA_TYPE_EVENT, OUTPUT_TYPE_EVENT, OUTPUT_TYPE_ENROLLMENT);
 
     var url = this.dataType === DATA_TYPE_AGG ? '/events/aggregate' :
               this.outputType === OUTPUT_TYPE_EVENT ? '/events/query' :
               '/enrollments/query';
 
-console.log("url: ", url);
     return url || dimensionConfig.dataTypeUrl[dimensionConfig.getDefaultDataType()] || '';
 };
+
+Layout.prototype.getDefaultSortParam = function() {
+    var { optionConfig } = refs;
+
+    var OUTPUT_TYPE_EVENT = optionConfig.getOutputType('event').id;
+    var OUTPUT_TYPE_ENROLLMENT = optionConfig.getOutputType('enrollment').id;
+
+    return 'desc=' + (this.outputType === OUTPUT_TYPE_EVENT ?
+        'eventdate' : this.outputType === OUTPUT_TYPE_ENROLLMENT ?
+        'enrollmentdate' : ''
+    );
+}
 
 Layout.prototype.getProgramUrl = function() {
     return isObject(this.program) ? '/' + this.program.id : '';
@@ -205,7 +215,6 @@ Layout.prototype.req = function(source, format, isSorted, isTableLayout, isFilte
 
     // dimensions
     this.getDimensions(false, isSorted).forEach(function(dimension) {
-        console.log("dimension.url(isSorted)", dimension.url(isSorted));
         request.add(dimension.url(isSorted));
     });
 
@@ -321,7 +330,7 @@ Layout.prototype.req = function(source, format, isSorted, isTableLayout, isFilte
             ) {
                 request.add(this.sorting.direction.toLowerCase() + '=' + this.sorting.id);
             } else {
-                request.add('desc=eventdate'); // default sort by event date
+                request.add(this.getDefaultSortParam()); // default sort by event date
             }
         }
 
