@@ -9,7 +9,7 @@ import { Dimension as d2aDimension } from 'd2-analysis';
 
 export var Dimension = function(refs, c, applyConfig, forceApplyConfig) {
     var t = this;
-
+console.log("C: ", c);
     var _ignoreUrlDimensions = ['dy', 'longitude', 'latitude'];
 
     c = isObject(c) ? c : {};
@@ -18,6 +18,10 @@ export var Dimension = function(refs, c, applyConfig, forceApplyConfig) {
     Object.assign(t, new d2aDimension(refs, c, applyConfig));
 
     // props
+    if (isObject(c.programStage)) {
+        t.programStage = c.programStage;
+    }
+
     if (isString(c.filter)) {
         t.filter = c.filter;
     }
@@ -50,40 +54,14 @@ Dimension.prototype.isIgnoreDimension = function() {
 
 // dep 1
 
-const stageMap = {
-    a3kGcGDCuk6: 'A03MvHHogjR',
-    H6uSAMO5WLD: 'A03MvHHogjR',
-    UXz7xuGCEhU: 'A03MvHHogjR',
-    wQLfBvPrXqq: 'A03MvHHogjR',
-    bx6fsa0t90x: 'A03MvHHogjR',
-    ebaJjqltK5N: 'A03MvHHogjR',
-    X8zyunlgUfM: 'A03MvHHogjR',
-    uf3svrmp8Oj: 'A03MvHHogjR',
-
-    GQY2lXrypjO: 'ZzYYXq4fJie',
-    X8zyunlgUfM: 'ZzYYXq4fJie',
-    FqlgKAG8HOu: 'ZzYYXq4fJie',
-    vTUhAUZFoys: 'ZzYYXq4fJie',
-    rxBfISxXS2U: 'ZzYYXq4fJie',
-    lNNb3truQoi: 'ZzYYXq4fJie',
-    pOe0ogW4OWd: 'ZzYYXq4fJie',
-    HLmTEmupdX0: 'ZzYYXq4fJie',
-    cYGaxwK615G: 'ZzYYXq4fJie',
-    hDZbpskhqDd: 'ZzYYXq4fJie',
-    sj3j9Hwc7so: 'ZzYYXq4fJie',
-    aei1xRjSU2l: 'ZzYYXq4fJie',
-    BeynU4L6VCQ: 'ZzYYXq4fJie',
-    OuJ6sgPyAbC: 'ZzYYXq4fJie',
-};
-
-const getFullId = dim => stageMap[dim] ? stageMap[dim] + '.' + dim : dim;
+const getFullId = dim => (dim.programStage ? dim.programStage.id + '.' : '') + dim.dimension;
 
 Dimension.prototype.url = function(isSorted, response, isFilter) {
     if (this.isIgnoreDimension()) {
         return '';
     }
-
-    var url = (isFilter ? 'filter' : 'dimension') + '=' + getFullId(this.dimension);
+console.log("DIM: ", this);
+    var url = (isFilter ? 'filter' : 'dimension') + '=' + getFullId(this);
 
     if (isObject(this.legendSet)) {
         url += '-' + this.legendSet.id;
