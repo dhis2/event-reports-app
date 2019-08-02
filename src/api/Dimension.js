@@ -9,7 +9,7 @@ import { Dimension as d2aDimension } from 'd2-analysis';
 
 export var Dimension = function(refs, c, applyConfig, forceApplyConfig) {
     var t = this;
-console.log("C: ", c);
+
     var _ignoreUrlDimensions = ['dy', 'longitude', 'latitude'];
 
     c = isObject(c) ? c : {};
@@ -60,7 +60,7 @@ Dimension.prototype.url = function(isSorted, response, isFilter) {
     if (this.isIgnoreDimension()) {
         return '';
     }
-console.log("DIM: ", this);
+
     var url = (isFilter ? 'filter' : 'dimension') + '=' + getFullId(this);
 
     if (isObject(this.legendSet)) {
