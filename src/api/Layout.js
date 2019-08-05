@@ -113,6 +113,11 @@ export var Layout = function(refs, c, applyConfig, forceApplyConfig) {
             ? c.reportParams.paramParentOrganisationUnit
             : isBoolean(c.parentOrganisationUnit) ? c.parentOrganisationUnit : false;
 
+    // data element dimensions
+    if (c.dataElementDimensions) {
+        t.dataElementDimensions = c.dataElementDimensions;
+    }
+
     // force apply
     Object.assign(t, forceApplyConfig);
 
@@ -194,6 +199,11 @@ Layout.prototype.getDefaultSortParam = function() {
 Layout.prototype.getProgramUrl = function() {
     return isObject(this.program) ? '/' + this.program.id : '';
 };
+
+Layout.prototype.getDataElementName = function(dataElementId) {
+    return isArray(this.dataElementDimensions) ?
+        this.dataElementDimensions.find(obj => obj.dataElement.id === dataElementId).dataElement.name : null;
+}
 
 // dep 1
 
