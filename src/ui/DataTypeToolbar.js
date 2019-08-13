@@ -2,10 +2,8 @@ export var DataTypeToolbar;
 
 DataTypeToolbar = function(refs) {
     var uiManager = refs.uiManager,
-        instanceManager = refs.instanceManager,
         dimensionConfig = refs.dimensionConfig,
-        optionConfig = refs.optionConfig,
-        i18n = refs.i18nManager.get();
+        optionConfig = refs.optionConfig;
 
     var DATA_TYPE_PIVOT_ID = dimensionConfig.dataType['aggregated_values'];
     var DATA_TYPE_LIST_ID = dimensionConfig.dataType['individual_cases'];
