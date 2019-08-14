@@ -66,18 +66,26 @@ DataTypeToolbar = function(refs) {
 
     var dataTypeToolbar = Ext.create('Ext.container.Container', {
         layout: 'column',
-        style: 'padding:2px 1px 0; border-top:1px solid #d0d0d0; border-bottom:1px solid #d0d0d0; background-color: #f6f6f6',
+        style: 'padding:3px 1px 0; border-top:1px solid #d0d0d0; border-bottom:1px solid #d0d0d0; background-color: #f6f6f6',
         getDataType: function() {
             return dataType.getValue();
         },
         setDataType: function(type) {
-            dataType.setValue(type);
+            if (!type) {
+                dataType.reset();
+            } else {
+                dataType.setValue(type);
+            }
         },
         getOutputType: function() {
             return outputType.getValue();
         },
         setOutputType: function(type) {
-            outputType.setValue(type);
+            if (!type) {
+                outputType.reset();
+            } else {
+                outputType.setValue(type);
+            }
         },
         items: [
             dataType,
