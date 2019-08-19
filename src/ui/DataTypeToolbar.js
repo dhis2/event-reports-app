@@ -2,8 +2,11 @@ export var DataTypeToolbar;
 
 DataTypeToolbar = function(refs) {
     var uiManager = refs.uiManager,
+        i18nManager = refs.i18nManager,
         dimensionConfig = refs.dimensionConfig,
         optionConfig = refs.optionConfig;
+
+    var i18n = i18nManager.get();
 
     var DATA_TYPE_PIVOT_ID = dimensionConfig.dataType['aggregated_values'];
     var DATA_TYPE_LIST_ID = dimensionConfig.dataType['individual_cases'];
@@ -51,16 +54,16 @@ DataTypeToolbar = function(refs) {
     };
 
     var dataType = getCombobox([
-        { id: DATA_TYPE_PIVOT_ID, name: 'Pivot table' },
-        { id: DATA_TYPE_LIST_ID, name: 'Line list' },
-    ], DATA_TYPE_PIVOT_ID, 'Table style', cmp => onDataTypeSelect(cmp.getValue()));
+        { id: DATA_TYPE_PIVOT_ID, name: i18n.pivot_table },
+        { id: DATA_TYPE_LIST_ID, name: i18n.line_list },
+    ], DATA_TYPE_PIVOT_ID, i18n.table_style, cmp => onDataTypeSelect(cmp.getValue()));
 
     uiManager.reg(dataType, 'dataType');
 
     var outputType = getCombobox([
-        { id: OUTPUT_TYPE_EVENT_ID, name: 'Event' },
-        { id: OUTPUT_TYPE_ENROLLMENT_ID, name: 'Enrollment' },
-    ], OUTPUT_TYPE_EVENT_ID, 'Output type', cmp => onOutputTypeSelect(cmp.getValue()));
+        { id: OUTPUT_TYPE_EVENT_ID, name: i18n.event },
+        { id: OUTPUT_TYPE_ENROLLMENT_ID, name: i18n.enrollment },
+    ], OUTPUT_TYPE_EVENT_ID, i18n.output_type, cmp => onOutputTypeSelect(cmp.getValue()));
 
     uiManager.reg(outputType, 'outputType');
 
