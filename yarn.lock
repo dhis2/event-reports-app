@@ -1753,10 +1753,10 @@ currently-unhandled@^0.4.1:
   dependencies:
     array-find-index "^1.0.1"
 
-d2-analysis@31.0.10:
-  version "31.0.10"
-  resolved "https://registry.yarnpkg.com/d2-analysis/-/d2-analysis-31.0.10.tgz#a0e7625978004a3bb6b11bfb193ce4ab2432736e"
-  integrity sha512-pcB77w7Wuj4xnRQhKF+SKyTjOGdo7siTnB9nIb9g8gH7DwsRZr1tDqGxERbtfPTq4mH/DQW1tgzayy27DUQLuw==
+d2-analysis@31.0.11:
+  version "31.0.11"
+  resolved "https://registry.yarnpkg.com/d2-analysis/-/d2-analysis-31.0.11.tgz#757caa9e582f76e582d1876341eccd52b3238cb4"
+  integrity sha512-TeOXwbLmvqGx0GS0ai0S36nYGcE7pP+xyBN7T+A9Ktas3y14nvZ92kB7BWOl7bvHbMw3f7ulN28qHv4nSbytPw==
   dependencies:
     "@dhis2/d2-ui-rich-text" "^5.1.0"
     d2-utilizr "^0.2.16"
