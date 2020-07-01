@@ -89,6 +89,7 @@ function render(plugin, layout) {
     // ui manager
     var uiManager = new manager.UiManager(instanceRefs);
     instanceRefs.uiManager = uiManager;
+    uiManager.setOnRender(eventReportPlugin.onRender)
     uiManager.applyTo([].concat(arrayTo(api), arrayTo(table)));
 
     // instance manager
