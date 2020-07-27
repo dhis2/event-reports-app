@@ -417,7 +417,7 @@ Layout.prototype.req = function(source, format, isSorted, isTableLayout, isFilte
             request.add('showHierarchy=true');
         }
 
-        // paging always off
+        // paging
         if (isLineList) {
             request.add('paging=false');
         }
