@@ -51,7 +51,7 @@
     "susy": "2.2.5",
     "url-loader": "^0.5.7",
     "webpack": "1.12.9",
-    "webpack-dev-server": "1.14.0"
+    "webpack-dev-server": "3.1.11"
   },
   "manifest.webapp": {
     "name": "DHIS2 event reports app",
