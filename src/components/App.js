@@ -11,9 +11,9 @@ import history from '../modules/history'
 import { sGetCurrent } from '../reducers/current'
 import { sGetVisualization } from '../reducers/visualization'
 import classes from './App.module.css'
+import { default as TitleBar } from './TitleBar/TitleBar'
 import { Toolbar } from './Toolbar/Toolbar'
 import { default as Visualization } from './Visualization/Visualization'
-import { default as TitleBar } from './TitleBar/TitleBar'
 
 const visualizationQuery = {
     eventReport: {
