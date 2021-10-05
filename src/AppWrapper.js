@@ -65,7 +65,7 @@ const AppWrapper = () => {
                                     } else {
                                         return (
                                             <App
-                                                d2={d2}
+                                                user={d2.currentUser}
                                                 location={history.location}
                                                 baseUrl={baseUrl}
                                                 dataEngine={engine}

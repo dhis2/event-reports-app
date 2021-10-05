@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { acClearCurrent, acSetCurrent } from '../actions/current'
+import { acReceivedUser } from '../actions/user'
 import {
     acClearVisualization,
     acSetVisualization,
@@ -13,6 +14,7 @@ import { sGetVisualization } from '../reducers/visualization'
 import classes from './App.module.css'
 import { default as TitleBar } from './TitleBar/TitleBar'
 import { Toolbar } from './Toolbar/Toolbar'
+import StartScreen from './Visualization/StartScreen'
 import { default as Visualization } from './Visualization/Visualization'
 
 const visualizationQuery = {
@@ -31,8 +33,10 @@ const App = ({
     visualization,
     clearCurrent,
     clearVisualization,
+    user,
     setCurrent,
     setVisualization,
+    setUser,
 }) => {
     const [previousLocation, setPreviousLocation] = useState(null)
     const [initialLoadIsComplete, setInitialLoadIsComplete] = useState(false)
@@ -82,6 +86,7 @@ const App = ({
     }
 
     useEffect(() => {
+        setUser(user)
         loadVisualization(location)
 
         const unlisten = history.listen(({ location }) => {
@@ -128,7 +133,7 @@ const App = ({
                             visualization ? (
                                 <Visualization />
                             ) : (
-                                'start screen'
+                                <StartScreen />
                             )
                         ) : (
                             'loading...'
@@ -150,6 +155,7 @@ const mapDispatchToProps = {
     clearCurrent: acClearCurrent,
     setCurrent: acSetCurrent,
     setVisualization: acSetVisualization,
+    setUser: acReceivedUser,
 }
 
 App.propTypes = {
@@ -157,7 +163,9 @@ App.propTypes = {
     clearVisualization: PropTypes.func,
     location: PropTypes.object,
     setCurrent: PropTypes.func,
+    setUser: PropTypes.func,
     setVisualization: PropTypes.func,
+    user: PropTypes.object,
     visualization: PropTypes.object,
 }
 
