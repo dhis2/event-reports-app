@@ -1,4 +1,5 @@
 import { useDataQuery } from '@dhis2/app-runtime'
+import { CssVariables } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
@@ -141,6 +142,7 @@ const App = ({
                     </div>
                 </div>
             </div>
+            <CssVariables colors spacers />
         </div>
     )
 }
