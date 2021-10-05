@@ -12,6 +12,8 @@ import { sGetCurrent } from '../reducers/current'
 import { sGetVisualization } from '../reducers/visualization'
 import classes from './App.module.css'
 import { Toolbar } from './Toolbar/Toolbar'
+import { default as Visualization } from './Visualization/Visualization'
+import { default as TitleBar } from './TitleBar/TitleBar'
 
 const visualizationQuery = {
     eventReport: {
@@ -117,16 +119,20 @@ const App = ({
                 >
                     <div className={classes.mainCenterLayout}>{'layout'}</div>
                     <div className={classes.mainCenterTitlebar}>
-                        {'titlebar'}
+                        <TitleBar />
                     </div>
                     <div
                         className={`${classes.mainCenterCanvas} ${classes.flexGrow1}`}
                     >
-                        {initialLoadIsComplete
-                            ? visualization
-                                ? visualization.name
-                                : 'start screen'
-                            : 'loading...'}
+                        {initialLoadIsComplete ? (
+                            visualization ? (
+                                <Visualization />
+                            ) : (
+                                'start screen'
+                            )
+                        ) : (
+                            'loading...'
+                        )}
                     </div>
                 </div>
             </div>
