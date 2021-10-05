@@ -1,4 +1,4 @@
-import { useDataQuery } from '@dhis2/app-runtime'
+import { useDataQuery, useDataEngine } from '@dhis2/app-runtime'
 import { CssVariables } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React, { useState, useEffect } from 'react'
@@ -9,6 +9,7 @@ import {
     acClearVisualization,
     acSetVisualization,
 } from '../actions/visualization'
+import { apiPostDataStatistics } from '../api/dataStatistics'
 import history from '../modules/history'
 import { sGetCurrent } from '../reducers/current'
 import { sGetVisualization } from '../reducers/visualization'
@@ -44,6 +45,7 @@ const App = ({
     const { data, refetch } = useDataQuery(visualizationQuery, {
         lazy: true,
     })
+    const dataEngine = useDataEngine()
 
     const needsRefetch = location => {
         if (!previousLocation) {
@@ -107,9 +109,11 @@ const App = ({
     }, [])
 
     useEffect(() => {
-        if (data?.eventReport) {
-            setVisualization(data.eventReport)
-            setCurrent(data.eventReport)
+        const visualization = data?.eventReport
+        if (visualization) {
+            setVisualization(visualization)
+            setCurrent(visualization)
+            apiPostDataStatistics(dataEngine, visualization.id)
         }
     }, [data])
 
