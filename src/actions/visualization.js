@@ -3,9 +3,9 @@ import {
     CLEAR_VISUALIZATION,
 } from '../reducers/visualization'
 
-export const acSetVisualization = visualization => ({
+export const acSetVisualization = value => ({
     type: SET_VISUALIZATION,
-    value: visualization,
+    value,
 })
 
 export const acClearVisualization = () => ({
