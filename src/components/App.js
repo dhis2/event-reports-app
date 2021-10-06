@@ -17,7 +17,7 @@ import classes from './App.module.css'
 import { default as TitleBar } from './TitleBar/TitleBar'
 import { Toolbar } from './Toolbar/Toolbar'
 import StartScreen from './Visualization/StartScreen'
-import Visualization from './Visualization/Visualization'
+import { Visualization } from './Visualization/Visualization'
 
 const visualizationQuery = {
     eventReport: {
