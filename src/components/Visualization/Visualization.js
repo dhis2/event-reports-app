@@ -73,8 +73,6 @@ export const Visualization = ({ visualization }) => {
 
     useEffect(() => {
         if (analyticsResponse) {
-            console.log('res', analyticsResponse)
-
             // extract headers
             const headers = visualization.columns.reduce((headers, column) => {
                 headers.push(analyticsResponse.getHeader(column.dimension)) // TODO
@@ -90,7 +88,7 @@ export const Visualization = ({ visualization }) => {
                         headers.reduce((filteredRow, header) => {
                             filteredRow.push(
                                 header ? row[header.getIndex()] : '-'
-                            ) // FIXME
+                            ) // FIXME solve the case of visualization.column not mapping to any response.header (ie. "pe")
                             return filteredRow
                         }, [])
                     )
