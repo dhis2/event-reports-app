@@ -1,5 +1,5 @@
 import { apiFetchOrganisationUnitLevels } from '@dhis2/analytics'
-import { useConfig, useDataEngine } from '@dhis2/app-runtime'
+import { useDataEngine } from '@dhis2/app-runtime'
 import { D2Shim } from '@dhis2/app-runtime-adapter-d2'
 import React, { useState, useEffect, useCallback } from 'react'
 import { Provider as ReduxProvider } from 'react-redux'
