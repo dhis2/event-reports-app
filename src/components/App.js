@@ -141,7 +141,8 @@ const App = ({
                                 <StartScreen />
                             )
                         ) : (
-                            'loading...'
+                            'loading... (TODO)'
+                            // TODO: add loading spinner
                         )}
                     </div>
                 </div>
