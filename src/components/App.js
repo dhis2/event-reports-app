@@ -1,4 +1,5 @@
 import { useDataQuery, useDataEngine } from '@dhis2/app-runtime'
+import { useD2 } from '@dhis2/app-runtime-adapter-d2'
 import { CssVariables } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React, { useState, useEffect } from 'react'
@@ -35,7 +36,6 @@ const App = ({
     visualization,
     clearCurrent,
     clearVisualization,
-    user,
     setCurrent,
     setVisualization,
     setUser,
@@ -45,6 +45,7 @@ const App = ({
     const { data, refetch } = useDataQuery(visualizationQuery, {
         lazy: true,
     })
+    const { d2 } = useD2()
     const dataEngine = useDataEngine()
 
     const needsRefetch = location => {
@@ -89,7 +90,7 @@ const App = ({
     }
 
     useEffect(() => {
-        setUser(user)
+        setUser(d2.currentUser)
         loadVisualization(location)
 
         const unlisten = history.listen(({ location }) => {
@@ -172,7 +173,6 @@ App.propTypes = {
     setCurrent: PropTypes.func,
     setUser: PropTypes.func,
     setVisualization: PropTypes.func,
-    user: PropTypes.object,
     visualization: PropTypes.object,
 }
 

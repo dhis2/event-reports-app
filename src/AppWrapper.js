@@ -14,7 +14,6 @@ import history from './modules/history'
 import './locales'
 
 const AppWrapper = () => {
-    const { baseUrl } = useConfig()
     const engine = useDataEngine()
     const store = configureStore([
         thunk.withExtraArgument(engine), // FIXME: Not needed for ER? Pointed out by @edoardo
@@ -65,10 +64,7 @@ const AppWrapper = () => {
                                     } else {
                                         return (
                                             <App
-                                                user={d2.currentUser}
                                                 location={history.location}
-                                                baseUrl={baseUrl}
-                                                dataEngine={engine}
                                                 ouLevels={ouLevels}
                                                 userSettings={userSettings}
                                             />
