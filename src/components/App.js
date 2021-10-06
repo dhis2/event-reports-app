@@ -54,7 +54,7 @@ const App = ({
     const { data, refetch } = useDataQuery(visualizationQuery, {
         lazy: true,
     })
-    const [mutate] = useDataMutation(dataStatisticsMutation)
+    const [setDataStatistics] = useDataMutation(dataStatisticsMutation)
     const { d2 } = useD2()
 
     const needsRefetch = location => {
@@ -123,7 +123,7 @@ const App = ({
         if (visualization) {
             setVisualization(visualization)
             setCurrent(visualization)
-            mutate({ id: visualization.id })
+            setDataStatistics({ id: visualization.id })
         }
     }, [data])
 
