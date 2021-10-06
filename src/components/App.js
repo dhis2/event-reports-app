@@ -1,4 +1,4 @@
-import { useDataQuery, useDataEngine } from '@dhis2/app-runtime'
+import { useDataQuery, useDataMutation } from '@dhis2/app-runtime'
 import { useD2 } from '@dhis2/app-runtime-adapter-d2'
 import { CssVariables } from '@dhis2/ui'
 import PropTypes from 'prop-types'
@@ -10,7 +10,7 @@ import {
     acClearVisualization,
     acSetVisualization,
 } from '../actions/visualization'
-import { apiPostDataStatistics } from '../api/dataStatistics'
+import { EVENT_TYPE } from '../modules/dataStatistics'
 import history from '../modules/history'
 import { sGetCurrent } from '../reducers/current'
 import { sGetVisualization } from '../reducers/visualization'
@@ -31,6 +31,15 @@ const visualizationQuery = {
     },
 }
 
+const dataStatisticsMutation = {
+    resource: 'dataStatistics',
+    params: ({ id }) => ({
+        favorite: id,
+        eventType: EVENT_TYPE,
+    }),
+    type: 'create',
+}
+
 const App = ({
     location,
     visualization,
@@ -45,8 +54,8 @@ const App = ({
     const { data, refetch } = useDataQuery(visualizationQuery, {
         lazy: true,
     })
+    const [mutate] = useDataMutation(dataStatisticsMutation)
     const { d2 } = useD2()
-    const dataEngine = useDataEngine()
 
     const needsRefetch = location => {
         if (!previousLocation) {
@@ -114,7 +123,7 @@ const App = ({
         if (visualization) {
             setVisualization(visualization)
             setCurrent(visualization)
-            apiPostDataStatistics(dataEngine, visualization.id)
+            mutate({ id: visualization.id })
         }
     }, [data])
 
