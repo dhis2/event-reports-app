@@ -1,28 +1,30 @@
-import { useDataEngine } from '@dhis2/app-runtime'
+import { useDataQuery } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import PropTypes from 'prop-types'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
-import { apiFetchMostViewedVisualizations } from '../../api/mostViewedVisualizations'
 import { GenericError } from '../../assets/ErrorIcons'
+import { EVENT_TYPE } from '../../modules/dataStatistics'
 import { VisualizationError, genericErrorTitle } from '../../modules/error'
 import history from '../../modules/history'
 import { sGetUsername } from '../../reducers/user'
 import styles from './styles/StartScreen.module.css'
 
-const StartScreen = ({ error, username }) => {
-    const [mostViewedVisualizations, setMostViewedVisualizations] = useState([])
-    const engine = useDataEngine()
+const mostViewedVisualizationsQuery = {
+    mostViewedVisualizations: {
+        resource: 'dataStatistics/favorites',
+        params: ({ pageSize, username }) => ({
+            eventType: EVENT_TYPE,
+            pageSize: pageSize || 10,
+            ...(username ? { username } : {}),
+        }),
+    },
+}
 
-    useEffect(() => {
-        async function populateMostViewedVisualizations(engine) {
-            const mostViewedVisualizationsResult =
-                await apiFetchMostViewedVisualizations(engine, 6, username)
-            const visualizations = mostViewedVisualizationsResult.visualization // {position: int, views: int, id: string, created: string}
-            setMostViewedVisualizations(visualizations)
-        }
-        populateMostViewedVisualizations(engine)
-    }, [])
+const StartScreen = ({ error, username }) => {
+    const { data } = useDataQuery(mostViewedVisualizationsQuery, {
+        variables: { pageSize: 6, username },
+    })
 
     const getContent = () =>
         error ? (
@@ -42,7 +44,8 @@ const StartScreen = ({ error, username }) => {
                         <li className={styles.guideItem}>{i18n.t('TEXT')}</li>
                     </ul>
                 </div>
-                {mostViewedVisualizations.length > 0 && (
+                {/* TODO add a spinner when loading?! */}
+                {data?.mostViewedVisualizations.length > 0 && (
                     <div className={styles.section}>
                         <h3
                             className={styles.title}
@@ -50,7 +53,7 @@ const StartScreen = ({ error, username }) => {
                         >
                             {i18n.t('Your most viewed TEXT')}
                         </h3>
-                        {mostViewedVisualizations.map(
+                        {data.mostViewedVisualizations.map(
                             (visualization, index) => {
                                 return (
                                     <p
