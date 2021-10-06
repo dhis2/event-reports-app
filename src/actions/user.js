@@ -1,10 +1,10 @@
 import { apiFetchUserAuthority } from '../api/user'
 import { GenericServerError } from '../modules/error'
-import { RECEIVED_USER, SET_USER_AUTHORITY } from '../reducers/user'
+import { SET_USER, SET_USER_AUTHORITY } from '../reducers/user'
 import { acSetLoadError } from './loader'
 
-export const acReceivedUser = value => ({
-    type: RECEIVED_USER,
+export const acSetUser = value => ({
+    type: SET_USER,
     value,
 })
 

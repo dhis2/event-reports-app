@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { acClearCurrent, acSetCurrent } from '../actions/current'
-import { acReceivedUser } from '../actions/user'
+import { acSetUser } from '../actions/user'
 import {
     acClearVisualization,
     acSetVisualization,
@@ -162,7 +162,7 @@ const mapDispatchToProps = {
     clearCurrent: acClearCurrent,
     setCurrent: acSetCurrent,
     setVisualization: acSetVisualization,
-    setUser: acReceivedUser,
+    setUser: acSetUser,
 }
 
 App.propTypes = {

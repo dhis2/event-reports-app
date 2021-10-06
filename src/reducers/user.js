@@ -1,4 +1,4 @@
-export const RECEIVED_USER = 'RECEIVED_USER'
+export const SET_USER = 'SET_USER'
 export const SET_USER_AUTHORITY = 'SET_USER_AUTHORITY'
 
 export const DEFAULT_USER = {
@@ -11,7 +11,7 @@ export const DEFAULT_USER = {
 
 export default (state = DEFAULT_USER, action) => {
     switch (action.type) {
-        case RECEIVED_USER: {
+        case SET_USER: {
             return fromD2ToUserObj(action.value)
         }
         case SET_USER_AUTHORITY: {
