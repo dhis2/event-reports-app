@@ -107,7 +107,7 @@ export const Visualization = ({ visualization }) => {
             <DataTable scrollHeight="500px">
                 <TableHead>
                     <DataTableRow>
-                        {headers.map(header =>
+                        {headers.map((header, index) =>
                             header ? (
                                 <DataTableColumnHeader
                                     fixed
@@ -127,7 +127,11 @@ export const Visualization = ({ visualization }) => {
                                     {header.column}
                                 </DataTableColumnHeader>
                             ) : (
-                                <DataTableColumnHeader fixed top="0" />
+                                <DataTableColumnHeader
+                                    fixed
+                                    top="0"
+                                    key={`undefined_${index}`} // FIXME this is due to pe not being present in headers, needs special handling
+                                />
                             )
                         )}
                     </DataTableRow>
