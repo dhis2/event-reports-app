@@ -48,7 +48,7 @@
 }
 .section {
     text-align: left;
-    background: #fff;
+    background: var(--colors-white);
     padding: 20px;
     margin-bottom: var(--spacers-dp24);
     border-radius: 5px;
