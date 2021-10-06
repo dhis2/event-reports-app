@@ -1,5 +1,4 @@
 export const SET_USER = 'SET_USER'
-export const SET_USER_AUTHORITY = 'SET_USER_AUTHORITY'
 
 export const DEFAULT_USER = {
     id: '',
@@ -13,15 +12,6 @@ export default (state = DEFAULT_USER, action) => {
     switch (action.type) {
         case SET_USER: {
             return fromD2ToUserObj(action.value)
-        }
-        case SET_USER_AUTHORITY: {
-            return {
-                ...state,
-                authorities: {
-                    ...state.authorities,
-                    ...action.value,
-                },
-            }
         }
         default:
             return state
