@@ -1,4 +1,4 @@
-import { useDataQuery, useDataMutation } from '@dhis2/app-runtime'
+import { useDataMutation } from '@dhis2/app-runtime'
 import { useD2 } from '@dhis2/app-runtime-adapter-d2'
 import { CssVariables } from '@dhis2/ui'
 import PropTypes from 'prop-types'
@@ -15,6 +15,7 @@ import {
 } from '../actions/visualization'
 import { EVENT_TYPE } from '../modules/dataStatistics'
 import history from '../modules/history'
+import { useVisualization } from '../modules/useVisualization'
 import { sGetCurrent } from '../reducers/current'
 import { sGetVisualization } from '../reducers/visualization'
 import { default as AlertBar } from './AlertBar/AlertBar'
@@ -25,17 +26,6 @@ import { default as TitleBar } from './TitleBar/TitleBar'
 import { Toolbar } from './Toolbar/Toolbar'
 import StartScreen from './Visualization/StartScreen'
 import { Visualization } from './Visualization/Visualization'
-
-const visualizationQuery = {
-    eventReport: {
-        resource: 'eventReports',
-        id: ({ id }) => id,
-        // TODO check if this list is what we need/want (copied from old ER)
-        params: {
-            fields: '*,interpretations[*,user[id,displayName,userCredentials[username]],likedBy[id,displayName],comments[id,lastUpdated,text,user[id,displayName,userCredentials[username]]]],columns[dimension,filter,programStage[id],legendSet[id],items[dimensionItem~rename(id),dimensionItemType,displayName~rename(name)]],rows[dimension,filter,programStage[id],legendSet[id],items[dimensionItem~rename(id),dimensionItemType,displayName~rename(name)]],filters[dimension,filter,programStage[id],legendSet[id],items[dimensionItem~rename(id),dimensionItemType,displayName~rename(name)]],program[id,displayName~rename(name),enrollmentDateLabel,incidentDateLabel],programStage[id,displayName~rename(name),executionDateLabel],access,userGroupAccesses,publicAccess,displayDescription,user[displayName,userCredentials[username]],href,!rewindRelativePeriods,!userOrganisationUnit,!userOrganisationUnitChildren,!userOrganisationUnitGrandChildren,!externalAccess,!relativePeriods,!columnDimensions,!rowDimensions,!filterDimensions,!organisationUnitGroups,!itemOrganisationUnitGroups,!indicators,!dataElements,!dataElementOperands,!dataElementGroups,!dataSets,!periods,!organisationUnitLevels,!organisationUnits,dataElementDimensions[legendSet[id,name],dataElement[id,name]]',
-        },
-    },
-}
 
 const dataStatisticsMutation = {
     resource: 'dataStatistics',
@@ -61,9 +51,7 @@ const App = ({
 }) => {
     const [previousLocation, setPreviousLocation] = useState(null)
     const [initialLoadIsComplete, setInitialLoadIsComplete] = useState(false)
-    const { data, refetch } = useDataQuery(visualizationQuery, {
-        lazy: true,
-    })
+    const { data, refetch } = useVisualization()
     const [postDataStatistics] = useDataMutation(dataStatisticsMutation)
     const { d2 } = useD2()
 
@@ -158,6 +146,7 @@ const App = ({
 
     useEffect(() => {
         const visualization = data?.eventReport
+
         if (visualization) {
             setVisualization(visualization)
             setCurrent(visualization)
