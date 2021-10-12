@@ -15,6 +15,7 @@ import { EVENT_TYPE } from '../modules/dataStatistics'
 import history from '../modules/history'
 import { sGetCurrent } from '../reducers/current'
 import { sGetVisualization } from '../reducers/visualization'
+import { default as AlertBar } from './AlertBar/AlertBar'
 import classes from './App.module.css'
 import { default as TitleBar } from './TitleBar/TitleBar'
 import { Toolbar } from './Toolbar/Toolbar'
@@ -184,6 +185,7 @@ const App = ({
                     </div>
                 </div>
             </div>
+            <AlertBar />
             <CssVariables colors spacers />
         </div>
     )

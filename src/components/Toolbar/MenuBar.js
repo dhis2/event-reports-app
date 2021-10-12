@@ -5,11 +5,14 @@ import i18n from '@dhis2/d2-i18n'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
+import { acSetAlertBar } from '../../actions/alertbar'
 import { acSetCurrent } from '../../actions/current'
 import { acSetVisualization } from '../../actions/visualization'
+import { getErrorVariantByStatusCode } from '../../modules/error'
 import history from '../../modules/history'
 import { sGetCurrent } from '../../reducers/current'
 import { sGetVisualization } from '../../reducers/visualization'
+import { VARIANT_SUCCESS } from '../AlertBar/AlertBar'
 import VisualizationOptionsManager from '../VisualizationOptions/VisualizationOptionsManager'
 import classes from './styles/MenuBar.module.css'
 
@@ -39,6 +42,7 @@ export const MenuBar = ({
     current,
     visualization,
     apiObjectName,
+    setAlertBar,
     setCurrent,
     setVisualization,
 }) => {
@@ -66,7 +70,14 @@ export const MenuBar = ({
 
         history.push('/')
 
-        // TODO snackbar message
+        setAlertBar({
+            variant: VARIANT_SUCCESS,
+            message: i18n.t('"{{deletedObject}}" successfully deleted.', {
+                deletedObject: deletedVisualization,
+            }),
+            duration: 2000,
+        })
+
         console.log('Deleted:', deletedVisualization)
     }
 
@@ -94,7 +105,11 @@ export const MenuBar = ({
             setCurrent(updatedCurrent)
         }
 
-        // TODO snackbar
+        setAlertBar({
+            variant: VARIANT_SUCCESS,
+            message: i18n.t('Rename successfull'),
+            duration: 2000,
+        })
     }
 
     const onSave = (details = {}, copy = false) => {
@@ -147,11 +162,22 @@ export const MenuBar = ({
     }
 
     const onError = error => {
+        // TODO remove once tested
         console.log('Error:', error)
 
-        // TODO handle errors
+        const message =
+            error.errorCode === 'E4030'
+                ? i18n.t(
+                      "This visualization can't be deleted because it is used on one or more dashboards"
+                  )
+                : error.message
 
-        // TODO snackbar message
+        const variant = getErrorVariantByStatusCode(error.httpStatusCode)
+
+        acSetAlertBar({
+            variant,
+            message,
+        })
     }
 
     const [postVisualization] = useDataMutation(visualizationSaveMutation, {
@@ -197,6 +223,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
+    setAlertBar: acSetAlertBar,
     setCurrent: acSetCurrent,
     setVisualization: acSetVisualization,
 }

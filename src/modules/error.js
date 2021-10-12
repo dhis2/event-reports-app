@@ -1,5 +1,6 @@
 import i18n from '@dhis2/d2-i18n'
 import { EmptyBox, GenericError } from '../assets/ErrorIcons'
+import { VARIANT_ERROR, VARIANT_WARNING } from '../components/AlertBar/AlertBar'
 
 export class VisualizationError {
     constructor(icon, title, description) {
@@ -53,4 +54,6 @@ export class VisualizationNotFoundError extends VisualizationError {
     }
 }
 
+export const getErrorVariantByStatusCode = statusCode =>
+    String(statusCode).match(/50\d/) ? VARIANT_ERROR : VARIANT_WARNING
 export const genericErrorTitle = i18n.t('Something went wrong')
