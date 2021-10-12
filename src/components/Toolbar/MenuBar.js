@@ -8,11 +8,11 @@ import { connect } from 'react-redux'
 import { acSetAlertBar } from '../../actions/alertbar'
 import { acSetCurrent } from '../../actions/current'
 import { acSetVisualization } from '../../actions/visualization'
-import { getErrorVariantByStatusCode } from '../../modules/error'
+import { getAlertTypeByStatusCode } from '../../modules/error'
 import history from '../../modules/history'
 import { sGetCurrent } from '../../reducers/current'
 import { sGetVisualization } from '../../reducers/visualization'
-import { VARIANT_SUCCESS } from '../AlertBar/AlertBar'
+import { ALERT_TYPE_SUCCESS } from '../AlertBar/AlertBar'
 import VisualizationOptionsManager from '../VisualizationOptions/VisualizationOptionsManager'
 import classes from './styles/MenuBar.module.css'
 
@@ -71,14 +71,12 @@ export const MenuBar = ({
         history.push('/')
 
         setAlertBar({
-            variant: VARIANT_SUCCESS,
+            type: ALERT_TYPE_SUCCESS,
             message: i18n.t('"{{deletedObject}}" successfully deleted.', {
                 deletedObject: deletedVisualization,
             }),
             duration: 2000,
         })
-
-        console.log('Deleted:', deletedVisualization)
     }
 
     const onRename = ({ name, description }) => {
@@ -106,8 +104,8 @@ export const MenuBar = ({
         }
 
         setAlertBar({
-            variant: VARIANT_SUCCESS,
-            message: i18n.t('Rename successfull'),
+            type: ALERT_TYPE_SUCCESS,
+            message: i18n.t('Rename successful'),
             duration: 2000,
         })
     }
@@ -172,10 +170,8 @@ export const MenuBar = ({
                   )
                 : error.message
 
-        const variant = getErrorVariantByStatusCode(error.httpStatusCode)
-
         acSetAlertBar({
-            variant,
+            type: getAlertTypeByStatusCode(error.httpStatusCode),
             message,
         })
     }
@@ -212,6 +208,7 @@ MenuBar.propTypes = {
     apiObjectName: PropTypes.string,
     current: PropTypes.object,
     dataTest: PropTypes.string,
+    setAlertBar: PropTypes.func,
     setCurrent: PropTypes.func,
     setVisualization: PropTypes.func,
     visualization: PropTypes.object,
