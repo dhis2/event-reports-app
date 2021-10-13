@@ -7,15 +7,17 @@ import { connect } from 'react-redux'
 import { acClearCurrent, acSetCurrent } from '../actions/current'
 import { tSetDimensions } from '../actions/dimensions'
 import { acAddMetadata } from '../actions/metadata'
-import { tAddSettings } from '../actions/settings'
+import { acAddSettings } from '../actions/settings'
 import { acSetUser } from '../actions/user'
 import {
     acClearVisualization,
     acSetVisualization,
 } from '../actions/visualization'
+import { useOrganisationUnitRoots } from '../hooks/useOrganisationUnitRoots'
+import { useSystemSettings } from '../hooks/useSystemSettings'
+import { useVisualization } from '../hooks/useVisualization'
 import { EVENT_TYPE } from '../modules/dataStatistics'
 import history from '../modules/history'
-import { useVisualization } from '../modules/useVisualization'
 import { sGetCurrent } from '../reducers/current'
 import { sGetVisualization } from '../reducers/visualization'
 import { default as AlertBar } from './AlertBar/AlertBar'
@@ -54,6 +56,8 @@ const App = ({
     const { data, refetch } = useVisualization()
     const [postDataStatistics] = useDataMutation(dataStatisticsMutation)
     const { d2 } = useD2()
+    const systemSettings = useSystemSettings()
+    const orgUnitRoots = useOrganisationUnitRoots()
 
     const needsRefetch = location => {
         if (!previousLocation) {
@@ -116,7 +120,7 @@ const App = ({
 
     useEffect(() => {
         const prepare = async () => {
-            await addSettings(userSettings)
+            addSettings(userSettings)
             setUser(d2.currentUser)
             await setDimensions()
         }
@@ -143,6 +147,12 @@ const App = ({
 
         return () => unlisten && unlisten()
     }, [])
+
+    useEffect(() => {
+        if (systemSettings && orgUnitRoots) {
+            addSettings({ ...systemSettings, ...orgUnitRoots })
+        }
+    }, [systemSettings, orgUnitRoots])
 
     useEffect(() => {
         const visualization = data?.eventReport
@@ -210,7 +220,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
     addMetadata: acAddMetadata,
-    addSettings: tAddSettings,
+    addSettings: acAddSettings,
     clearVisualization: acClearVisualization,
     clearCurrent: acClearCurrent,
     setCurrent: acSetCurrent,
