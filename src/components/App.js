@@ -20,6 +20,7 @@ import { EVENT_TYPE } from '../modules/dataStatistics'
 import history from '../modules/history'
 import { sGetCurrent } from '../reducers/current'
 import { sGetIsVisualizationLoading } from '../reducers/loader'
+import { sGetUiOptions } from '../reducers/ui'
 import { sGetVisualization } from '../reducers/visualization'
 import { default as AlertBar } from './AlertBar/AlertBar'
 import classes from './App.module.css'
@@ -59,6 +60,7 @@ const App = ({
     clearCurrent,
     clearVisualization,
     clearUi,
+    displayDensity,
     isLoading,
     setCurrent,
     setDimensions,
@@ -245,6 +247,7 @@ const App = ({
                                                 onResponseReceived={
                                                     onResponseReceived
                                                 }
+                                                options={{ displayDensity }}
                                             />
                                         )}
                                     </>
@@ -261,6 +264,7 @@ const App = ({
 
 const mapStateToProps = state => ({
     current: sGetCurrent(state),
+    displayDensity: sGetUiOptions(state).displayDensity,
     visualization: sGetVisualization(state),
     isLoading: sGetIsVisualizationLoading(state),
 })
@@ -286,6 +290,7 @@ App.propTypes = {
     clearCurrent: PropTypes.func,
     clearUi: PropTypes.func,
     clearVisualization: PropTypes.func,
+    displayDensity: PropTypes.string,
     isLoading: PropTypes.bool,
     location: PropTypes.object,
     setCurrent: PropTypes.func,

@@ -13,9 +13,17 @@ import {
 } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
+import {
+    DISPLAY_DENSITY_COMFORTABLE,
+    DISPLAY_DENSITY_COMPACT,
+} from '../../modules/options'
 import styles from './styles/Visualization.module.css'
 
-export const Visualization = ({ visualization, onResponseReceived }) => {
+export const Visualization = ({
+    visualization,
+    onResponseReceived,
+    options,
+}) => {
     const dataEngine = useDataEngine()
     const [analyticsResponse, setAnalyticsResponse] = useState(null)
     const [headers, setHeaders] = useState([])
@@ -115,8 +123,16 @@ export const Visualization = ({ visualization, onResponseReceived }) => {
         return null
     }
 
+    const large = options.displayDensity === DISPLAY_DENSITY_COMFORTABLE
+    const small = options.displayDensity === DISPLAY_DENSITY_COMPACT
+
     return (
         <div className={styles.wrapper}>
+            {options.displayDensity}
+            <br />
+            Large: {large.toString()}
+            <br />
+            Small: {small.toString()}
             <DataTable scrollHeight="500px" scrollWidth="1000px" width="1000px">
                 <TableHead>
                     <DataTableRow>
@@ -136,6 +152,8 @@ export const Visualization = ({ visualization, onResponseReceived }) => {
                                     sortDirection={getSortDirection(
                                         header.name
                                     )}
+                                    large={large}
+                                    small={small}
                                 >
                                     {header.column}
                                 </DataTableColumnHeader>
@@ -144,6 +162,8 @@ export const Visualization = ({ visualization, onResponseReceived }) => {
                                     fixed
                                     top="0"
                                     key={`undefined_${index}`} // FIXME this is due to pe not being present in headers, needs special handling
+                                    large={large}
+                                    small={small}
                                 />
                             )
                         )}
@@ -153,7 +173,11 @@ export const Visualization = ({ visualization, onResponseReceived }) => {
                     {rows.map((row, index) => (
                         <DataTableRow key={index}>
                             {row.map((value, index) => (
-                                <DataTableCell key={index}>
+                                <DataTableCell
+                                    key={index}
+                                    large={large}
+                                    small={small}
+                                >
                                     {value}
                                 </DataTableCell>
                             ))}
@@ -201,5 +225,6 @@ Visualization.defaultProps = {
 
 Visualization.propTypes = {
     visualization: PropTypes.object.isRequired,
+    options: PropTypes.shape({ displayDensity: PropTypes.string.isRequired }),
     onResponseReceived: PropTypes.func,
 }
