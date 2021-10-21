@@ -1,6 +1,6 @@
 import React from 'react'
 import classes from '../App.module.css'
-import { default as MenuBar } from './MenuBar'
+import { default as MenuBar } from './MenuBar/MenuBar'
 
 const apiObjectName = 'eventReport' // TODO move to App?
 
