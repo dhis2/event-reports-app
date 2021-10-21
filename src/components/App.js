@@ -53,6 +53,7 @@ const dataStatisticsMutation = {
 
 const App = ({
     location,
+    current,
     visualization,
     addMetadata,
     addSettings,
@@ -228,7 +229,7 @@ const App = ({
                             )}
                         >
                             {initialLoadIsComplete &&
-                                (!visualization && !isLoading ? (
+                                (!current && !isLoading ? (
                                     <StartScreen />
                                 ) : (
                                     <>
@@ -239,9 +240,9 @@ const App = ({
                                                 <LoadingMask />
                                             </div>
                                         )}
-                                        {visualization && (
+                                        {current && (
                                             <Visualization
-                                                visualization={visualization}
+                                                visualization={current}
                                                 onResponseReceived={
                                                     onResponseReceived
                                                 }
