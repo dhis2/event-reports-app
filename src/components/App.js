@@ -21,7 +21,6 @@ import history from '../modules/history'
 import { sGetCurrent } from '../reducers/current'
 import { sGetIsVisualizationLoading } from '../reducers/loader'
 import { sGetUiOptions } from '../reducers/ui'
-import { sGetVisualization } from '../reducers/visualization'
 import { default as AlertBar } from './AlertBar/AlertBar'
 import classes from './App.module.css'
 import DndContext from './DndContext'
@@ -265,7 +264,7 @@ const App = ({
 const mapStateToProps = state => ({
     current: sGetCurrent(state),
     displayDensity: sGetUiOptions(state).displayDensity,
-    visualization: sGetVisualization(state),
+    visualization: sGetCurrent(state),
     isLoading: sGetIsVisualizationLoading(state),
 })
 

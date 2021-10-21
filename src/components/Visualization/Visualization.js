@@ -19,11 +19,7 @@ import {
 } from '../../modules/options'
 import styles from './styles/Visualization.module.css'
 
-export const Visualization = ({
-    visualization,
-    onResponseReceived,
-    options,
-}) => {
+export const Visualization = ({ visualization, onResponseReceived }) => {
     const dataEngine = useDataEngine()
     const [analyticsResponse, setAnalyticsResponse] = useState(null)
     const [headers, setHeaders] = useState([])
@@ -123,16 +119,11 @@ export const Visualization = ({
         return null
     }
 
-    const large = options.displayDensity === DISPLAY_DENSITY_COMFORTABLE
-    const small = options.displayDensity === DISPLAY_DENSITY_COMPACT
+    const large = visualization.displayDensity === DISPLAY_DENSITY_COMFORTABLE
+    const small = visualization.displayDensity === DISPLAY_DENSITY_COMPACT
 
     return (
         <div className={styles.wrapper}>
-            {options.displayDensity}
-            <br />
-            Large: {large.toString()}
-            <br />
-            Small: {small.toString()}
             <DataTable scrollHeight="500px" scrollWidth="1000px" width="1000px">
                 <TableHead>
                     <DataTableRow>
@@ -225,6 +216,5 @@ Visualization.defaultProps = {
 
 Visualization.propTypes = {
     visualization: PropTypes.object.isRequired,
-    options: PropTypes.shape({ displayDensity: PropTypes.string.isRequired }),
     onResponseReceived: PropTypes.func,
 }

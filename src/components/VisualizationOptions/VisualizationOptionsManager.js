@@ -1,17 +1,26 @@
 import { VisualizationOptions } from '@dhis2/analytics'
 import i18n from '@dhis2/d2-i18n'
+import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
+import { tSetCurrentFromUi } from '../../actions/current'
 import { getOptionsByType } from '../../modules/options/config'
 import MenuButton from '../MenuButton/MenuButton'
 //import UpdateVisualizationContainer from '../UpdateButton/UpdateVisualizationContainer'
 
-const VisualizationOptionsManager = () => {
+const VisualizationOptionsManager = ({ onUpdate }) => {
     const [dialogIsOpen, setDialogIsOpen] = useState(false)
 
     const onClick = () => {
-        // TODO: update vis
         onClose()
+        // try {
+        //     validateLayout(getCurrentFromUi())
+        //     acClearLoadError()
+        // } catch (error) {
+        //     acSetLoadError(error || new GenericClientError())
+        // }
+        //onLoadingStart()
+        onUpdate()
     }
 
     const onClose = () => {
@@ -43,8 +52,17 @@ const VisualizationOptionsManager = () => {
     )
 }
 
-VisualizationOptionsManager.propTypes = {}
+VisualizationOptionsManager.propTypes = {
+    onUpdate: PropTypes.func,
+}
 
 const mapStateToProps = () => ({})
 
-export default connect(mapStateToProps)(VisualizationOptionsManager)
+const mapDispatchToProps = {
+    onUpdate: tSetCurrentFromUi,
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(VisualizationOptionsManager)
