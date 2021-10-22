@@ -2,12 +2,12 @@ import { Card, Popper, Layer } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React, { useState, createRef } from 'react'
 import { connect } from 'react-redux'
+import ArrowDown from '../../../assets/ArrowDown'
 import {
     visTypeDisplayNames,
     VIS_TYPE_PIVOT_TABLE,
 } from '../../../modules/visualization'
 import { sGetUi, sGetUiType } from '../../../reducers/ui'
-import ArrowDown from './ArrowDown'
 import ListItemIcon from './ListItemIcon'
 import classes from './styles/VisualizationTypeSelector.module.css'
 import VisualizationTypeListItem from './VisualizationTypeListItem'

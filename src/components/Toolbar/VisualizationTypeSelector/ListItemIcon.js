@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import PivotTableIcon from '../../../assets/PivotTableIcon'
 import {
     VIS_TYPE_PIVOT_TABLE,
     VIS_TYPE_LINE_LIST,
 } from '../../../modules/visualization'
-import PivotTableIcon from './PivotTableIcon'
 
 const ListItemIcon = ({ iconType, style }) => {
     switch (iconType) {
