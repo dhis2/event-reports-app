@@ -20,7 +20,6 @@ import { EVENT_TYPE } from '../modules/dataStatistics'
 import history from '../modules/history'
 import { sGetCurrent } from '../reducers/current'
 import { sGetIsVisualizationLoading } from '../reducers/loader'
-import { sGetUiOptions } from '../reducers/ui'
 import { default as AlertBar } from './AlertBar/AlertBar'
 import classes from './App.module.css'
 import DndContext from './DndContext'
@@ -53,13 +52,12 @@ const dataStatisticsMutation = {
 
 const App = ({
     location,
-    visualization,
+    current,
     addMetadata,
     addSettings,
     clearCurrent,
     clearVisualization,
     clearUi,
-    displayDensity,
     isLoading,
     setCurrent,
     setDimensions,
@@ -229,7 +227,7 @@ const App = ({
                             )}
                         >
                             {initialLoadIsComplete &&
-                                (!visualization && !isLoading ? (
+                                (!current && !isLoading ? (
                                     <StartScreen />
                                 ) : (
                                     <>
@@ -240,13 +238,12 @@ const App = ({
                                                 <LoadingMask />
                                             </div>
                                         )}
-                                        {visualization && (
+                                        {current && (
                                             <Visualization
-                                                visualization={visualization}
+                                                visualization={current}
                                                 onResponseReceived={
                                                     onResponseReceived
                                                 }
-                                                options={{ displayDensity }}
                                             />
                                         )}
                                     </>
@@ -263,8 +260,6 @@ const App = ({
 
 const mapStateToProps = state => ({
     current: sGetCurrent(state),
-    displayDensity: sGetUiOptions(state).displayDensity,
-    visualization: sGetCurrent(state),
     isLoading: sGetIsVisualizationLoading(state),
 })
 
@@ -289,7 +284,7 @@ App.propTypes = {
     clearCurrent: PropTypes.func,
     clearUi: PropTypes.func,
     clearVisualization: PropTypes.func,
-    displayDensity: PropTypes.string,
+    current: PropTypes.object,
     isLoading: PropTypes.bool,
     location: PropTypes.object,
     setCurrent: PropTypes.func,
@@ -300,7 +295,6 @@ App.propTypes = {
     setVisualization: PropTypes.func,
     setVisualizationLoading: PropTypes.func,
     userSettings: PropTypes.object,
-    visualization: PropTypes.object,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
