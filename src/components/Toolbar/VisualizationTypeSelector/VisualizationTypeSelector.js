@@ -2,13 +2,12 @@ import { Card, Popper, Layer } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React, { useState, createRef } from 'react'
 import { connect } from 'react-redux'
-import ArrowDown from './ArrowDown'
-import { getAdaptedUiByType } from '../../../modules/ui'
 import {
     visTypeDisplayNames,
     VIS_TYPE_PIVOT_TABLE,
 } from '../../../modules/visualization'
 import { sGetUi, sGetUiType } from '../../../reducers/ui'
+import ArrowDown from './ArrowDown'
 import ListItemIcon from './ListItemIcon'
 import classes from './styles/VisualizationTypeSelector.module.css'
 import VisualizationTypeListItem from './VisualizationTypeListItem'
@@ -34,7 +33,7 @@ export const VisualizationTypeSelector = ({ visualizationType }) => {
                             key={type}
                             iconType={type}
                             label={visTypeDisplayNames[type]}
-                            description={`TEXT description for ${type}`}
+                            description={`TEXT description for ${visTypeDisplayNames[type]}`}
                             isSelected={type === visualizationType}
                             onClick={handleListItemClick(type)}
                             // always disabled until PT is supported
