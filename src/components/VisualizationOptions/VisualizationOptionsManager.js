@@ -29,7 +29,7 @@ const VisualizationOptionsManager = ({ onUpdate }) => {
         <>
             <MenuButton
                 data-test={'app-menubar-options-button'}
-                onClick={setDialogIsOpen(true)}
+                onClick={() => setDialogIsOpen(true)}
             >
                 {i18n.t('Options')}
             </MenuButton>
@@ -37,7 +37,7 @@ const VisualizationOptionsManager = ({ onUpdate }) => {
                 <VisualizationOptions
                     optionsConfig={optionsConfig}
                     onUpdate={onClick}
-                    onClose={setDialogIsOpen(false)}
+                    onClose={() => setDialogIsOpen(false)}
                 />
             )}
         </>
