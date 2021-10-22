@@ -19,6 +19,7 @@ export const visTypeMap = {
         description: 'TEXT description for Pivot table',
         icon: PivotTableIcon,
         disabled: true,
+        disabledText: i18n.t('Pivot tables are not supported by this app yet'),
     },
 }
 

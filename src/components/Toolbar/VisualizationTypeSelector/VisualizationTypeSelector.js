@@ -1,4 +1,4 @@
-import { Card, Popper, Layer } from '@dhis2/ui'
+import { Card, Popper, Layer, Tooltip } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React, { useState, createRef } from 'react'
 import { connect } from 'react-redux'
@@ -19,21 +19,34 @@ export const VisualizationTypeSelector = ({ visualizationType }) => {
 
     const getVisTypes = () => Object.keys(visTypeMap).sort()
 
+    const renderVisualizationTypeListItem = type => (
+        <VisualizationTypeListItem
+            key={type}
+            visType={type}
+            label={visTypeMap[type].name}
+            description={visTypeMap[type].description}
+            isSelected={type === visualizationType}
+            onClick={handleListItemClick(type)}
+            disabled={visTypeMap[type].disabled}
+        />
+    )
+
     const VisTypesList = (
         <Card dataTest={'visualization-type-selector-card'}>
             <div className={classes.listContainer}>
                 <div className={classes.listSection}>
-                    {getVisTypes().map(type => (
-                        <VisualizationTypeListItem
-                            key={type}
-                            visType={type}
-                            label={visTypeMap[type].name}
-                            description={visTypeMap[type].description}
-                            isSelected={type === visualizationType}
-                            onClick={handleListItemClick(type)}
-                            disabled={visTypeMap[type].disabled}
-                        />
-                    ))}
+                    {getVisTypes().map(type =>
+                        visTypeMap[type].disabled ? (
+                            <Tooltip
+                                placement="bottom"
+                                content={visTypeMap[type].disabledText}
+                            >
+                                {renderVisualizationTypeListItem(type)}
+                            </Tooltip>
+                        ) : (
+                            renderVisualizationTypeListItem(type)
+                        )
+                    )}
                 </div>
             </div>
         </Card>
