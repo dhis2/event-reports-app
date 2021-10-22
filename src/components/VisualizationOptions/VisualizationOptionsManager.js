@@ -12,7 +12,7 @@ const VisualizationOptionsManager = ({ onUpdate }) => {
     const [dialogIsOpen, setDialogIsOpen] = useState(false)
 
     const onClick = () => {
-        onClose()
+        setDialogIsOpen(false)
         // try {
         //     validateLayout(getCurrentFromUi())
         //     acClearLoadError()
@@ -23,21 +23,13 @@ const VisualizationOptionsManager = ({ onUpdate }) => {
         onUpdate()
     }
 
-    const onClose = () => {
-        toggleVisualizationOptionsDialog()
-    }
-
-    const toggleVisualizationOptionsDialog = () => {
-        setDialogIsOpen(!dialogIsOpen)
-    }
-
     const optionsConfig = getOptionsByType()
 
     return (
         <>
             <MenuButton
                 data-test={'app-menubar-options-button'}
-                onClick={toggleVisualizationOptionsDialog}
+                onClick={setDialogIsOpen(true)}
             >
                 {i18n.t('Options')}
             </MenuButton>
@@ -45,7 +37,7 @@ const VisualizationOptionsManager = ({ onUpdate }) => {
                 <VisualizationOptions
                     optionsConfig={optionsConfig}
                     onUpdate={onClick}
-                    onClose={onClose}
+                    onClose={setDialogIsOpen(false)}
                 />
             )}
         </>
