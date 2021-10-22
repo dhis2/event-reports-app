@@ -5,7 +5,7 @@ import ListItemIcon from './ListItemIcon'
 import classes from './styles/VisualizationTypeSelector.module.css'
 
 const VisualizationTypeListItem = ({
-    iconType,
+    visType,
     label,
     description,
     disabled,
@@ -22,7 +22,7 @@ const VisualizationTypeListItem = ({
         <div className={classes.listItemIcon}>
             {
                 <ListItemIcon
-                    iconType={iconType}
+                    visType={visType}
                     style={{ width: 48, height: 48 }}
                 />
             }
@@ -37,9 +37,9 @@ const VisualizationTypeListItem = ({
 VisualizationTypeListItem.propTypes = {
     description: PropTypes.string,
     disabled: PropTypes.bool,
-    iconType: PropTypes.string,
     isSelected: PropTypes.bool,
     label: PropTypes.string,
+    visType: PropTypes.string,
     onClick: PropTypes.func,
 }
 

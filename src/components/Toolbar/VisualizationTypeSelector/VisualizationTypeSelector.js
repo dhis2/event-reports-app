@@ -3,10 +3,7 @@ import PropTypes from 'prop-types'
 import React, { useState, createRef } from 'react'
 import { connect } from 'react-redux'
 import ArrowDown from '../../../assets/ArrowDown'
-import {
-    visTypeDisplayNames,
-    VIS_TYPE_PIVOT_TABLE,
-} from '../../../modules/visualization'
+import { visTypeMap } from '../../../modules/visualization'
 import { sGetUi, sGetUiType } from '../../../reducers/ui'
 import ListItemIcon from './ListItemIcon'
 import classes from './styles/VisualizationTypeSelector.module.css'
@@ -20,7 +17,7 @@ export const VisualizationTypeSelector = ({ visualizationType }) => {
         setListIsOpen(false)
     }
 
-    const getVisTypes = () => Object.keys(visTypeDisplayNames)
+    const getVisTypes = () => Object.keys(visTypeMap).sort()
 
     const VisTypesList = (
         <Card dataTest={'visualization-type-selector-card'}>
@@ -29,13 +26,12 @@ export const VisualizationTypeSelector = ({ visualizationType }) => {
                     {getVisTypes().map(type => (
                         <VisualizationTypeListItem
                             key={type}
-                            iconType={type}
-                            label={visTypeDisplayNames[type]}
-                            description={`TEXT description for ${visTypeDisplayNames[type]}`}
+                            visType={type}
+                            label={visTypeMap[type].name}
+                            description={visTypeMap[type].description}
                             isSelected={type === visualizationType}
                             onClick={handleListItemClick(type)}
-                            // always disabled until PT is supported
-                            disabled={type === VIS_TYPE_PIVOT_TABLE}
+                            disabled={visTypeMap[type].disabled}
                         />
                     ))}
                 </div>
@@ -53,9 +49,9 @@ export const VisualizationTypeSelector = ({ visualizationType }) => {
                 className={classes.button}
                 data-test={'visualization-type-selector-button'}
             >
-                <ListItemIcon iconType={visualizationType} />
+                <ListItemIcon visType={visualizationType} />
                 <span data-test="visualization-type-selector-currently-selected-text">
-                    {visTypeDisplayNames[visualizationType]}
+                    {visTypeMap[visualizationType].name}
                 </span>
                 <span className={classes.arrowIcon}>
                     <ArrowDown />
@@ -75,7 +71,7 @@ export const VisualizationTypeSelector = ({ visualizationType }) => {
 }
 
 VisualizationTypeSelector.propTypes = {
-    visualizationType: PropTypes.oneOf(Object.keys(visTypeDisplayNames)),
+    visualizationType: PropTypes.oneOf(Object.keys(visTypeMap)),
 }
 
 const mapStateToProps = state => ({
