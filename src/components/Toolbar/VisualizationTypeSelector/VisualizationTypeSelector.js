@@ -57,7 +57,7 @@ export const VisualizationTypeSelector = ({ visualizationType }) => {
     return (
         <div className={classes.container}>
             <div
-                onClick={() => setListIsOpen(!listIsOpen)}
+                onClick={() => setListIsOpen(true)}
                 ref={buttonRef}
                 className={classes.button}
                 data-test={'visualization-type-selector-button'}
