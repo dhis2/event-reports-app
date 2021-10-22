@@ -15,11 +15,9 @@ import VisualizationTypeListItem from './VisualizationTypeListItem'
 export const VisualizationTypeSelector = ({ visualizationType }) => {
     const [listIsOpen, setListIsOpen] = useState(false)
 
-    const toggleList = () => setListIsOpen(!listIsOpen)
-
     const handleListItemClick = () => () => {
         // TODO add set UI when PT is available
-        toggleList()
+        setListIsOpen(false)
     }
 
     const getVisTypes = () => Object.keys(visTypeDisplayNames)
@@ -50,7 +48,7 @@ export const VisualizationTypeSelector = ({ visualizationType }) => {
     return (
         <div className={classes.container}>
             <div
-                onClick={toggleList}
+                onClick={() => setListIsOpen(!listIsOpen)}
                 ref={buttonRef}
                 className={classes.button}
                 data-test={'visualization-type-selector-button'}
@@ -64,7 +62,7 @@ export const VisualizationTypeSelector = ({ visualizationType }) => {
                 </span>
             </div>
             {listIsOpen && (
-                <Layer onClick={toggleList}>
+                <Layer onClick={() => setListIsOpen(false)}>
                     <Popper reference={buttonRef} placement="bottom-start">
                         <div className={classes.cardContainer}>
                             {VisTypesList}
