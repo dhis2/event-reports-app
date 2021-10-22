@@ -5,7 +5,7 @@ import {
     DISPLAY_DENSITY_NORMAL,
     DISPLAY_DENSITY_COMPACT,
 } from '../../../modules/options'
-import SelectBaseOption from './SelectBaseOption'
+import { default as SelectBaseOption } from './SelectBaseOption'
 
 const DisplayDensity = () => (
     <SelectBaseOption
