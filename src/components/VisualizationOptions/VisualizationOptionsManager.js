@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { tSetCurrentFromUi } from '../../actions/current'
 import { getOptionsByType } from '../../modules/options/config'
-import MenuButton from '../MenuButton/MenuButton'
+import MenuButton from '../Toolbar/MenuBar/MenuButton'
 //import UpdateVisualizationContainer from '../UpdateButton/UpdateVisualizationContainer'
 
 const VisualizationOptionsManager = ({ onUpdate }) => {
