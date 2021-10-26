@@ -14,6 +14,7 @@ import history from '../../../modules/history'
 import { sGetCurrent } from '../../../reducers/current'
 import { sGetVisualization } from '../../../reducers/visualization'
 import { ALERT_TYPE_SUCCESS } from '../../AlertBar/AlertBar'
+import { default as DownloadManager } from '../../DownloadManager/DownloadManager'
 import VisualizationOptionsManager from '../../VisualizationOptions/VisualizationOptionsManager'
 import classes from './styles/MenuBar.module.css'
 
@@ -216,6 +217,7 @@ export const MenuBar = ({
                 onError={onError}
             />
             <VisualizationOptionsManager />
+            <DownloadManager />
         </div>
     )
 }
