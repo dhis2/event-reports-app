@@ -11,15 +11,9 @@ import styles from './styles/InterpretationsButton.module.css'
 
 export const InterpretationsButton = ({ showRightSidebar, id, onClick }) => (
     <MenuButton disabled={!id} onClick={onClick}>
-        {showRightSidebar ? (
-            <div className={styles.iconWrapper}>
-                <IconChevronRight24 />
-            </div>
-        ) : (
-            <div className={styles.iconWrapper}>
-                <IconChevronLeft24 />
-            </div>
-        )}
+        <div className={styles.iconWrapper}>
+            {showRightSidebar ? <IconChevronRight24 /> : <IconChevronLeft24 />}
+        </div>
         {i18n.t('Interpretations')}
     </MenuButton>
 )
