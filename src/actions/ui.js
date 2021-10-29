@@ -7,7 +7,7 @@ import {
     SET_UI_OPTIONS,
     SET_UI_FROM_VISUALIZATION,
     CLEAR_UI,
-    TOGGLE_UI_RIGHT_SIDEBAR_OPEN,
+    TOGGLE_UI_RIGHT_SIDEBAR,
 } from '../reducers/ui'
 
 export const acSetUiOptions = value => ({
@@ -45,8 +45,8 @@ export const acClearUi = value => ({
     value,
 })
 
-export const acToggleUiRightSidebarOpen = () => ({
-    type: TOGGLE_UI_RIGHT_SIDEBAR_OPEN,
+export const acToggleUiRightSidebar = () => ({
+    type: TOGGLE_UI_RIGHT_SIDEBAR,
 })
 
 export const tClearUi = () => (dispatch, getState) => {

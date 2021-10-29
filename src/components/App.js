@@ -20,7 +20,7 @@ import { EVENT_TYPE } from '../modules/dataStatistics'
 import history from '../modules/history'
 import { sGetCurrent } from '../reducers/current'
 import { sGetIsVisualizationLoading } from '../reducers/loader'
-import { sGetUiRightSidebarOpen } from '../reducers/ui'
+import { sGetUiShowRightSidebar } from '../reducers/ui'
 import { default as AlertBar } from './AlertBar/AlertBar'
 import classes from './App.module.css'
 import { DetailsPanel } from './DetailsPanel/DetailsPanel'
@@ -61,7 +61,6 @@ const App = ({
     clearVisualization,
     clearUi,
     isLoading,
-    rightSidebarOpen,
     setCurrent,
     setDimensions,
     setInitMetadata,
@@ -69,6 +68,7 @@ const App = ({
     setVisualizationLoading,
     setUiFromVisualization,
     setUser,
+    showRightSidebar,
     userSettings,
 }) => {
     const [previousLocation, setPreviousLocation] = useState(null)
@@ -254,7 +254,7 @@ const App = ({
                         </div>
                     </div>
                 </DndContext>
-                {rightSidebarOpen && current && (
+                {showRightSidebar && current && (
                     <div className={classes.mainRight}>
                         <DetailsPanel />
                     </div>
@@ -269,7 +269,7 @@ const App = ({
 const mapStateToProps = state => ({
     current: sGetCurrent(state),
     isLoading: sGetIsVisualizationLoading(state),
-    rightSidebarOpen: sGetUiRightSidebarOpen(state),
+    showRightSidebar: sGetUiShowRightSidebar(state),
 })
 
 const mapDispatchToProps = {
@@ -296,7 +296,6 @@ App.propTypes = {
     current: PropTypes.object,
     isLoading: PropTypes.bool,
     location: PropTypes.object,
-    rightSidebarOpen: PropTypes.bool,
     setCurrent: PropTypes.func,
     setDimensions: PropTypes.func,
     setInitMetadata: PropTypes.func,
@@ -304,6 +303,7 @@ App.propTypes = {
     setUser: PropTypes.func,
     setVisualization: PropTypes.func,
     setVisualizationLoading: PropTypes.func,
+    showRightSidebar: PropTypes.bool,
     userSettings: PropTypes.object,
 }
 
