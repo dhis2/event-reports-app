@@ -23,7 +23,6 @@ const EMPTY_UI = {
     },
     itemsByDimension: {},
     options: {},
-    showRightSidebar: false,
 }
 
 const DEFAULT_UI = {
