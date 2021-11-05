@@ -1,7 +1,7 @@
 import { useDataMutation } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import { Parser as RichTextParser } from '@dhis2/d2-ui-rich-text'
-import { Button, IconReply16, IconThumbUp16, colors } from '@dhis2/ui'
+import { Button, Tooltip, IconReply16, IconThumbUp16, colors } from '@dhis2/ui'
 import cx from 'classnames'
 import moment from 'moment'
 import PropTypes from 'prop-types'
@@ -55,25 +55,31 @@ export const Interpretation = ({
                 <RichTextParser>{interpretation.text}</RichTextParser>
             </div>
             <div className={classes.interpretationStats}>
-                <span
-                    onClick={onLikeClick(isLikedByCurrentUser)}
-                    className={cx({ [classes.isLiked]: isLikedByCurrentUser })}
-                >
-                    {interpretation.likes ? interpretation.likes : null}{' '}
-                    <IconThumbUp16
-                        color={
-                            isLikedByCurrentUser
-                                ? colors.teal500
-                                : colors.grey700
-                        }
-                    />
-                </span>
-                <span onClick={() => onClick(interpretation.id)}>
-                    {interpretation.comments.length
-                        ? interpretation.comments.length
-                        : null}
-                    <IconReply16 color={colors.grey700} />
-                </span>
+                <Tooltip closeDelay={200} content={i18n.t('Like')}>
+                    <span
+                        onClick={onLikeClick(isLikedByCurrentUser)}
+                        className={cx({
+                            [classes.isLiked]: isLikedByCurrentUser,
+                        })}
+                    >
+                        {interpretation.likes ? interpretation.likes : null}{' '}
+                        <IconThumbUp16
+                            color={
+                                isLikedByCurrentUser
+                                    ? colors.teal500
+                                    : colors.grey700
+                            }
+                        />
+                    </span>
+                </Tooltip>
+                <Tooltip closeDelay={200} content={i18n.t('Reply')}>
+                    <span onClick={() => onClick(interpretation.id)}>
+                        {interpretation.comments.length
+                            ? interpretation.comments.length
+                            : null}
+                        <IconReply16 color={colors.grey700} />
+                    </span>
+                </Tooltip>
             </div>
             <div>
                 <Button
