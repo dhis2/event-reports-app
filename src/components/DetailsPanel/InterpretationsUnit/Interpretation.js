@@ -18,7 +18,6 @@ export const Interpretation = ({
     const engine = useDataEngine()
     const resource = `interpretations/${interpretation.id}/like`
     const onComplete = res => {
-        console.log('onComplete', res)
         if (res.status === 'OK') {
             onLikeToggle()
         }
