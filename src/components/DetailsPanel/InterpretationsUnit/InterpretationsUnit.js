@@ -9,20 +9,28 @@ import {
 } from '@dhis2/ui'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Avatar } from './Avatar'
 import { InterpretationList } from './InterpretationList'
 import classes from './styles/InterpretationsUnit.module.css'
 
-const getInterpretationsQuery = type => ({
-    visualization: {
-        resource: type,
-        id: ({ id }) => id,
-        params: {
-            fields: 'interpretations[id,user[displayName],created,text,comments[id],likes,likedBy[id]]',
-        },
+const interpretationsQuery = {
+    interpretations: {
+        resource: 'interpretations',
+        params: ({ type, id }) => ({
+            fields: [
+                'id',
+                'user[displayName]',
+                'created',
+                'text',
+                'comments[id]',
+                'likes',
+                'likedBy[id]',
+            ],
+            filter: `${type}.id:eq:${id}`,
+        }),
     },
-})
+}
 
 export const InterpretationsUnit = ({
     currentUser,
@@ -32,22 +40,17 @@ export const InterpretationsUnit = ({
 }) => {
     const [isExpanded, setIsExpanded] = useState(true)
 
-    const interpretationsQuery = useMemo(
-        () => getInterpretationsQuery(type),
-        []
-    )
-
     const { data, loading, refetch } = useDataQuery(interpretationsQuery, {
         lazy: true,
     })
 
     useEffect(() => {
         if (id) {
-            refetch({ id })
+            refetch({ type, id })
         }
     }, [type, id])
 
-    const onLikeToggle = () => refetch({ id })
+    const onLikeToggle = () => refetch({ type, id })
 
     return (
         <div
@@ -76,7 +79,7 @@ export const InterpretationsUnit = ({
                             <InterpretationList
                                 currentUser={currentUser}
                                 interpretations={
-                                    data.visualization.interpretations
+                                    data.interpretations.interpretations
                                 }
                                 onInterpretationClick={onInterpretationClick}
                                 onLikeToggle={onLikeToggle}

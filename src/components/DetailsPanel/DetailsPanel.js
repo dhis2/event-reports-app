@@ -12,7 +12,7 @@ export const DetailsPanel = ({ currentUser, visualization }) => (
     <div className={classes.panel}>
         <AboutVisualizationUnit type="eventReports" id={visualization.id} />
         <InterpretationsUnit
-            type="eventReports"
+            type="eventReport"
             id={visualization.id}
             currentUser={currentUser}
             onInterpretationClick={interpretationId =>
