@@ -1,11 +1,11 @@
-import { useDataEngine } from '@dhis2/app-runtime'
+import { useDataMutation } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import { Parser as RichTextParser } from '@dhis2/d2-ui-rich-text'
 import { Button, IconReply16, IconThumbUp16, colors } from '@dhis2/ui'
 import cx from 'classnames'
 import moment from 'moment'
 import PropTypes from 'prop-types'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Avatar } from './Avatar'
 import classes from './styles/Interpretation.module.css'
 
@@ -15,23 +15,20 @@ export const Interpretation = ({
     onClick,
     onLikeToggle,
 }) => {
-    const engine = useDataEngine()
-    const resource = `interpretations/${interpretation.id}/like`
     const onComplete = res => {
         if (res.status === 'OK') {
             onLikeToggle()
         }
     }
-    const likeInterpretation = () =>
-        engine.mutate({ resource, onComplete, type: 'create' })
-    const unlikeInterpretation = () =>
-        engine.mutate({ resource, onComplete, type: 'delete' })
+    const resource = `interpretations/${interpretation.id}/like`
+    const likeMutationRef = useRef({ resource, type: 'create' })
+    const unlikeMutationRef = useRef({ resource, type: 'create' })
+    const [like] = useDataMutation(likeMutationRef.current, { onComplete })
+    const [unlike] = useDataMutation(unlikeMutationRef.current, { onComplete })
     const [isLikedByCurrentUser, setIsLikedByCurrentUser] = useState(false)
-
     const onLikeClick = isLiked => e => {
         e.stopPropagation()
-
-        isLiked ? unlikeInterpretation() : likeInterpretation()
+        isLiked ? unlike() : like()
     }
 
     useEffect(() => {
