@@ -22,7 +22,7 @@ export const Interpretation = ({
     }
     const resource = `interpretations/${interpretation.id}/like`
     const likeMutationRef = useRef({ resource, type: 'create' })
-    const unlikeMutationRef = useRef({ resource, type: 'create' })
+    const unlikeMutationRef = useRef({ resource, type: 'delete' })
     const [like] = useDataMutation(likeMutationRef.current, { onComplete })
     const [unlike] = useDataMutation(unlikeMutationRef.current, { onComplete })
     const [isLikedByCurrentUser, setIsLikedByCurrentUser] = useState(false)
