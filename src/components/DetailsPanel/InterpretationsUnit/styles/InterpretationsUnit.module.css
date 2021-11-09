@@ -8,6 +8,11 @@
     padding-bottom: var(--spacers-dp32);
 }
 
+.loader {
+    display: flex;
+    justify-content: center;
+}
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -23,6 +28,5 @@
 .input {
     margin-top: var(--spacers-dp12);
     display: flex;
-    align-items: center;
     gap: var(--spacers-dp8);
 }

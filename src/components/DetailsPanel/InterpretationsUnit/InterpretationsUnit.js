@@ -1,17 +1,17 @@
-import { useDataQuery } from '@dhis2/app-runtime'
+import { useDataQuery, useDataMutation } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import {
     CircularLoader,
     IconChevronDown24,
     IconChevronUp24,
-    Input,
     colors,
 } from '@dhis2/ui'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Avatar } from './Avatar'
 import { InterpretationList } from './InterpretationList'
+import { RichTextEditor } from './RichTextEditor'
 import classes from './styles/InterpretationsUnit.module.css'
 
 const interpretationsQuery = {
@@ -52,6 +52,22 @@ export const InterpretationsUnit = ({
 
     const onLikeToggle = () => refetch({ type, id })
 
+    const saveMutationRef = useRef({
+        resource: `interpretations/${type}/${id}`,
+        type: 'create',
+        data: ({ text }) => text,
+    })
+
+    const [save] = useDataMutation(saveMutationRef.current, {
+        onComplete: res => {
+            if (res.status === 'OK') {
+                refetch({ type, id })
+            }
+        },
+    })
+
+    const onSave = text => save({ text })
+
     return (
         <div
             className={cx(classes.container, {
@@ -73,7 +89,11 @@ export const InterpretationsUnit = ({
             </div>
             {isExpanded && (
                 <>
-                    {loading && <CircularLoader small />}
+                    {loading && (
+                        <div className={classes.loader}>
+                            <CircularLoader small />
+                        </div>
+                    )}
                     {data && (
                         <>
                             <InterpretationList
@@ -86,10 +106,14 @@ export const InterpretationsUnit = ({
                             />
                             <div className={classes.input}>
                                 <Avatar name={currentUser.name} />
-                                <Input
-                                    placeholder={i18n.t(
+                                <RichTextEditor
+                                    inputPlaceholder={i18n.t(
                                         'Write an interpretation'
                                     )}
+                                    saveButtonLabel={i18n.t(
+                                        'Save interpretation'
+                                    )}
+                                    onSave={onSave}
                                 />
                             </div>
                         </>
