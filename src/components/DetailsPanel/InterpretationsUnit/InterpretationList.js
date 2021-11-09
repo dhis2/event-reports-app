@@ -28,27 +28,46 @@ export const InterpretationList = ({
 
     return (
         <ol className={classes.interpretationGroups}>
-            {Object.keys(interpretationsByDate).map(date => (
-                <li key={date}>
-                    <div className={classes.dateSection}>
-                        <IconCalendar24 color={colors.grey600} />
-                        <time dateTime={date} className={classes.dateHeader}>
-                            {moment(date).format('ll')}
-                        </time>
-                    </div>
-                    <ol className={classes.interpretationList}>
-                        {interpretationsByDate[date].map(interpretation => (
-                            <Interpretation
-                                key={interpretation.id}
-                                interpretation={interpretation}
-                                currentUser={currentUser}
-                                onClick={onInterpretationClick}
-                                onLikeToggle={onLikeToggle}
-                            />
-                        ))}
-                    </ol>
-                </li>
-            ))}
+            {Object.keys(interpretationsByDate)
+                .sort()
+                .reverse()
+                .map(date => (
+                    <li key={date}>
+                        <div className={classes.dateSection}>
+                            <IconCalendar24 color={colors.grey600} />
+                            <time
+                                dateTime={date}
+                                className={classes.dateHeader}
+                            >
+                                {moment(date).format('ll')}
+                            </time>
+                        </div>
+                        <ol className={classes.interpretationList}>
+                            {interpretationsByDate[date]
+                                .sort((a, b) => {
+                                    const dateA = a.created
+                                    const dateB = b.created
+
+                                    if (dateA < dateB) {
+                                        return -1
+                                    }
+                                    if (dateA > dateB) {
+                                        return 1
+                                    }
+                                    return 0
+                                })
+                                .map(interpretation => (
+                                    <Interpretation
+                                        key={interpretation.id}
+                                        interpretation={interpretation}
+                                        currentUser={currentUser}
+                                        onClick={onInterpretationClick}
+                                        onLikeToggle={onLikeToggle}
+                                    />
+                                ))}
+                        </ol>
+                    </li>
+                ))}
         </ol>
     )
 }
