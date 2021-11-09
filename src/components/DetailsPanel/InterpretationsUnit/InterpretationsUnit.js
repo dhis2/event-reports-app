@@ -1,6 +1,7 @@
 import { useDataQuery, useDataMutation } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import {
+    Button,
     CircularLoader,
     IconChevronDown24,
     IconChevronUp24,
@@ -9,9 +10,8 @@ import {
 import cx from 'classnames'
 import PropTypes from 'prop-types'
 import React, { useEffect, useRef, useState } from 'react'
-import { Avatar } from './Avatar'
 import { InterpretationList } from './InterpretationList'
-import { RichTextEditor } from './RichTextEditor'
+import { InterpretationForm } from './InterpretationForm'
 import classes from './styles/InterpretationsUnit.module.css'
 
 const interpretationsQuery = {
@@ -50,23 +50,10 @@ export const InterpretationsUnit = ({
         }
     }, [type, id])
 
-    const onLikeToggle = () => refetch({ type, id })
-
-    const saveMutationRef = useRef({
-        resource: `interpretations/${type}/${id}`,
-        type: 'create',
-        data: ({ text }) => text,
-    })
-
-    const [save] = useDataMutation(saveMutationRef.current, {
-        onComplete: res => {
-            if (res.status === 'OK') {
-                refetch({ type, id })
-            }
-        },
-    })
-
-    const onSave = text => save({ text })
+    const onCompleteAction = () => {
+        console.log('complete action')
+        refetch({ type, id })
+    }
 
     return (
         <div
@@ -102,20 +89,14 @@ export const InterpretationsUnit = ({
                                     data.interpretations.interpretations
                                 }
                                 onInterpretationClick={onInterpretationClick}
-                                onLikeToggle={onLikeToggle}
+                                onLikeToggle={onCompleteAction}
                             />
-                            <div className={classes.input}>
-                                <Avatar name={currentUser.name} />
-                                <RichTextEditor
-                                    inputPlaceholder={i18n.t(
-                                        'Write an interpretation'
-                                    )}
-                                    saveButtonLabel={i18n.t(
-                                        'Save interpretation'
-                                    )}
-                                    onSave={onSave}
-                                />
-                            </div>
+                            <InterpretationForm
+                                currentUser={currentUser}
+                                type={type}
+                                id={id}
+                                onSave={onCompleteAction}
+                            />
                         </>
                     )}
                 </>

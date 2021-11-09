@@ -24,9 +24,3 @@
     line-height: 21px;
     color: var(--colors-grey900);
 }
-
-.input {
-    margin-top: var(--spacers-dp12);
-    display: flex;
-    gap: var(--spacers-dp8);
-}
