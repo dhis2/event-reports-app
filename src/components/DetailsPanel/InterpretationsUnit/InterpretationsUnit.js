@@ -1,7 +1,6 @@
-import { useDataQuery, useDataMutation } from '@dhis2/app-runtime'
+import { useDataQuery } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import {
-    Button,
     CircularLoader,
     IconChevronDown24,
     IconChevronUp24,
@@ -9,9 +8,9 @@ import {
 } from '@dhis2/ui'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
-import React, { useEffect, useRef, useState } from 'react'
-import { InterpretationList } from './InterpretationList'
+import React, { useEffect, useState } from 'react'
 import { InterpretationForm } from './InterpretationForm'
+import { InterpretationList } from './InterpretationList'
 import classes from './styles/InterpretationsUnit.module.css'
 
 const interpretationsQuery = {
@@ -51,7 +50,6 @@ export const InterpretationsUnit = ({
     }, [type, id])
 
     const onCompleteAction = () => {
-        console.log('complete action')
         refetch({ type, id })
     }
 
