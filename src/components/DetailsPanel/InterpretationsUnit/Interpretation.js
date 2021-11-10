@@ -61,7 +61,12 @@ export const Interpretation = ({
                 <RichTextParser>{interpretation.text}</RichTextParser>
             </div>
             <div className={classes.interpretationStats}>
-                <Tooltip closeDelay={200} content={i18n.t('Like')}>
+                <Tooltip
+                    closeDelay={200}
+                    content={
+                        isLikedByCurrentUser ? i18n.t('Unlike') : i18n.t('Like')
+                    }
+                >
                     <span
                         onClick={onLikeClick(isLikedByCurrentUser)}
                         className={cx({
