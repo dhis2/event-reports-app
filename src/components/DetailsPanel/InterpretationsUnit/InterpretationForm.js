@@ -36,7 +36,7 @@ export const InterpretationForm = ({ type, id, currentUser, onSave }) => {
                 <div className={classes.input}>
                     <RichTextEditor
                         inputPlaceholder={inputPlaceholder}
-                        onChange={value => setInterpretationText(value)}
+                        onChange={setInterpretationText}
                         value={interpretationText}
                     />
                     <div className={classes.buttonsWrap}>
