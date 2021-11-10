@@ -26,6 +26,19 @@ export const InterpretationList = ({
         {}
     )
 
+    const sortByDateProp = (a, b) => {
+        const dateA = a.created
+        const dateB = b.created
+
+        if (dateA < dateB) {
+            return -1
+        }
+        if (dateA > dateB) {
+            return 1
+        }
+        return 0
+    }
+
     return (
         <ol className={classes.interpretationGroups}>
             {Object.keys(interpretationsByDate)
@@ -44,18 +57,7 @@ export const InterpretationList = ({
                         </div>
                         <ol className={classes.interpretationList}>
                             {interpretationsByDate[date]
-                                .sort((a, b) => {
-                                    const dateA = a.created
-                                    const dateB = b.created
-
-                                    if (dateA < dateB) {
-                                        return -1
-                                    }
-                                    if (dateA > dateB) {
-                                        return 1
-                                    }
-                                    return 0
-                                })
+                                .sort(sortByDateProp)
                                 .map(interpretation => (
                                     <Interpretation
                                         key={interpretation.id}
