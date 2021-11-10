@@ -46,6 +46,10 @@
     align-items: center;
 }
 
+.actionButton {
+    all: unset;
+}
+
 .isLiked {
     color: var(--colors-teal600);
     font-weight: 500;

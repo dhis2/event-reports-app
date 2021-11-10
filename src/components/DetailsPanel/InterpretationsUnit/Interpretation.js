@@ -67,9 +67,9 @@ export const Interpretation = ({
                         isLikedByCurrentUser ? i18n.t('Unlike') : i18n.t('Like')
                     }
                 >
-                    <span
+                    <button
                         onClick={onLikeClick(isLikedByCurrentUser)}
-                        className={cx({
+                        className={cx(classes.actionButton, {
                             [classes.isLiked]: isLikedByCurrentUser,
                         })}
                     >
@@ -81,15 +81,18 @@ export const Interpretation = ({
                                     : colors.grey700
                             }
                         />
-                    </span>
+                    </button>
                 </Tooltip>
                 <Tooltip closeDelay={200} content={i18n.t('Reply')}>
-                    <span onClick={() => onClick(interpretation.id)}>
+                    <button
+                        className={classes.actionButton}
+                        onClick={() => onClick(interpretation.id)}
+                    >
                         {interpretation.comments.length
                             ? interpretation.comments.length
                             : null}
                         <IconReply16 color={colors.grey700} />
-                    </span>
+                    </button>
                 </Tooltip>
             </div>
             <div>
