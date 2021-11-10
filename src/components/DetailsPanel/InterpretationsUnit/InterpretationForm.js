@@ -4,7 +4,7 @@ import { Button, Input } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React, { useRef, useState } from 'react'
 import { Avatar } from './Avatar'
-import { RichTextEditor } from './RichTextEditor'
+import { RichTextEditor } from './RichTextEditor/RichTextEditor'
 import classes from './styles/InterpretationForm.module.css'
 
 export const InterpretationForm = ({ type, id, currentUser, onSave }) => {
