@@ -1,12 +1,18 @@
 import { useDataMutation } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import { Parser as RichTextParser } from '@dhis2/d2-ui-rich-text'
-import { Button, Tooltip, IconReply16, IconThumbUp16, colors } from '@dhis2/ui'
+import {
+    Button,
+    Tooltip,
+    UserAvatar,
+    IconReply16,
+    IconThumbUp16,
+    colors,
+} from '@dhis2/ui'
 import cx from 'classnames'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { useEffect, useState, useRef } from 'react'
-import { Avatar } from './Avatar'
 import classes from './styles/Interpretation.module.css'
 
 export const Interpretation = ({
@@ -45,7 +51,7 @@ export const Interpretation = ({
             onClick={() => onClick(interpretation.id)}
         >
             <div className={classes.interpretationHeader}>
-                <Avatar name={interpretation.user.displayName} />
+                <UserAvatar name={interpretation.user.displayName} extrasmall />
                 {interpretation.user.displayName}
                 <time dateTime={interpretation.created}>
                     {moment(interpretation.created).format('DD/MM/YY hh:mm')}
