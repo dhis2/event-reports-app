@@ -63,6 +63,7 @@ const Toolbar = ({
                         <Tooltip
                             content={i18n.t('Bold text')}
                             placement="bottom"
+                            closeDelay={200}
                         >
                             <Button
                                 secondary
@@ -74,6 +75,7 @@ const Toolbar = ({
                         <Tooltip
                             content={i18n.t('Italic text')}
                             placement="bottom"
+                            closeDelay={200}
                         >
                             <Button
                                 secondary
@@ -87,6 +89,7 @@ const Toolbar = ({
                         <Tooltip
                             content={i18n.t('Link to a URL')}
                             placement="bottom"
+                            closeDelay={200}
                         >
                             <Button
                                 secondary
@@ -100,6 +103,7 @@ const Toolbar = ({
                         <Tooltip
                             content={i18n.t('Mention a user')}
                             placement="bottom"
+                            closeDelay={200}
                         >
                             <Button
                                 secondary
@@ -109,8 +113,9 @@ const Toolbar = ({
                             />
                         </Tooltip>
                         <Tooltip
-                            content={i18n.t('Add an emoji')}
+                            content={i18n.t('Add emoji')}
                             placement="bottom"
+                            closeDelay={200}
                         >
                             <div
                                 ref={emoticonsButtonRef}
