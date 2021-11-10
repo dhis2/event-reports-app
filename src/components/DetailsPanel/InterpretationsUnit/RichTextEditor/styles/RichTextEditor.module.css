@@ -36,3 +36,19 @@
     flex-shrink: 0;
     margin-left: auto;
 }
+
+.emoticonsButtonWrapper {
+    display: inline-block;
+}
+
+.emoticonsList {
+    display: flex;
+    gap: var(--spacers-dp8);
+    list-style-type: none;
+    margin: 0 var(--spacers-dp4) 0 var(--spacers-dp8);
+    padding: 0;
+}
+
+.emoticonsList li {
+    cursor: pointer;
+}
