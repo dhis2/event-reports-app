@@ -14,18 +14,22 @@ import {
 } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React, { createRef, useState } from 'react'
-import classes from './styles/RichTextEditor.module.css'
+import {
+    mainClasses,
+    toolbarClasses,
+    emojisPopoverClasses,
+} from './styles/RichTextEditor.style.js'
 
 const smileyFace = ':-)'
 const sadFace = ':-('
 const thumbsUp = ':+1'
 const thumbsDown = ':-1'
 
-const emoticonsButtonRef = createRef()
+const emojisButtonRef = createRef()
 
-const EmoticonsPopover = ({ onInsertMarkup, onClose }) => (
-    <Popover reference={emoticonsButtonRef} onClickOutside={onClose}>
-        <ul className={classes.emoticonsList}>
+const EmojisPopover = ({ onInsertMarkup, onClose }) => (
+    <Popover reference={emojisButtonRef} onClickOutside={onClose}>
+        <ul className="emojisList">
             <li onClick={() => onInsertMarkup(smileyFace)}>
                 <RichTextParser>{smileyFace}</RichTextParser>
             </li>
@@ -39,10 +43,11 @@ const EmoticonsPopover = ({ onInsertMarkup, onClose }) => (
                 <RichTextParser>{thumbsDown}</RichTextParser>
             </li>
         </ul>
+        <style jsx>{emojisPopoverClasses}</style>
     </Popover>
 )
 
-EmoticonsPopover.propTypes = {
+EmojisPopover.propTypes = {
     onClose: PropTypes.func.isRequired,
     onInsertMarkup: PropTypes.func.isRequired,
 }
@@ -53,13 +58,13 @@ const Toolbar = ({
     previewButtonDisabled,
     previewMode,
 }) => {
-    const [emoticonsPopoverIsOpen, setEmoticonsPopoverIsOpen] = useState(false)
+    const [emojisPopoverIsOpen, setEmojisPopoverIsOpen] = useState(false)
 
     return (
-        <div className={classes.toolbar}>
+        <div className="toolbar">
             {!previewMode ? (
-                <div className={classes.actionsWrap}>
-                    <div className={classes.mainActions}>
+                <div className="actionsWrapper">
+                    <div className="mainActions">
                         <Tooltip
                             content={i18n.t('Bold text')}
                             placement="bottom"
@@ -117,36 +122,31 @@ const Toolbar = ({
                             placement="bottom"
                             closeDelay={200}
                         >
-                            <div
-                                ref={emoticonsButtonRef}
-                                className={classes.emoticonsButtonWrapper}
-                            >
+                            <div ref={emojisButtonRef}>
                                 <Button
                                     secondary
                                     small
                                     icon={
                                         <IconFaceAdd24 color={colors.grey700} />
                                     }
-                                    onClick={() =>
-                                        setEmoticonsPopoverIsOpen(true)
-                                    }
+                                    onClick={() => setEmojisPopoverIsOpen(true)}
                                 />
                             </div>
-                            {emoticonsPopoverIsOpen && (
-                                <EmoticonsPopover
+                            {emojisPopoverIsOpen && (
+                                <EmojisPopover
                                     onClose={() =>
-                                        setEmoticonsPopoverIsOpen(false)
+                                        setEmojisPopoverIsOpen(false)
                                     }
                                     onInsertMarkup={markup => {
                                         onInsertMarkup(markup)
-                                        setEmoticonsPopoverIsOpen(false)
+                                        setEmojisPopoverIsOpen(false)
                                     }}
                                 />
                             )}
                         </Tooltip>
                     </div>
 
-                    <div className={classes.sideActions}>
+                    <div className="sideActions">
                         <Button
                             secondary
                             small
@@ -158,12 +158,13 @@ const Toolbar = ({
                     </div>
                 </div>
             ) : (
-                <div className={classes.previewWrap}>
+                <div className="previewWrapper">
                     <Button secondary small onClick={onTogglePreview}>
                         {i18n.t('Back to write mode')}
                     </Button>
                 </div>
             )}
+            <style jsx>{toolbarClasses}</style>
         </div>
     )
 }
@@ -179,7 +180,7 @@ export const RichTextEditor = ({ value, inputPlaceholder, onChange }) => {
     const [previewMode, setPreviewMode] = useState(false)
 
     return (
-        <div className={classes.container}>
+        <div className="container">
             <Toolbar
                 onInsertMarkup={markup => {
                     // TODO handle markdown highlights etc...
@@ -190,7 +191,7 @@ export const RichTextEditor = ({ value, inputPlaceholder, onChange }) => {
                 previewButtonDisabled={!value}
             />
             {previewMode ? (
-                <div className={classes.preview}>
+                <div className="preview">
                     <RichTextParser>{value}</RichTextParser>
                 </div>
             ) : (
@@ -201,6 +202,7 @@ export const RichTextEditor = ({ value, inputPlaceholder, onChange }) => {
                     onChange={({ value }) => onChange(value)}
                 />
             )}
+            <style jsx>{mainClasses}</style>
         </div>
     )
 }
