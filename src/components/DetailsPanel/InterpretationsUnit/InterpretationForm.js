@@ -8,7 +8,7 @@ import classes from './styles/InterpretationForm.module.css'
 
 export const InterpretationForm = ({ type, id, currentUser, onSave }) => {
     const [showRichTextEditor, setShowRichTextEditor] = useState(false)
-    const [interpretationText, setInterpretationText] = useState(null)
+    const [interpretationText, setInterpretationText] = useState('')
 
     const saveMutationRef = useRef({
         resource: `interpretations/${type}/${id}`,
