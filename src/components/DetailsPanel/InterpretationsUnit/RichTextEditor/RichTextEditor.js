@@ -1,5 +1,8 @@
 import i18n from '@dhis2/d2-i18n'
-import { Parser as RichTextParser } from '@dhis2/d2-ui-rich-text'
+import {
+    Parser as RichTextParser,
+    convertCtrlKey,
+} from '@dhis2/d2-ui-rich-text'
 import {
     Button,
     Popover,
@@ -195,12 +198,14 @@ export const RichTextEditor = ({ value, inputPlaceholder, onChange }) => {
                     <RichTextParser>{value}</RichTextParser>
                 </div>
             ) : (
-                <TextArea
-                    initialFocus
-                    placeholder={inputPlaceholder}
-                    value={value}
-                    onChange={({ value }) => onChange(value)}
-                />
+                <div onKeyDown={event => convertCtrlKey(event, onChange)}>
+                    <TextArea
+                        initialFocus
+                        placeholder={inputPlaceholder}
+                        value={value}
+                        onChange={({ value }) => onChange(value)}
+                    />
+                </div>
             )}
             <style jsx>{mainClasses}</style>
         </div>
