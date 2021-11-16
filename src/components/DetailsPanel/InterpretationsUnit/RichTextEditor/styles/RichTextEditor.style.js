@@ -1,4 +1,4 @@
-import { colors, spacers } from '@dhis2/ui'
+import { colors, spacers, theme } from '@dhis2/ui'
 import css from 'styled-jsx/css'
 
 export const mainClasses = css`
@@ -12,6 +12,37 @@ export const mainClasses = css`
         font-size: 14px;
         line-height: 19px;
         color: ${colors.grey900};
+    }
+
+    .textarea {
+        width: 100%;
+        box-sizing: border-box;
+        padding: ${spacers.dp8} ${spacers.dp12};
+
+        color: ${colors.grey900};
+        background-color: ${colors.white};
+
+        border: 1px solid ${colors.grey500};
+        border-radius: 3px;
+        box-shadow: inset 0 0 0 1px rgba(102, 113, 123, 0.15),
+            inset 0 1px 2px 0 rgba(102, 113, 123, 0.1);
+        outline: 0;
+
+        font-size: 14px;
+        line-height: ${spacers.dp16};
+        user-select: text;
+    }
+
+    .textarea:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px ${theme.focus};
+    }
+
+    .textarea:disabled {
+        background-color: ${colors.grey100};
+        border-color: ${colors.grey500};
+        color: ${theme.disabled};
+        cursor: not-allowed;
     }
 `
 

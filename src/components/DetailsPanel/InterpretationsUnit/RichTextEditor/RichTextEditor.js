@@ -6,7 +6,6 @@ import {
 import {
     Button,
     Popover,
-    TextArea,
     Tooltip,
     IconAt24,
     IconFaceAdd24,
@@ -16,7 +15,7 @@ import {
     colors,
 } from '@dhis2/ui'
 import PropTypes from 'prop-types'
-import React, { createRef, useState } from 'react'
+import React, { createRef, useEffect, useState } from 'react'
 import {
     mainClasses,
     toolbarClasses,
@@ -29,6 +28,7 @@ const thumbsUp = ':+1'
 const thumbsDown = ':-1'
 
 const emojisButtonRef = createRef()
+const textareaRef = createRef()
 
 const EmojisPopover = ({ onInsertMarkup, onClose }) => (
     <Popover reference={emojisButtonRef} onClickOutside={onClose}>
@@ -182,6 +182,8 @@ Toolbar.propTypes = {
 export const RichTextEditor = ({ value, inputPlaceholder, onChange }) => {
     const [previewMode, setPreviewMode] = useState(false)
 
+    useEffect(() => textareaRef.current.focus(), [textareaRef.current])
+
     return (
         <div className="container">
             <Toolbar
@@ -199,11 +201,12 @@ export const RichTextEditor = ({ value, inputPlaceholder, onChange }) => {
                 </div>
             ) : (
                 <div onKeyDown={event => convertCtrlKey(event, onChange)}>
-                    <TextArea
-                        initialFocus
+                    <textarea
+                        className="textarea"
+                        ref={textareaRef}
                         placeholder={inputPlaceholder}
                         value={value}
-                        onChange={({ value }) => onChange(value)}
+                        onChange={event => onChange(event.target.value)}
                     />
                 </div>
             )}
