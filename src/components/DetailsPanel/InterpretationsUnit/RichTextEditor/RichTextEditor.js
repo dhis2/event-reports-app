@@ -57,12 +57,15 @@ EmojisPopover.propTypes = {
 }
 
 const Toolbar = ({
+    disabled,
     onInsertMarkdown,
     onTogglePreview,
     previewButtonDisabled,
     previewMode,
 }) => {
     const [emojisPopoverIsOpen, setEmojisPopoverIsOpen] = useState(false)
+
+    const iconColor = disabled ? colors.grey600 : colors.grey700
 
     return (
         <div className="toolbar">
@@ -77,7 +80,8 @@ const Toolbar = ({
                             <Button
                                 secondary
                                 small
-                                icon={<IconTextBold24 color={colors.grey700} />}
+                                disabled={disabled}
+                                icon={<IconTextBold24 color={iconColor} />}
                                 onClick={() => onInsertMarkdown('bold')}
                             />
                         </Tooltip>
@@ -89,9 +93,8 @@ const Toolbar = ({
                             <Button
                                 secondary
                                 small
-                                icon={
-                                    <IconTextItalic24 color={colors.grey700} />
-                                }
+                                disabled={disabled}
+                                icon={<IconTextItalic24 color={iconColor} />}
                                 onClick={() => onInsertMarkdown('italic')}
                             />
                         </Tooltip>
@@ -103,7 +106,8 @@ const Toolbar = ({
                             <Button
                                 secondary
                                 small
-                                icon={<IconLink24 color={colors.grey700} />}
+                                disabled={disabled}
+                                icon={<IconLink24 color={iconColor} />}
                                 onClick={() => onInsertMarkdown('link')}
                             />
                         </Tooltip>
@@ -115,7 +119,8 @@ const Toolbar = ({
                             <Button
                                 secondary
                                 small
-                                icon={<IconAt24 color={colors.grey700} />}
+                                disabled={disabled}
+                                icon={<IconAt24 color={iconColor} />}
                                 onClick={() => onInsertMarkdown('mention')}
                             />
                         </Tooltip>
@@ -128,9 +133,8 @@ const Toolbar = ({
                                 <Button
                                     secondary
                                     small
-                                    icon={
-                                        <IconFaceAdd24 color={colors.grey700} />
-                                    }
+                                    disabled={disabled}
+                                    icon={<IconFaceAdd24 color={iconColor} />}
                                     onClick={() => setEmojisPopoverIsOpen(true)}
                                 />
                             </div>
@@ -152,7 +156,7 @@ const Toolbar = ({
                         <Button
                             secondary
                             small
-                            disabled={previewButtonDisabled}
+                            disabled={previewButtonDisabled || disabled}
                             onClick={onTogglePreview}
                         >
                             {i18n.t('Preview')}
@@ -161,7 +165,12 @@ const Toolbar = ({
                 </div>
             ) : (
                 <div className="previewWrapper">
-                    <Button secondary small onClick={onTogglePreview}>
+                    <Button
+                        secondary
+                        small
+                        onClick={onTogglePreview}
+                        disabled={disabled}
+                    >
                         {i18n.t('Back to write mode')}
                     </Button>
                 </div>
@@ -176,9 +185,15 @@ Toolbar.propTypes = {
     previewMode: PropTypes.bool.isRequired,
     onInsertMarkdown: PropTypes.func.isRequired,
     onTogglePreview: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
 }
 
-export const RichTextEditor = ({ value, inputPlaceholder, onChange }) => {
+export const RichTextEditor = ({
+    value,
+    disabled,
+    inputPlaceholder,
+    onChange,
+}) => {
     const [previewMode, setPreviewMode] = useState(false)
 
     useEffect(() => textareaRef.current.focus(), [textareaRef.current])
@@ -200,6 +215,7 @@ export const RichTextEditor = ({ value, inputPlaceholder, onChange }) => {
                 onTogglePreview={() => setPreviewMode(!previewMode)}
                 previewMode={previewMode}
                 previewButtonDisabled={!value}
+                disabled={disabled}
             />
             {previewMode ? (
                 <div className="preview">
@@ -211,6 +227,7 @@ export const RichTextEditor = ({ value, inputPlaceholder, onChange }) => {
                         className="textarea"
                         ref={textareaRef}
                         placeholder={inputPlaceholder}
+                        disabled={disabled}
                         value={value}
                         onChange={event => onChange(event.target.value)}
                     />
@@ -224,5 +241,6 @@ export const RichTextEditor = ({ value, inputPlaceholder, onChange }) => {
 RichTextEditor.propTypes = {
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
     inputPlaceholder: PropTypes.string,
 }
