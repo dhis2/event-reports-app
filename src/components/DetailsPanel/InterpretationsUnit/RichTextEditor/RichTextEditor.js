@@ -1,8 +1,5 @@
 import i18n from '@dhis2/d2-i18n'
-import {
-    Parser as RichTextParser,
-    convertCtrlKey,
-} from '@dhis2/d2-ui-rich-text'
+import { Parser as RichTextParser } from '@dhis2/d2-ui-rich-text'
 import {
     Button,
     Popover,
@@ -17,33 +14,37 @@ import {
 import PropTypes from 'prop-types'
 import React, { createRef, useEffect, useState } from 'react'
 import {
+    convertCtrlKey,
+    insertMarkdown,
+    emojis,
+    EMOJI_SMILEY_FACE,
+    EMOJI_SAD_FACE,
+    EMOJI_THUMBS_UP,
+    EMOJI_THUMBS_DOWN,
+} from './markdownHandler'
+import {
     mainClasses,
     toolbarClasses,
     emojisPopoverClasses,
 } from './styles/RichTextEditor.style.js'
 
-const smileyFace = ':-)'
-const sadFace = ':-('
-const thumbsUp = ':+1'
-const thumbsDown = ':-1'
-
 const emojisButtonRef = createRef()
 const textareaRef = createRef()
 
-const EmojisPopover = ({ onInsertMarkup, onClose }) => (
+const EmojisPopover = ({ onInsertMarkdown, onClose }) => (
     <Popover reference={emojisButtonRef} onClickOutside={onClose}>
         <ul className="emojisList">
-            <li onClick={() => onInsertMarkup(smileyFace)}>
-                <RichTextParser>{smileyFace}</RichTextParser>
+            <li onClick={() => onInsertMarkdown(EMOJI_SMILEY_FACE)}>
+                <RichTextParser>{emojis[EMOJI_SMILEY_FACE]}</RichTextParser>
             </li>
-            <li onClick={() => onInsertMarkup(sadFace)}>
-                <RichTextParser>{sadFace}</RichTextParser>
+            <li onClick={() => onInsertMarkdown(EMOJI_SAD_FACE)}>
+                <RichTextParser>{emojis[EMOJI_SAD_FACE]}</RichTextParser>
             </li>
-            <li onClick={() => onInsertMarkup(thumbsUp)}>
-                <RichTextParser>{thumbsUp}</RichTextParser>
+            <li onClick={() => onInsertMarkdown(EMOJI_THUMBS_UP)}>
+                <RichTextParser>{emojis[EMOJI_THUMBS_UP]}</RichTextParser>
             </li>
-            <li onClick={() => onInsertMarkup(thumbsDown)}>
-                <RichTextParser>{thumbsDown}</RichTextParser>
+            <li onClick={() => onInsertMarkdown(EMOJI_THUMBS_DOWN)}>
+                <RichTextParser>{emojis[EMOJI_THUMBS_DOWN]}</RichTextParser>
             </li>
         </ul>
         <style jsx>{emojisPopoverClasses}</style>
@@ -52,11 +53,11 @@ const EmojisPopover = ({ onInsertMarkup, onClose }) => (
 
 EmojisPopover.propTypes = {
     onClose: PropTypes.func.isRequired,
-    onInsertMarkup: PropTypes.func.isRequired,
+    onInsertMarkdown: PropTypes.func.isRequired,
 }
 
 const Toolbar = ({
-    onInsertMarkup,
+    onInsertMarkdown,
     onTogglePreview,
     previewButtonDisabled,
     previewMode,
@@ -77,7 +78,7 @@ const Toolbar = ({
                                 secondary
                                 small
                                 icon={<IconTextBold24 color={colors.grey700} />}
-                                onClick={() => onInsertMarkup('*bold text*')}
+                                onClick={() => onInsertMarkdown('bold')}
                             />
                         </Tooltip>
                         <Tooltip
@@ -91,7 +92,7 @@ const Toolbar = ({
                                 icon={
                                     <IconTextItalic24 color={colors.grey700} />
                                 }
-                                onClick={() => onInsertMarkup('_italic text_')}
+                                onClick={() => onInsertMarkdown('italic')}
                             />
                         </Tooltip>
                         <Tooltip
@@ -103,9 +104,7 @@ const Toolbar = ({
                                 secondary
                                 small
                                 icon={<IconLink24 color={colors.grey700} />}
-                                onClick={() =>
-                                    onInsertMarkup('http://<link-url>')
-                                }
+                                onClick={() => onInsertMarkdown('link')}
                             />
                         </Tooltip>
                         <Tooltip
@@ -117,7 +116,7 @@ const Toolbar = ({
                                 secondary
                                 small
                                 icon={<IconAt24 color={colors.grey700} />}
-                                onClick={() => onInsertMarkup('@')}
+                                onClick={() => onInsertMarkdown('mention')}
                             />
                         </Tooltip>
                         <Tooltip
@@ -140,8 +139,8 @@ const Toolbar = ({
                                     onClose={() =>
                                         setEmojisPopoverIsOpen(false)
                                     }
-                                    onInsertMarkup={markup => {
-                                        onInsertMarkup(markup)
+                                    onInsertMarkdown={markup => {
+                                        onInsertMarkdown(markup)
                                         setEmojisPopoverIsOpen(false)
                                     }}
                                 />
@@ -175,7 +174,7 @@ const Toolbar = ({
 Toolbar.propTypes = {
     previewButtonDisabled: PropTypes.bool.isRequired,
     previewMode: PropTypes.bool.isRequired,
-    onInsertMarkup: PropTypes.func.isRequired,
+    onInsertMarkdown: PropTypes.func.isRequired,
     onTogglePreview: PropTypes.func.isRequired,
 }
 
@@ -187,9 +186,16 @@ export const RichTextEditor = ({ value, inputPlaceholder, onChange }) => {
     return (
         <div className="container">
             <Toolbar
-                onInsertMarkup={markup => {
-                    // TODO handle markdown highlights etc...
-                    onChange(value ? value + markup : markup)
+                onInsertMarkdown={markdown => {
+                    insertMarkdown(
+                        markdown,
+                        textareaRef.current,
+                        (text, caretPos) => {
+                            onChange(text)
+                            textareaRef.current.focus()
+                            textareaRef.current.selectionEnd = caretPos
+                        }
+                    )
                 }}
                 onTogglePreview={() => setPreviewMode(!previewMode)}
                 previewMode={previewMode}
