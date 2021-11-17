@@ -19,13 +19,11 @@ export const InterpretationForm = ({ type, id, currentUser, onSave }) => {
     const [save, { loading: saveMutationInProgress }] = useDataMutation(
         saveMutationRef.current,
         {
-            onComplete: res => {
-                if (res.status === 'OK') {
-                    setShowRichTextEditor(false)
-                    setInterpretationText('')
+            onComplete: () => {
+                setShowRichTextEditor(false)
+                setInterpretationText('')
 
-                    onSave()
-                }
+                onSave()
             },
         }
     )
