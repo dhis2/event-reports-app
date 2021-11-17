@@ -12,7 +12,7 @@ import {
     colors,
 } from '@dhis2/ui'
 import PropTypes from 'prop-types'
-import React, { createRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import {
     convertCtrlKey,
     insertMarkdown,
@@ -28,11 +28,8 @@ import {
     emojisPopoverClasses,
 } from './styles/RichTextEditor.style.js'
 
-const emojisButtonRef = createRef()
-const textareaRef = createRef()
-
-const EmojisPopover = ({ onInsertMarkdown, onClose }) => (
-    <Popover reference={emojisButtonRef} onClickOutside={onClose}>
+const EmojisPopover = ({ onInsertMarkdown, onClose, reference }) => (
+    <Popover reference={reference} onClickOutside={onClose}>
         <ul className="emojisList">
             <li onClick={() => onInsertMarkdown(EMOJI_SMILEY_FACE)}>
                 <RichTextParser>{emojis[EMOJI_SMILEY_FACE]}</RichTextParser>
@@ -54,6 +51,7 @@ const EmojisPopover = ({ onInsertMarkdown, onClose }) => (
 EmojisPopover.propTypes = {
     onClose: PropTypes.func.isRequired,
     onInsertMarkdown: PropTypes.func.isRequired,
+    reference: PropTypes.object,
 }
 
 const Toolbar = ({
@@ -63,6 +61,7 @@ const Toolbar = ({
     previewButtonDisabled,
     previewMode,
 }) => {
+    const emojisButtonRef = useRef()
     const [emojisPopoverIsOpen, setEmojisPopoverIsOpen] = useState(false)
 
     const iconColor = disabled ? colors.grey600 : colors.grey700
@@ -147,6 +146,7 @@ const Toolbar = ({
                                         onInsertMarkdown(markup)
                                         setEmojisPopoverIsOpen(false)
                                     }}
+                                    reference={emojisButtonRef}
                                 />
                             )}
                         </Tooltip>
@@ -195,6 +195,7 @@ export const RichTextEditor = ({
     onChange,
 }) => {
     const [previewMode, setPreviewMode] = useState(false)
+    const textareaRef = useRef()
 
     useEffect(() => textareaRef.current.focus(), [textareaRef.current])
 
