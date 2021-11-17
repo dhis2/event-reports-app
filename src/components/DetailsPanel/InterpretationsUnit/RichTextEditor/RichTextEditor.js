@@ -4,6 +4,7 @@ import {
     Button,
     Popover,
     Tooltip,
+    Field,
     IconAt24,
     IconFaceAdd24,
     IconLink24,
@@ -193,6 +194,7 @@ export const RichTextEditor = ({
     disabled,
     inputPlaceholder,
     onChange,
+    errorText,
 }) => {
     const [previewMode, setPreviewMode] = useState(false)
     const textareaRef = useRef()
@@ -223,16 +225,18 @@ export const RichTextEditor = ({
                     <RichTextParser>{value}</RichTextParser>
                 </div>
             ) : (
-                <div onKeyDown={event => convertCtrlKey(event, onChange)}>
-                    <textarea
-                        className="textarea"
-                        ref={textareaRef}
-                        placeholder={inputPlaceholder}
-                        disabled={disabled}
-                        value={value}
-                        onChange={event => onChange(event.target.value)}
-                    />
-                </div>
+                <Field error={!!errorText} validationText={errorText}>
+                    <div onKeyDown={event => convertCtrlKey(event, onChange)}>
+                        <textarea
+                            className="textarea"
+                            ref={textareaRef}
+                            placeholder={inputPlaceholder}
+                            disabled={disabled}
+                            value={value}
+                            onChange={event => onChange(event.target.value)}
+                        />
+                    </div>
+                </Field>
             )}
             <style jsx>{mainClasses}</style>
         </div>
@@ -243,5 +247,6 @@ RichTextEditor.propTypes = {
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
+    errorText: PropTypes.string,
     inputPlaceholder: PropTypes.string,
 }
