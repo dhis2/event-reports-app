@@ -14,6 +14,7 @@ import {
 } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React, { forwardRef, useRef, useEffect, useState } from 'react'
+import { UserMentionWrapper } from '../UserMention/UserMentionWrapper'
 import {
     convertCtrlKey,
     insertMarkdown,
@@ -198,7 +199,7 @@ export const RichTextEditor = forwardRef(
         const internalRef = useRef()
         const textareaRef = externalRef || internalRef
 
-        useEffect(() => textareaRef.current.focus(), [textareaRef.current])
+        useEffect(() => textareaRef.current?.focus(), [textareaRef.current])
 
         return (
             <div className="container">
@@ -225,22 +226,27 @@ export const RichTextEditor = forwardRef(
                     </div>
                 ) : (
                     <Field error={!!errorText} validationText={errorText}>
-                        <div
-                            onKeyDown={(event) =>
-                                convertCtrlKey(event, onChange)
-                            }
+                        <UserMentionWrapper
+                            onUserSelect={onChange}
+                            inputReference={textareaRef}
                         >
-                            <textarea
-                                className="textarea"
-                                ref={textareaRef}
-                                placeholder={inputPlaceholder}
-                                disabled={disabled}
-                                value={value}
-                                onChange={(event) =>
-                                    onChange(event.target.value)
+                            <div
+                                onKeyDown={(event) =>
+                                    convertCtrlKey(event, onChange)
                                 }
-                            />
-                        </div>
+                            >
+                                <textarea
+                                    className="textarea"
+                                    ref={textareaRef}
+                                    placeholder={inputPlaceholder}
+                                    disabled={disabled}
+                                    value={value}
+                                    onChange={(event) =>
+                                        onChange(event.target.value)
+                                    }
+                                />
+                            </div>
+                        </UserMentionWrapper>
                     </Field>
                 )}
                 <style jsx>{mainClasses}</style>
