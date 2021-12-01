@@ -38,7 +38,6 @@ export const UserMentionWrapper = ({
     inputReference,
     onUserSelect,
 }) => {
-    const [element, setElement] = useState(null)
     const [captureText, setCaptureText] = useState(false)
     const [capturedText, setCapturedText] = useState('')
     const [cloneText, setCloneText] = useState('')
@@ -84,8 +83,6 @@ export const UserMentionWrapper = ({
 
     // event bubbles up from the wrapped input/textarea
     const onKeyDown = ({ key, target }) => {
-        setElement(target)
-
         const { selectionStart } = target
 
         if (!captureText && key === '@') {
@@ -131,7 +128,7 @@ export const UserMentionWrapper = ({
     }
 
     const onSelect = user => {
-        const originalValue = element.value
+        const originalValue = inputReference.current.value
         const newValue = `${originalValue.slice(
             0,
             captureStartPosition - 1
@@ -148,20 +145,13 @@ export const UserMentionWrapper = ({
         }
 
         // need to refocus on the input/textarea
-        element.focus()
+        inputReference.current.focus()
 
         // position the cursor at the end
-        setTimeout(() => element.setSelectionRange(-1, -1), 0)
+        setTimeout(() => inputReference.current.setSelectionRange(-1, -1), 0)
     }
 
-    const onClick = user => (_, event) => {
-        if (event) {
-            event.stopPropagation()
-            event.preventDefault()
-        }
-
-        onSelect(user)
-    }
+    const onClick = user => () => onSelect(user)
 
     console.log('cloneText', cloneText)
 
