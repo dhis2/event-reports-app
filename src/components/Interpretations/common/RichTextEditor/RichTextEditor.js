@@ -230,22 +230,19 @@ export const RichTextEditor = forwardRef(
                             onUserSelect={onChange}
                             inputReference={textareaRef}
                         >
-                            <div
+                            <textarea
+                                className="textarea"
+                                ref={textareaRef}
+                                placeholder={inputPlaceholder}
+                                disabled={disabled}
+                                value={value}
+                                onChange={(event) =>
+                                    onChange(event.target.value)
+                                }
                                 onKeyDown={(event) =>
                                     convertCtrlKey(event, onChange)
                                 }
-                            >
-                                <textarea
-                                    className="textarea"
-                                    ref={textareaRef}
-                                    placeholder={inputPlaceholder}
-                                    disabled={disabled}
-                                    value={value}
-                                    onChange={(event) =>
-                                        onChange(event.target.value)
-                                    }
-                                />
-                            </div>
+                            />
                         </UserMentionWrapper>
                     </Field>
                 )}
