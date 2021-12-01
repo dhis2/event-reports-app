@@ -148,7 +148,10 @@ export const UserMentionWrapper = ({
         inputReference.current.focus()
 
         // position the cursor at the end
-        setTimeout(() => inputReference.current.setSelectionRange(-1, -1), 0)
+        requestAnimationFrame(
+            () => inputReference.current.setSelectionRange(-1, -1),
+            0
+        )
     }
 
     const onClick = user => () => onSelect(user)
