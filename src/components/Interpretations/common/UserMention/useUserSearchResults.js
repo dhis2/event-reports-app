@@ -1,14 +1,12 @@
 import { useDataQuery } from '@dhis2/app-runtime'
 import debounce from 'lodash/debounce'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 const usersQuery = {
     users: {
-        resource: 'users',
+        resource: 'userLookup',
         params: ({ searchText }) => ({
-            fields: 'id,displayName,userCredentials[username]',
             query: searchText,
-            order: 'displayName:iasc',
         }),
     },
 }
@@ -19,12 +17,14 @@ export const useUserSearchResults = ({ searchText }) => {
         lazy: true,
     })
 
-    const debouncedRefetchRef = useRef(debounce(refetch, 250))
+    const debouncedRefetch = useMemo(() => debounce(refetch, 250), [refetch])
 
     useEffect(() => {
         if (searchText.length) {
-            debouncedRefetchRef.current({ searchText })
+            debouncedRefetch({ searchText })
         }
+
+        return () => debouncedRefetch.cancel()
     }, [searchText])
 
     useEffect(() => {

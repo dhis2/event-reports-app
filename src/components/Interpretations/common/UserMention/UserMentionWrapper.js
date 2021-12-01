@@ -49,7 +49,7 @@ export const UserMentionWrapper = ({
                 spacePosition > 0 ? spacePosition : selectionEnd + 1
             )
 
-            if (!filterValue || filterValue !== capturedText) {
+            if (filterValue !== capturedText) {
                 setCapturedText(filterValue)
             } else if (filterValue.length === 0) {
                 setCapturedText('')
@@ -112,7 +112,7 @@ export const UserMentionWrapper = ({
             captureStartPosition - 1
         )}${originalValue
             .slice(captureStartPosition - 1)
-            .replace(/^@\w*/, `@${user.userCredentials.username} `)}`
+            .replace(/^@\w*/, `@${user.username} `)}`
 
         reset()
 
@@ -178,7 +178,7 @@ export const UserMentionWrapper = ({
                                         dense
                                         key={u.id}
                                         onClick={onClick(u)}
-                                        label={`${u.displayName} (${u.userCredentials.username})`}
+                                        label={`${u.displayName} (${u.username})`}
                                         active={
                                             users[selectedUserIndex]?.id ===
                                             u.id
