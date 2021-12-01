@@ -139,8 +139,11 @@ export const UserMentionWrapper = ({
     }
 
     return (
-        <div onKeyDown={onKeyDown} onInput={onInput}>
+        <div onKeyDown={onKeyDown} onInput={onInput} className="wrapper">
             {children}
+            <div className="clone">
+                <span>testetst</span>
+            </div>
             {captureText && (
                 <Popper reference={inputReference} placement="top-start">
                     <div className="container">
@@ -192,10 +195,10 @@ export const UserMentionWrapper = ({
                                     />
                                 )}
                         </Menu>
-                        <style jsx>{userMentionWrapperClasses}</style>
                     </div>
                 </Popper>
             )}
+            <style jsx>{userMentionWrapperClasses}</style>
         </div>
     )
 }
