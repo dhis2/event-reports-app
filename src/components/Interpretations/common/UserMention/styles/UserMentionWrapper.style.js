@@ -7,6 +7,7 @@ export const userMentionWrapperClasses = css`
     }
     .clone {
         position: absolute;
+        visibility: hidden;
         inset: 0;
         box-sizing: border-box;
         padding: ${spacers.dp8} ${spacers.dp12};
@@ -16,6 +17,14 @@ export const userMentionWrapperClasses = css`
         z-index: 1;
         pointer-events: none;
         opacity: 0.5;
+    }
+    .clone > pre {
+        display: inline;
+        opacity: 0;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        font: inherit;
+        margin: 0;
     }
     .container {
         background-color: ${colors.white};

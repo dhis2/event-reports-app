@@ -6,11 +6,32 @@ import {
     MenuSectionHeader,
     MenuItem,
     Popper,
+    Card,
 } from '@dhis2/ui'
 import PropTypes from 'prop-types'
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { userMentionWrapperClasses } from './styles/UserMentionWrapper.style.js'
 import { useUserSearchResults } from './useUserSearchResults'
+
+const AT_SYMBOL_WIDTH = 14
+
+const getVirtualPopperReference = ref => {
+    const rects = ref.current.getClientRects()
+    const lastRect = rects[rects.length - 1]
+    const left = lastRect.left + lastRect.width - AT_SYMBOL_WIDTH
+
+    return {
+        getBoundingClientRect: () => ({
+            top: lastRect.top,
+            right: lastRect.right,
+            bottom: lastRect.bottom,
+            left,
+            width: AT_SYMBOL_WIDTH,
+            height: lastRect.height,
+            x: left,
+        }),
+    }
+}
 
 export const UserMentionWrapper = ({
     children,
@@ -20,6 +41,8 @@ export const UserMentionWrapper = ({
     const [element, setElement] = useState(null)
     const [captureText, setCaptureText] = useState(false)
     const [capturedText, setCapturedText] = useState('')
+    const [cloneText, setCloneText] = useState('')
+    const cloneRef = useRef(null)
     const [captureStartPosition, setCaptureStartPosition] = useState(null)
     const [selectedUserIndex, setSelectedUserIndex] = useState(0)
     const { users, fetching, clear } = useUserSearchResults({
@@ -29,6 +52,7 @@ export const UserMentionWrapper = ({
     const reset = () => {
         setCaptureText(false)
         setCapturedText('')
+        setCloneText('')
         setCaptureStartPosition(null)
         setSelectedUserIndex(0)
 
@@ -67,6 +91,7 @@ export const UserMentionWrapper = ({
         if (!captureText && key === '@') {
             setCaptureText(true)
             setCaptureStartPosition(selectionStart + 1)
+            setCloneText(target.value.substring(0, selectionStart) + '@')
         } else if (captureText) {
             if (
                 key === ' ' ||
@@ -138,64 +163,72 @@ export const UserMentionWrapper = ({
         onSelect(user)
     }
 
+    console.log('cloneText', cloneText)
+
     return (
         <div onKeyDown={onKeyDown} onInput={onInput} className="wrapper">
             {children}
             <div className="clone">
-                <span>testetst</span>
+                <pre ref={cloneRef}>{cloneText}</pre>
             </div>
             {captureText && (
-                <Popper reference={inputReference} placement="top-start">
-                    <div className="container">
-                        <Menu dense>
-                            <div className="header">
-                                <MenuSectionHeader
-                                    dense
-                                    hideDivider
-                                    label={
-                                        capturedText === ''
-                                            ? i18n.t('Search for a user')
-                                            : i18n.t(
-                                                  'Searching for "{{searchText}}"',
-                                                  {
-                                                      searchText: capturedText,
-                                                  }
-                                              )
-                                    }
-                                />
-                            </div>
-                            {fetching && (
-                                <div className="loader">
-                                    <CenteredContent>
-                                        <CircularLoader small />
-                                    </CenteredContent>
-                                </div>
-                            )}
-                            {!fetching &&
-                                users.length > 0 &&
-                                users.map(u => (
-                                    <MenuItem
+                <Popper
+                    reference={getVirtualPopperReference(cloneRef)}
+                    placement="top-start"
+                >
+                    <Card>
+                        <div className="container">
+                            <Menu dense>
+                                <div className="header">
+                                    <MenuSectionHeader
                                         dense
-                                        key={u.id}
-                                        onClick={onClick(u)}
-                                        label={`${u.displayName} (${u.username})`}
-                                        active={
-                                            users[selectedUserIndex]?.id ===
-                                            u.id
+                                        hideDivider
+                                        label={
+                                            capturedText === ''
+                                                ? i18n.t('Search for a user')
+                                                : i18n.t(
+                                                      'Searching for "{{searchText}}"',
+                                                      {
+                                                          searchText:
+                                                              capturedText,
+                                                      }
+                                                  )
                                         }
                                     />
-                                ))}
-                            {capturedText &&
-                                !fetching &&
-                                users.length === 0 && (
-                                    <MenuItem
-                                        dense
-                                        disabled
-                                        label={i18n.t('No results found')}
-                                    />
+                                </div>
+                                {fetching && (
+                                    <div className="loader">
+                                        <CenteredContent>
+                                            <CircularLoader small />
+                                        </CenteredContent>
+                                    </div>
                                 )}
-                        </Menu>
-                    </div>
+                                {!fetching &&
+                                    users.length > 0 &&
+                                    users.map(u => (
+                                        <MenuItem
+                                            dense
+                                            key={u.id}
+                                            onClick={onClick(u)}
+                                            label={`${u.displayName} (${u.username})`}
+                                            active={
+                                                users[selectedUserIndex]?.id ===
+                                                u.id
+                                            }
+                                        />
+                                    ))}
+                                {capturedText &&
+                                    !fetching &&
+                                    users.length === 0 && (
+                                        <MenuItem
+                                            dense
+                                            disabled
+                                            label={i18n.t('No results found')}
+                                        />
+                                    )}
+                            </Menu>
+                        </div>
+                    </Card>
                 </Popper>
             )}
             <style jsx>{userMentionWrapperClasses}</style>
