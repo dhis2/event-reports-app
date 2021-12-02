@@ -1,6 +1,11 @@
 import { colors, spacers } from '@dhis2/ui'
 import css from 'styled-jsx/css'
 
+/*
+ * Note that the clone and clone > pre styles have been chosen
+ * to emulate the styles of the textarea. If we decide to make
+ * changes there, they should be refelcted here too.
+ */
 export const userMentionWrapperClasses = css`
     .wrapper {
         position: relative;
@@ -16,11 +21,9 @@ export const userMentionWrapperClasses = css`
         line-height: ${spacers.dp16};
         z-index: 1;
         pointer-events: none;
-        opacity: 0.5;
     }
     .clone > pre {
         display: inline;
-        opacity: 0;
         word-wrap: break-word;
         overflow-wrap: break-word;
         font: inherit;
