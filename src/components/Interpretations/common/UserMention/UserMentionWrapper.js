@@ -11,7 +11,10 @@ import {
 } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React, { useState, useRef } from 'react'
-import { userMentionWrapperClasses } from './styles/UserMentionWrapper.style.js'
+import {
+    resolvedHeaderStyle,
+    userMentionWrapperClasses,
+} from './styles/UserMentionWrapper.style.js'
 import { UserList } from './UserList'
 import { useUserSearchResults } from './useUserSearchResults'
 
@@ -173,31 +176,32 @@ export const UserMentionWrapper = ({
                         <Card>
                             <div className="container">
                                 <Menu dense>
-                                    <div className="header">
-                                        <MenuSectionHeader
-                                            dense
-                                            hideDivider
+                                    <MenuSectionHeader
+                                        className={
+                                            resolvedHeaderStyle.className
+                                        }
+                                        dense
+                                        hideDivider
+                                        label={
+                                            capturedText === ''
+                                                ? i18n.t('Search for a user')
+                                                : i18n.t(
+                                                      'Searching for "{{searchText}}"',
+                                                      {
+                                                          searchText:
+                                                              capturedText,
+                                                      }
+                                                  )
+                                        }
+                                    />
+                                    {fetching && (
+                                        <MenuItem
                                             label={
-                                                capturedText === ''
-                                                    ? i18n.t(
-                                                          'Search for a user'
-                                                      )
-                                                    : i18n.t(
-                                                          'Searching for "{{searchText}}"',
-                                                          {
-                                                              searchText:
-                                                                  capturedText,
-                                                          }
-                                                      )
+                                                <CenteredContent>
+                                                    <CircularLoader small />
+                                                </CenteredContent>
                                             }
                                         />
-                                    </div>
-                                    {fetching && (
-                                        <div className="loader">
-                                            <CenteredContent>
-                                                <CircularLoader small />
-                                            </CenteredContent>
-                                        </div>
                                     )}
                                     {!fetching && users.length > 0 && (
                                         <UserList
@@ -227,6 +231,7 @@ export const UserMentionWrapper = ({
                 </Portal>
             )}
             <style jsx>{userMentionWrapperClasses}</style>
+            {resolvedHeaderStyle.styles}
         </div>
     )
 }

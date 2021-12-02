@@ -34,13 +34,9 @@ export const userMentionWrapperClasses = css`
         max-height: 180px;
         overflow: auto;
     }
+`
 
-    .header {
-        position: sticky;
-        top: 0;
-    }
-
-    .loader {
-        margin: ${spacers.dp2} 0 ${spacers.dp8} 0;
-    }
+export const resolvedHeaderStyle = css.resolve`
+    position: sticky;
+    top: 0;
 `
