@@ -7,6 +7,7 @@ import {
     MenuItem,
     Popper,
     Card,
+    Portal,
 } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React, { useState, useRef } from 'react'
@@ -157,8 +158,6 @@ export const UserMentionWrapper = ({
 
     const onClick = user => () => onSelect(user)
 
-    console.log('cloneText', cloneText)
-
     return (
         <div onKeyDown={onKeyDown} onInput={onInput} className="wrapper">
             {children}
@@ -166,58 +165,66 @@ export const UserMentionWrapper = ({
                 <pre ref={cloneRef}>{cloneText}</pre>
             </div>
             {captureText && (
-                <Popper
-                    reference={getVirtualPopperReference(cloneRef)}
-                    placement="top-start"
-                >
-                    <Card>
-                        <div className="container">
-                            <Menu dense>
-                                <div className="header">
-                                    <MenuSectionHeader
-                                        dense
-                                        hideDivider
-                                        label={
-                                            capturedText === ''
-                                                ? i18n.t('Search for a user')
-                                                : i18n.t(
-                                                      'Searching for "{{searchText}}"',
-                                                      {
-                                                          searchText:
-                                                              capturedText,
-                                                      }
-                                                  )
-                                        }
-                                    />
-                                </div>
-                                {fetching && (
-                                    <div className="loader">
-                                        <CenteredContent>
-                                            <CircularLoader small />
-                                        </CenteredContent>
-                                    </div>
-                                )}
-                                {!fetching && users.length > 0 && (
-                                    <UserList
-                                        users={users}
-                                        selectedUserIndex={selectedUserIndex}
-                                        onUserClick={onClick}
-                                        pager={pager}
-                                    />
-                                )}
-                                {capturedText &&
-                                    !fetching &&
-                                    users.length === 0 && (
-                                        <MenuItem
+                <Portal>
+                    <Popper
+                        reference={getVirtualPopperReference(cloneRef)}
+                        placement="top-start"
+                    >
+                        <Card>
+                            <div className="container">
+                                <Menu dense>
+                                    <div className="header">
+                                        <MenuSectionHeader
                                             dense
-                                            disabled
-                                            label={i18n.t('No results found')}
+                                            hideDivider
+                                            label={
+                                                capturedText === ''
+                                                    ? i18n.t(
+                                                          'Search for a user'
+                                                      )
+                                                    : i18n.t(
+                                                          'Searching for "{{searchText}}"',
+                                                          {
+                                                              searchText:
+                                                                  capturedText,
+                                                          }
+                                                      )
+                                            }
+                                        />
+                                    </div>
+                                    {fetching && (
+                                        <div className="loader">
+                                            <CenteredContent>
+                                                <CircularLoader small />
+                                            </CenteredContent>
+                                        </div>
+                                    )}
+                                    {!fetching && users.length > 0 && (
+                                        <UserList
+                                            users={users}
+                                            selectedUserIndex={
+                                                selectedUserIndex
+                                            }
+                                            onUserClick={onClick}
+                                            pager={pager}
                                         />
                                     )}
-                            </Menu>
-                        </div>
-                    </Card>
-                </Popper>
+                                    {capturedText &&
+                                        !fetching &&
+                                        users.length === 0 && (
+                                            <MenuItem
+                                                dense
+                                                disabled
+                                                label={i18n.t(
+                                                    'No results found'
+                                                )}
+                                            />
+                                        )}
+                                </Menu>
+                            </div>
+                        </Card>
+                    </Popper>
+                </Portal>
             )}
             <style jsx>{userMentionWrapperClasses}</style>
         </div>
