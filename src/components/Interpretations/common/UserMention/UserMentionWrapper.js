@@ -11,6 +11,7 @@ import {
 import PropTypes from 'prop-types'
 import React, { useState, useRef } from 'react'
 import { userMentionWrapperClasses } from './styles/UserMentionWrapper.style.js'
+import { UserList } from './UserList'
 import { useUserSearchResults } from './useUserSearchResults'
 
 const AT_SYMBOL_WIDTH = 14
@@ -44,7 +45,7 @@ export const UserMentionWrapper = ({
     const cloneRef = useRef(null)
     const [captureStartPosition, setCaptureStartPosition] = useState(null)
     const [selectedUserIndex, setSelectedUserIndex] = useState(0)
-    const { users, fetching, clear } = useUserSearchResults({
+    const { users, pager, fetching, clear } = useUserSearchResults({
         searchText: capturedText,
     })
 
@@ -196,20 +197,14 @@ export const UserMentionWrapper = ({
                                         </CenteredContent>
                                     </div>
                                 )}
-                                {!fetching &&
-                                    users.length > 0 &&
-                                    users.map(u => (
-                                        <MenuItem
-                                            dense
-                                            key={u.id}
-                                            onClick={onClick(u)}
-                                            label={`${u.displayName} (${u.username})`}
-                                            active={
-                                                users[selectedUserIndex]?.id ===
-                                                u.id
-                                            }
-                                        />
-                                    ))}
+                                {!fetching && users.length > 0 && (
+                                    <UserList
+                                        users={users}
+                                        selectedUserIndex={selectedUserIndex}
+                                        onUserClick={onClick}
+                                        pager={pager}
+                                    />
+                                )}
                                 {capturedText &&
                                     !fetching &&
                                     users.length === 0 && (

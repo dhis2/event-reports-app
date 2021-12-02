@@ -4,15 +4,19 @@ import { useCallback, useEffect, useState } from 'react'
 
 const usersQuery = {
     users: {
-        resource: 'userLookup',
+        resource: 'users/gist',
         params: ({ searchText }) => ({
-            query: searchText,
+            fields: 'id,displayName,userCredentials.username~rename(username)',
+            order: 'firstName,surname',
+            total: true,
+            filter: `userCredentials.username:ilike:${searchText},firstName:ilike:${searchText},surname:ilike:${searchText},email:ilike:${searchText}`,
+            rootJunction: 'OR',
         }),
     },
 }
 
 export const useUserSearchResults = ({ searchText }) => {
-    const [users, setUsers] = useState([])
+    const [{ users, pager }, setData] = useState({ users: [], pager: {} })
     const { data, fetching, refetch } = useDataQuery(usersQuery, {
         lazy: true,
     })
@@ -29,13 +33,14 @@ export const useUserSearchResults = ({ searchText }) => {
 
     useEffect(() => {
         if (data) {
-            setUsers(data.users.users)
+            setData(data.users)
         }
     }, [data])
 
     return {
         users,
+        pager,
         fetching,
-        clear: () => setUsers([]),
+        clear: () => setData({ users: [], pager: {} }),
     }
 }
