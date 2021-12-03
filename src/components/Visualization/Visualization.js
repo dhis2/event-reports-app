@@ -1,4 +1,4 @@
-import { renderValue } from '@dhis2/analytics'
+import { formatValue } from '@dhis2/analytics'
 import i18n from '@dhis2/d2-i18n'
 import {
     DataTable,
@@ -131,7 +131,7 @@ export const Visualization = ({
                                     small={small}
                                     className={fontSizeClass}
                                 >
-                                    {renderValue(
+                                    {formatValue(
                                         value,
                                         headers[index]?.valueType || 'TEXT',
                                         {
