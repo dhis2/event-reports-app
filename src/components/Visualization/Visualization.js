@@ -133,7 +133,8 @@ export const Visualization = ({
                                 >
                                     {formatValue(
                                         value,
-                                        headers[index]?.valueType || 'TEXT',
+                                        data.headers[index]?.valueType ||
+                                            'TEXT',
                                         {
                                             digitGroupSeparator:
                                                 visualization.digitGroupSeparator,
