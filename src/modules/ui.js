@@ -101,3 +101,21 @@ export const parseCurrentRepetition = (repetition) => {
         ? defaultUiRepetition
         : { mostRecent, oldest }
 }
+
+export const parseUiRepetition = (repetition) => {
+    if (
+        repetition.mostRecent < 0 ||
+        repetition.oldest < 0 ||
+        (repetition.mostRecent === 0 && repetition.oldest === 0)
+    ) {
+        return getDefaultCurrentRepetition()
+    }
+
+    return [
+        ...new Array(repetition.oldest).fill().map((_, i) => i + 1),
+        ...new Array(repetition.mostRecent)
+            .fill()
+            .map((_, i) => -i + 0)
+            .sort((a, b) => a - b),
+    ]
+}
