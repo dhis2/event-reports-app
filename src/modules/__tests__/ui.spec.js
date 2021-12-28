@@ -6,10 +6,17 @@ import {
 } from '../ui.js'
 
 describe('parseCurrentRepetition', () => {
-    it('converts from current to ui format', () => {
-        const defaultUiRepetition = getDefaultUiRepetition()
-        const defaultCurrentRepetition = getDefaultCurrentRepetition()
+    const defaultUiRepetition = getDefaultUiRepetition()
+    const defaultCurrentRepetition = getDefaultCurrentRepetition()
 
+    it('does not modify the input', () => {
+        parseCurrentRepetition(defaultCurrentRepetition)
+
+        expect(defaultCurrentRepetition).toEqual(getDefaultCurrentRepetition())
+    })
+
+    it('converts from current to ui format', () => {
+        // invalid
         expect(parseCurrentRepetition([])).toEqual(defaultUiRepetition)
 
         expect(parseCurrentRepetition(defaultCurrentRepetition)).toEqual(
@@ -49,18 +56,39 @@ describe('parseCurrentRepetition', () => {
 })
 
 describe('parseUiRepetition', () => {
+    const defaultUiRepetition = getDefaultUiRepetition()
+    const defaultCurrentRepetition = getDefaultCurrentRepetition()
+
+    it('does not modify the input', () => {
+        parseUiRepetition(defaultUiRepetition)
+
+        expect(defaultUiRepetition).toEqual(getDefaultUiRepetition())
+    })
+
     it('converts from ui to current format', () => {
-        const defaultUiRepetition = getDefaultUiRepetition()
-        const defaultCurrentRepetition = getDefaultCurrentRepetition()
+        // invalid
+        expect(
+            parseUiRepetition({
+                mostRecent: 0,
+                oldest: 0,
+            })
+        ).toEqual(defaultCurrentRepetition)
 
-        const invalidUiRepetition = {
-            mostRecent: 0,
-            oldest: 0,
-        }
+        // invalid
+        expect(
+            parseUiRepetition({
+                mostRecent: -1,
+                oldest: 1,
+            })
+        ).toEqual(defaultCurrentRepetition)
 
-        expect(parseUiRepetition(invalidUiRepetition)).toEqual(
-            defaultCurrentRepetition
-        )
+        // invalid
+        expect(
+            parseUiRepetition({
+                mostRecent: 1,
+                oldest: -1,
+            })
+        ).toEqual(defaultCurrentRepetition)
 
         expect(parseUiRepetition(defaultUiRepetition)).toEqual(
             defaultCurrentRepetition

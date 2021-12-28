@@ -92,10 +92,8 @@ export const parseCurrentRepetition = (repetition) => {
         return defaultUiRepetition
     }
 
-    const rep = [...repetition]
-
-    const mostRecent = rep.filter((n) => n < 1).length
-    const oldest = rep.filter((n) => n > 0).length
+    const mostRecent = repetition.filter((n) => n < 1).length
+    const oldest = repetition.filter((n) => n > 0).length
 
     return mostRecent === 0 && oldest === 0
         ? defaultUiRepetition
