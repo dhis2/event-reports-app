@@ -78,3 +78,26 @@ const getConditionsFromVisualization = (vis) =>
             }),
             {}
         )
+
+export const getDefaultCurrentRepetition = () => [0]
+export const getDefaultUiRepetition = () => ({
+    mostRecent: 1,
+    oldest: 0,
+})
+
+export const parseCurrentRepetition = (repetition) => {
+    const defaultUiRepetition = getDefaultUiRepetition()
+
+    if (!repetition.length) {
+        return defaultUiRepetition
+    }
+
+    const rep = [...repetition]
+
+    const mostRecent = rep.filter((n) => n < 1).length
+    const oldest = rep.filter((n) => n > 0).length
+
+    return mostRecent === 0 && oldest === 0
+        ? defaultUiRepetition
+        : { mostRecent, oldest }
+}
