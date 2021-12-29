@@ -3,6 +3,7 @@ import {
     layoutGetAxisIdDimensionIdsObject,
     layoutGetDimensionIdItemIdsObject,
 } from '@dhis2/analytics'
+import isObject from 'lodash-es/isObject'
 import { getAdaptedUiLayoutByType, getInverseLayout } from './layout.js'
 import { getOptionsFromVisualization } from './options.js'
 import { removeLastPathSegment } from './orgUnit.js'
@@ -79,39 +80,59 @@ const getConditionsFromVisualization = (vis) =>
             {}
         )
 
+// Repetition
+
+export const PROP_MOST_RECENT = 'mostRecent'
+export const PROP_OLDEST = 'oldest'
+
 export const getDefaultCurrentRepetition = () => [0]
 export const getDefaultUiRepetition = () => ({
-    mostRecent: 1,
-    oldest: 0,
+    [PROP_MOST_RECENT]: 1,
+    [PROP_OLDEST]: 0,
 })
 
-export const parseCurrentRepetition = (repetition) => {
-    const defaultUiRepetition = getDefaultUiRepetition()
+export const PARSE_CURRENT_REPETITION_ERROR =
+    'parseCurrentRepetition: Invalid input'
 
-    if (!repetition.length) {
-        return defaultUiRepetition
+export const PARSE_UI_REPETITION_ERROR = 'parseUiRepetition: Invalid input'
+
+export const parseCurrentRepetition = (repetition) => {
+    if (
+        !(
+            Array.isArray(repetition) &&
+            repetition.length &&
+            repetition.every((i) => typeof i === 'number')
+        )
+    ) {
+        throw new Error(PARSE_CURRENT_REPETITION_ERROR)
     }
 
-    const mostRecent = repetition.filter((n) => n < 1).length
-    const oldest = repetition.filter((n) => n > 0).length
-
-    return mostRecent === 0 && oldest === 0
-        ? defaultUiRepetition
-        : { mostRecent, oldest }
+    return {
+        mostRecent: repetition.filter((n) => n < 1).length,
+        oldest: repetition.filter((n) => n > 0).length,
+    }
 }
 
 export const parseUiRepetition = (repetition) => {
     if (
-        repetition.mostRecent < 0 ||
-        repetition.oldest < 0 ||
-        (repetition.mostRecent === 0 && repetition.oldest === 0)
+        !(
+            isObject(repetition) &&
+            typeof repetition[PROP_MOST_RECENT] === 'number' &&
+            repetition[PROP_MOST_RECENT] >= 0 &&
+            typeof repetition[PROP_OLDEST] === 'number' &&
+            repetition[PROP_OLDEST] >= 0
+        )
     ) {
+        throw new Error(PARSE_UI_REPETITION_ERROR)
+    }
+
+    if (repetition[PROP_MOST_RECENT] === 0 && repetition[PROP_OLDEST] === 0) {
         return getDefaultCurrentRepetition()
     }
 
     return [
-        ...new Array(repetition.oldest).fill().map((_, i) => i + 1),
-        ...new Array(repetition.mostRecent)
+        ...new Array(repetition[PROP_OLDEST]).fill().map((_, i) => i + 1),
+        ...new Array(repetition[PROP_MOST_RECENT])
             .fill()
             .map((_, i) => -i + 0)
             .sort((a, b) => a - b),

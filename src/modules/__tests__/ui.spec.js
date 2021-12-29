@@ -3,6 +3,10 @@ import {
     getDefaultCurrentRepetition,
     parseCurrentRepetition,
     parseUiRepetition,
+    PARSE_CURRENT_REPETITION_ERROR,
+    PROP_OLDEST,
+    PROP_MOST_RECENT,
+    PARSE_UI_REPETITION_ERROR,
 } from '../ui.js'
 
 describe('parseCurrentRepetition', () => {
@@ -16,41 +20,50 @@ describe('parseCurrentRepetition', () => {
     })
 
     it('converts from current to ui format', () => {
-        // invalid
-        expect(parseCurrentRepetition([])).toEqual(defaultUiRepetition)
+        expect(() => parseCurrentRepetition()).toThrow(
+            PARSE_CURRENT_REPETITION_ERROR
+        )
+
+        expect(() => parseCurrentRepetition([])).toThrow(
+            PARSE_CURRENT_REPETITION_ERROR
+        )
+
+        expect(() => parseCurrentRepetition([1, 2, null])).toThrow(
+            PARSE_CURRENT_REPETITION_ERROR
+        )
 
         expect(parseCurrentRepetition(defaultCurrentRepetition)).toEqual(
             defaultUiRepetition
         )
 
         expect(parseCurrentRepetition([1])).toEqual({
-            mostRecent: 0,
-            oldest: 1,
+            [PROP_MOST_RECENT]: 0,
+            [PROP_OLDEST]: 1,
         })
 
         expect(parseCurrentRepetition([0, 1])).toEqual({
-            mostRecent: 1,
-            oldest: 1,
+            [PROP_MOST_RECENT]: 1,
+            [PROP_OLDEST]: 1,
         })
 
         expect(parseCurrentRepetition([0, -1])).toEqual({
-            mostRecent: 2,
-            oldest: 0,
+            [PROP_MOST_RECENT]: 2,
+            [PROP_OLDEST]: 0,
         })
 
         expect(parseCurrentRepetition([-1, 0, 1])).toEqual({
-            mostRecent: 2,
-            oldest: 1,
+            [PROP_MOST_RECENT]: 2,
+            [PROP_OLDEST]: 1,
         })
 
         expect(parseCurrentRepetition([0, 1, 2])).toEqual({
-            mostRecent: 1,
-            oldest: 2,
+            [PROP_MOST_RECENT]: 1,
+            [PROP_OLDEST]: 2,
         })
 
         expect(parseCurrentRepetition([1, 2, -1, 0])).toEqual({
-            mostRecent: 2,
-            oldest: 2,
+            [PROP_MOST_RECENT]: 2,
+            [PROP_OLDEST]: 2,
         })
     })
 })
@@ -66,73 +79,76 @@ describe('parseUiRepetition', () => {
     })
 
     it('converts from ui to current format', () => {
-        // invalid
+        expect(() => parseUiRepetition()).toThrow(PARSE_UI_REPETITION_ERROR)
+
+        expect(() => parseUiRepetition({})).toThrow(PARSE_UI_REPETITION_ERROR)
+
+        expect(() =>
+            parseUiRepetition({
+                [PROP_MOST_RECENT]: -1,
+                [PROP_OLDEST]: 1,
+            })
+        ).toThrow(PARSE_UI_REPETITION_ERROR)
+
+        expect(() =>
+            parseUiRepetition({
+                [PROP_MOST_RECENT]: 1,
+                [PROP_OLDEST]: true,
+            })
+        ).toThrow(PARSE_UI_REPETITION_ERROR)
+
+        // invalid, but allowed in dialog
         expect(
             parseUiRepetition({
-                mostRecent: 0,
-                oldest: 0,
+                [PROP_MOST_RECENT]: 0,
+                [PROP_OLDEST]: 0,
             })
         ).toEqual(defaultCurrentRepetition)
 
-        // invalid
-        expect(
-            parseUiRepetition({
-                mostRecent: -1,
-                oldest: 1,
-            })
-        ).toEqual(defaultCurrentRepetition)
-
-        // invalid
-        expect(
-            parseUiRepetition({
-                mostRecent: 1,
-                oldest: -1,
-            })
-        ).toEqual(defaultCurrentRepetition)
-
+        // default
         expect(parseUiRepetition(defaultUiRepetition)).toEqual(
             defaultCurrentRepetition
         )
 
         expect(
             parseUiRepetition({
-                mostRecent: 0,
-                oldest: 1,
+                [PROP_MOST_RECENT]: 0,
+                [PROP_OLDEST]: 1,
             })
         ).toEqual([1])
 
         expect(
             parseUiRepetition({
-                mostRecent: 1,
-                oldest: 1,
+                [PROP_MOST_RECENT]: 1,
+                [PROP_OLDEST]: 1,
             })
         ).toEqual([1, 0])
 
         expect(
             parseUiRepetition({
-                mostRecent: 2,
-                oldest: 0,
+                [PROP_MOST_RECENT]: 2,
+                [PROP_OLDEST]: 0,
             })
         ).toEqual([-1, 0])
 
         expect(
             parseUiRepetition({
-                mostRecent: 2,
-                oldest: 1,
+                [PROP_MOST_RECENT]: 2,
+                [PROP_OLDEST]: 1,
             })
         ).toEqual([1, -1, 0])
 
         expect(
             parseUiRepetition({
-                mostRecent: 1,
-                oldest: 2,
+                [PROP_MOST_RECENT]: 1,
+                [PROP_OLDEST]: 2,
             })
         ).toEqual([1, 2, 0])
 
         expect(
             parseUiRepetition({
-                mostRecent: 2,
-                oldest: 2,
+                [PROP_MOST_RECENT]: 2,
+                [PROP_OLDEST]: 2,
             })
         ).toEqual([1, 2, -1, 0])
     })
