@@ -108,8 +108,8 @@ export const parseCurrentRepetition = (repetition) => {
     }
 
     return {
-        mostRecent: repetition.filter((n) => n < 1).length,
-        oldest: repetition.filter((n) => n > 0).length,
+        [PROP_MOST_RECENT]: repetition.filter((n) => n < 1).length,
+        [PROP_OLDEST]: repetition.filter((n) => n > 0).length,
     }
 }
 
