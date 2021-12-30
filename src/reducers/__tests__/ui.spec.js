@@ -1,3 +1,4 @@
+import { PROP_MOST_RECENT, PROP_OLDEST } from '../../modules/ui.js'
 import reducer, { DEFAULT_UI, SET_UI_REPETITION } from '../ui.js'
 
 describe('reducer: ui', () => {
@@ -10,9 +11,11 @@ describe('reducer: ui', () => {
     // repetition
     describe('reducer: ui.repetition', () => {
         const getTestRepetition = () => ({
-            mostRecent: 2,
-            oldest: 1,
+            [PROP_MOST_RECENT]: 2,
+            [PROP_OLDEST]: 1,
         })
+
+        const dimensionId = 'abc'
 
         it('adds repetition by dimension id', () => {
             const actualState = reducer(
@@ -20,7 +23,7 @@ describe('reducer: ui', () => {
                 {
                     type: SET_UI_REPETITION,
                     value: {
-                        dimensionId: 'abc',
+                        dimensionId,
                         repetition: getTestRepetition(),
                     },
                 }
@@ -38,7 +41,7 @@ describe('reducer: ui', () => {
         it('overrides existing repetitions by dimension id', () => {
             const updatedRepetition = {
                 ...getTestRepetition(),
-                mostRecent: 3,
+                [PROP_MOST_RECENT]: 999,
             }
 
             const initialState = {
@@ -50,14 +53,14 @@ describe('reducer: ui', () => {
             const actualState = reducer(initialState, {
                 type: SET_UI_REPETITION,
                 value: {
-                    dimensionId: 'abc',
+                    dimensionId,
                     repetition: updatedRepetition,
                 },
             })
 
             const expectedState = {
                 repetitionByDimension: {
-                    abc: updatedRepetition,
+                    [dimensionId]: updatedRepetition,
                 },
             }
 
