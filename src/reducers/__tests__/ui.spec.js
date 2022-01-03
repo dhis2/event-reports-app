@@ -9,7 +9,7 @@ describe('reducer: ui', () => {
     })
 
     // repetition
-    describe('reducer: ui.repetition', () => {
+    describe('reducer: ui.repetitionByDimension', () => {
         const getTestRepetition = () => ({
             [PROP_MOST_RECENT]: 2,
             [PROP_OLDEST]: 1,
