@@ -6,7 +6,6 @@ import PropTypes from 'prop-types'
 import React, { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
 import { acClearCurrent, acSetCurrent } from '../actions/current.js'
-import { tSetLegendSets } from '../actions/legendSets.js'
 import { acSetVisualizationLoading } from '../actions/loader.js'
 import { acAddMetadata, tSetInitMetadata } from '../actions/metadata.js'
 import { tAddSettings } from '../actions/settings.js'
@@ -70,7 +69,6 @@ const App = ({
     isLoading,
     setCurrent,
     setInitMetadata,
-    setLegendSets,
     setVisualization,
     setVisualizationLoading,
     setUiFromVisualization,
@@ -158,7 +156,6 @@ const App = ({
         const onMount = async () => {
             await addSettings(userSettings)
             setUser(d2.currentUser)
-            await setLegendSets() // TODO: Only fetch this on-demand, rather than on app load!
 
             setInitMetadata()
 
@@ -304,7 +301,6 @@ const mapDispatchToProps = {
     clearUi: tClearUi,
     setCurrent: acSetCurrent,
     setInitMetadata: tSetInitMetadata,
-    setLegendSets: tSetLegendSets,
     setVisualization: acSetVisualization,
     setUser: acSetUser,
     setUiFromVisualization: acSetUiFromVisualization,
@@ -323,7 +319,6 @@ App.propTypes = {
     location: PropTypes.object,
     setCurrent: PropTypes.func,
     setInitMetadata: PropTypes.func,
-    setLegendSets: PropTypes.func,
     setUiFromVisualization: PropTypes.func,
     setUser: PropTypes.func,
     setVisualization: PropTypes.func,
