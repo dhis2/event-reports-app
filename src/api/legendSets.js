@@ -1,5 +1,16 @@
+const TYPE_PA = 'PROGRAM_ATTRIBUTE'
+//const TYPE_DE = 'PROGRAM_DATA_ELEMENT'
+
 const dataElementsQuery = {
     resource: 'dataElements',
+    id: ({ id }) => id,
+    params: {
+        fields: 'legendSets[id,name]',
+    },
+}
+
+const trackedEntityAttributesQuery = {
+    resource: 'trackedEntityAttributes',
     id: ({ id }) => id,
     params: {
         fields: 'legendSets[id,name]',
@@ -36,10 +47,14 @@ export const apiFetchLegendSetById = async ({ dataEngine, id }) => {
 export const apiFetchLegendSetsByDimension = async ({
     dataEngine,
     dimensionId,
-    dimensionType, // TODO: Use this to switch between dataElements and trackedEntityAttributes
+    dimensionType,
 }) => {
+    const query =
+        dimensionType === TYPE_PA
+            ? trackedEntityAttributesQuery
+            : dataElementsQuery
     const response = await dataEngine.query(
-        { legendSets: dataElementsQuery },
+        { legendSets: query },
         {
             variables: {
                 id: dimensionId,
