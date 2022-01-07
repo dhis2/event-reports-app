@@ -188,7 +188,7 @@ const ConditionsManager = ({
                     return null
                 }
 
-                const useDecimalSteps =
+                const enableDecimalSteps =
                     valueType === DIMENSION_TYPE_UNIT_INTERVAL
 
                 return (
@@ -209,7 +209,7 @@ const ConditionsManager = ({
                                 setSelectedLegendSet(value)
                             }
                             availableLegendSets={availableLegendSets}
-                            useDecimalSteps={useDecimalSteps}
+                            enableDecimalSteps={enableDecimalSteps}
                         />
                         {getDividerContent(index)}
                     </div>

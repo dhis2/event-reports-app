@@ -46,7 +46,7 @@ const NumericCondition = ({
     availableLegendSets,
     numberOfConditions,
     onLegendSetChange,
-    useDecimalSteps,
+    enableDecimalSteps,
 }) => {
     let operator, value
 
@@ -127,7 +127,7 @@ const NumericCondition = ({
                         onChange={({ value }) => setValue(value)}
                         width="150px"
                         dense
-                        step={useDecimalSteps ? '0.1' : '1'}
+                        step={enableDecimalSteps ? '0.1' : '1'}
                     />
                 )}
             {operator &&
@@ -197,8 +197,8 @@ NumericCondition.propTypes = {
     onLegendSetChange: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
     availableLegendSets: PropTypes.array,
+    enableDecimalSteps: PropTypes.bool,
     legendSetId: PropTypes.string,
-    useDecimalSteps: PropTypes.bool,
 }
 
 export default NumericCondition
