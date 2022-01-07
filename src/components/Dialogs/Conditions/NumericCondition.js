@@ -130,8 +130,7 @@ const NumericCondition = ({
                         step={enableDecimalSteps ? '0.1' : '1'}
                     />
                 )}
-            {operator &&
-                operator === OPERATOR_IN &&
+            {operator === OPERATOR_IN &&
                 availableLegendSets &&
                 ((legendSetId && legendSet) || !legendSetId) && (
                     <>
