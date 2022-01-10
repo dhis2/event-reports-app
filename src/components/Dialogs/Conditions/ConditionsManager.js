@@ -79,13 +79,20 @@ const ConditionsManager = ({
     const isOptionSetCondition =
         valueType === DIMENSION_TYPE_TEXT && dimension.optionSet
 
+    const getInitConditions = () =>
+        conditions.condition?.length
+            ? parseConditionsStringToArray(conditions.condition)
+            : null
+
+    const getEmptyConditions = () =>
+        SINGLETON_TYPES.includes(valueType) ||
+        isOptionSetCondition ||
+        conditions.legendSet
+            ? [EMPTY_CONDITION]
+            : []
+
     const [conditionsList, setConditionsList] = useState(
-        (conditions.condition?.length &&
-            parseConditionsStringToArray(conditions.condition)) ||
-            (!conditions.condition?.length &&
-                (SINGLETON_TYPES.includes(valueType) ||
-                    isOptionSetCondition) && [EMPTY_CONDITION]) ||
-            (conditions.legendSet ? [EMPTY_CONDITION] : [])
+        getInitConditions() || getEmptyConditions()
     )
 
     const [selectedLegendSet, setSelectedLegendSet] = useState(
