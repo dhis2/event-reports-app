@@ -26,25 +26,29 @@ const OrgUnitCondition = ({
     const value = parts[1]?.length && parts[1]
 
     const setValues = (item) => {
-        const forMetadata = {}
-        const forParentGraphMap = {}
+        if (item.checked) {
+            const forMetadata = {}
+            const forParentGraphMap = {}
 
-        forMetadata[item.id] = {
-            id: item.id,
-            name: item.name || item.displayName,
-            displayName: item.displayName,
+            forMetadata[item.id] = {
+                id: item.id,
+                name: item.name || item.displayName,
+                displayName: item.displayName,
+            }
+
+            if (item.path) {
+                const path = removeLastPathSegment(item.path)
+
+                forParentGraphMap[item.id] =
+                    path === `/${item.id}` ? '' : path.replace(/^\//, '')
+            }
+
+            addMetadata(forMetadata)
+            addParentGraphMap(forParentGraphMap)
+            onChange(`${OPERATOR_EQUAL}:${item.id}`)
+        } else {
+            onChange('')
         }
-
-        if (item.path) {
-            const path = removeLastPathSegment(item.path)
-
-            forParentGraphMap[item.id] =
-                path === `/${item.id}` ? '' : path.replace(/^\//, '')
-        }
-
-        addMetadata(forMetadata)
-        addParentGraphMap(forParentGraphMap)
-        onChange(`${OPERATOR_EQUAL}:${item.id}`)
     }
 
     const selected = value
