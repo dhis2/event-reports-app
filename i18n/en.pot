@@ -397,6 +397,9 @@ msgstr ""
 "This visualization can't be deleted because it is used on one or more "
 "dashboards"
 
+msgid "Pivot tables are not supported by this app yet"
+msgstr "Pivot tables are not supported by this app yet"
+
 msgid "Getting started"
 msgstr "Getting started"
 
@@ -630,9 +633,6 @@ msgstr "Line list"
 
 msgid "Pivot table"
 msgstr "Pivot table"
-
-msgid "Pivot tables are not supported by this app yet"
-msgstr "Pivot tables are not supported by this app yet"
 
 msgid "Events are single registrations or incidents in a program"
 msgstr "Events are single registrations or incidents in a program"

@@ -1,9 +1,15 @@
+import {
+    VIS_TYPE_PIVOT_TABLE,
+    VIS_TYPE_LINE_LIST,
+    visTypeDisplayNames,
+    visTypeDescriptions,
+} from '@dhis2/analytics'
+import i18n from '@dhis2/d2-i18n'
 import { Card, Popper, Layer, Tooltip } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React, { useState, createRef } from 'react'
 import { connect } from 'react-redux'
 import ArrowDown from '../../../assets/ArrowDown.js'
-import { visTypeMap } from '../../../modules/visualization.js'
 import { sGetUi, sGetUiType } from '../../../reducers/ui.js'
 import ListItemIcon from './ListItemIcon.js'
 import classes from './styles/VisualizationTypeSelector.module.css'
@@ -17,20 +23,20 @@ const VisualizationTypeSelector = ({ visualizationType }) => {
         setListIsOpen(false)
     }
 
-    const getVisTypes = () => Object.keys(visTypeMap).sort()
-
     const renderVisualizationTypeListItem = (type) => {
-        const isDisabled = visTypeMap[type].disabled
-
         return (
             <VisualizationTypeListItem
                 key={type}
                 visType={type}
-                label={visTypeMap[type].name}
-                description={visTypeMap[type].description}
+                label={visTypeDisplayNames[type]}
+                description={visTypeDescriptions[type]}
                 isSelected={type === visualizationType}
-                onClick={isDisabled ? null : handleListItemClick(type)}
-                disabled={isDisabled}
+                onClick={
+                    type === VIS_TYPE_PIVOT_TABLE
+                        ? null
+                        : handleListItemClick(type)
+                }
+                disabled={type === VIS_TYPE_PIVOT_TABLE}
             />
         )
     }
@@ -39,12 +45,14 @@ const VisualizationTypeSelector = ({ visualizationType }) => {
         <Card dataTest={'visualization-type-selector-card'}>
             <div className={classes.listContainer}>
                 <div className={classes.listSection}>
-                    {getVisTypes().map((type) =>
-                        visTypeMap[type].disabled ? (
+                    {[VIS_TYPE_LINE_LIST, VIS_TYPE_PIVOT_TABLE].map((type) =>
+                        type === VIS_TYPE_PIVOT_TABLE ? (
                             <Tooltip
                                 key={`${type}-tooltip`}
                                 placement="bottom"
-                                content={visTypeMap[type].disabledText}
+                                content={i18n.t(
+                                    'Pivot tables are not supported by this app yet'
+                                )}
                             >
                                 {renderVisualizationTypeListItem(type)}
                             </Tooltip>
@@ -69,7 +77,7 @@ const VisualizationTypeSelector = ({ visualizationType }) => {
             >
                 <ListItemIcon visType={visualizationType} />
                 <span data-test="visualization-type-selector-currently-selected-text">
-                    {visTypeMap[visualizationType].name}
+                    {visTypeDisplayNames[visualizationType]}
                 </span>
                 <span className={classes.arrowIcon}>
                     <ArrowDown />
@@ -89,7 +97,7 @@ const VisualizationTypeSelector = ({ visualizationType }) => {
 }
 
 VisualizationTypeSelector.propTypes = {
-    visualizationType: PropTypes.oneOf(Object.keys(visTypeMap)),
+    visualizationType: PropTypes.oneOf(Object.keys(visTypeDisplayNames)),
 }
 
 const mapStateToProps = (state) => ({

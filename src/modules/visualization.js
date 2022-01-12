@@ -1,36 +1,11 @@
 import { AXIS_ID_COLUMNS, AXIS_ID_FILTERS } from '@dhis2/analytics'
 import i18n from '@dhis2/d2-i18n'
-import PivotTableIcon from '../assets/PivotTableIcon.js'
 import { DEFAULT_CURRENT } from '../reducers/current.js'
 import { DEFAULT_VISUALIZATION } from '../reducers/visualization.js'
 import { default as options } from './options.js'
 
-export const DIMENSION_TYPE_ALL = 'ALL'
-export const DIMENSION_TYPE_DATA_ELEMENT = 'DATA_ELEMENT'
-export const DIMENSION_TYPE_PROGRAM_ATTRIBUTE = 'PROGRAM_ATTRIBUTE'
-export const DIMENSION_TYPE_PROGRAM_INDICATOR = 'PROGRAM_INDICATOR'
-
-export const VIS_TYPE_PIVOT_TABLE = 'PIVOT_TABLE'
-export const VIS_TYPE_LINE_LIST = 'LINE_LIST'
-
 export const OUTPUT_TYPE_EVENT = 'EVENT'
 export const OUTPUT_TYPE_ENROLLMENT = 'ENROLLMENT'
-
-export const visTypeMap = {
-    [VIS_TYPE_LINE_LIST]: {
-        name: i18n.t('Line list'),
-        description: 'TEXT description for Line list',
-        icon: PivotTableIcon,
-        disabled: false,
-    },
-    [VIS_TYPE_PIVOT_TABLE]: {
-        name: i18n.t('Pivot table'),
-        description: 'TEXT description for Pivot table',
-        icon: PivotTableIcon,
-        disabled: true,
-        disabledText: i18n.t('Pivot tables are not supported by this app yet'),
-    },
-}
 
 export const outputTypeMap = {
     [OUTPUT_TYPE_EVENT]: {

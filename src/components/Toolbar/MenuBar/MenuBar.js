@@ -1,4 +1,9 @@
-import { FileMenu, useCachedDataQuery } from '@dhis2/analytics'
+import {
+    FileMenu,
+    useCachedDataQuery,
+    VIS_TYPE_LINE_LIST,
+    VIS_TYPE_PIVOT_TABLE,
+} from '@dhis2/analytics'
 import { useDataMutation, useAlert } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import { Button } from '@dhis2/ui'
@@ -204,6 +209,11 @@ const MenuBar = ({
         dispatch(acSetShowExpandedLayoutPanel(false))
     }
 
+    const visTypes = [
+        { type: VIS_TYPE_LINE_LIST },
+        { type: VIS_TYPE_PIVOT_TABLE, disabled: true },
+    ]
+
     return (
         <div className={classes.menuBar} data-test={dataTest}>
             <Button
@@ -219,6 +229,8 @@ const MenuBar = ({
                 currentUser={currentUser}
                 fileType={apiObjectName}
                 fileObject={current}
+                filterVisTypes={visTypes}
+                defaultFilterVisType={VIS_TYPE_LINE_LIST}
                 onOpen={onOpen}
                 onNew={onNew}
                 onRename={onRename}
