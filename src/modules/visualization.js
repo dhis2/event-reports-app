@@ -1,4 +1,9 @@
-import { AXIS_ID_COLUMNS, AXIS_ID_FILTERS } from '@dhis2/analytics'
+import {
+    AXIS_ID_COLUMNS,
+    AXIS_ID_FILTERS,
+    VIS_TYPE_LINE_LIST,
+    VIS_TYPE_PIVOT_TABLE,
+} from '@dhis2/analytics'
 import i18n from '@dhis2/d2-i18n'
 import { DEFAULT_CURRENT } from '../reducers/current.js'
 import { DEFAULT_VISUALIZATION } from '../reducers/visualization.js'
@@ -39,6 +44,17 @@ export const transformProgramDataElement = (visualization) => {
 
 export const transformVisualization = (visualization) =>
     transformProgramDataElement(visualization)
+
+export const visTypes = [
+    { type: VIS_TYPE_LINE_LIST },
+    { type: VIS_TYPE_PIVOT_TABLE, disabled: true },
+]
+
+export const visTypeDescriptions = {
+    // TODO review descriptions @scott @joe
+    [VIS_TYPE_LINE_LIST]: i18n.t('TEXT description for Line List'),
+    [VIS_TYPE_PIVOT_TABLE]: i18n.t('TEXT description for Pivot Table'),
+}
 
 export const getVisualizationFromCurrent = (current) => {
     const visualization = Object.assign({}, current)

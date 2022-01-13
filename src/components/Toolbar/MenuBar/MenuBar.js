@@ -2,9 +2,7 @@ import {
     FileMenu,
     useCachedDataQuery,
     VIS_TYPE_LINE_LIST,
-    VIS_TYPE_PIVOT_TABLE,
 } from '@dhis2/analytics'
-import { useDataMutation, useAlert } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import { Button } from '@dhis2/ui'
 import PropTypes from 'prop-types'
@@ -15,6 +13,7 @@ import { acSetShowExpandedLayoutPanel } from '../../../actions/ui.js'
 import { acSetVisualization } from '../../../actions/visualization.js'
 import { getAlertTypeByStatusCode } from '../../../modules/error.js'
 import history from '../../../modules/history.js'
+import { visTypes } from '../../../modules/visualization.js'
 import { sGetCurrent } from '../../../reducers/current.js'
 import { sGetVisualization } from '../../../reducers/visualization.js'
 import { ToolbarDownloadDropdown } from '../../DownloadMenu/index.js'
@@ -208,11 +207,6 @@ const MenuBar = ({
         onUpdate()
         dispatch(acSetShowExpandedLayoutPanel(false))
     }
-
-    const visTypes = [
-        { type: VIS_TYPE_LINE_LIST },
-        { type: VIS_TYPE_PIVOT_TABLE, disabled: true },
-    ]
 
     return (
         <div className={classes.menuBar} data-test={dataTest}>
