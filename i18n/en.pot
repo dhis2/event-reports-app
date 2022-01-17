@@ -637,11 +637,5 @@ msgstr "Pivot table"
 msgid "TEXT description for Line List"
 msgstr "TEXT description for Line List"
 
-msgid "Events are single registrations or incidents in a program"
-msgstr "Events are single registrations or incidents in a program"
-
-msgid "Programs track enrollments across time"
-msgstr "Programs track enrollments across time"
-
 msgid "TEXT description for Pivot Table"
 msgstr "TEXT description for Pivot Table"
