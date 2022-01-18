@@ -1,4 +1,4 @@
-import { FileMenu, useCurrentUser } from '@dhis2/analytics'
+import { FileMenu, useCachedDataQuery } from '@dhis2/analytics'
 import { useDataMutation, useAlert } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import { Button } from '@dhis2/ui'
@@ -47,7 +47,7 @@ const MenuBar = ({
     setVisualization,
     onUpdate,
 }) => {
-    const { currentUser } = useCurrentUser()
+    const { data: providerCachedData } = useCachedDataQuery()
     const { show: showAlert } = useAlert(
         ({ message }) => message,
         ({ options }) => options
@@ -216,7 +216,7 @@ const MenuBar = ({
                 {i18n.t('Update')}
             </Button>
             <FileMenu
-                currentUser={currentUser}
+                currentUser={providerCachedData.currentUser}
                 fileType={apiObjectName}
                 fileObject={current}
                 onOpen={onOpen}

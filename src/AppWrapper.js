@@ -1,6 +1,6 @@
 import {
     apiFetchOrganisationUnitLevels,
-    CurrentUserProvider,
+    CachedDataQueryProvider,
 } from '@dhis2/analytics'
 import { useDataEngine } from '@dhis2/app-runtime'
 import React, { useState, useEffect, useCallback } from 'react'
@@ -11,6 +11,39 @@ import configureStore from './configureStore.js'
 import metadataMiddleware from './middleware/metadata.js'
 import history from './modules/history.js'
 import './locales/index.js'
+
+const query = {
+    currentUser: {
+        resource: 'me',
+        params: {
+            fields: 'id,username,displayName~rename(name)',
+        },
+    },
+    userSettings: {
+        resource: 'userSettings',
+        params: {
+            key: ['keyUiLocale', 'keyAnalysisDisplayProperty'],
+        },
+    },
+}
+
+const providerDataTransformation = (rawData) => {
+    const { keyAnalysisDisplayProperty, keyUiLocale, ...rest } =
+        rawData.userSettings
+
+    return {
+        currentUser: rawData.currentUser,
+        userSettings: {
+            ...rest,
+            displayProperty: keyAnalysisDisplayProperty,
+            displayNameProperty:
+                keyAnalysisDisplayProperty === 'name'
+                    ? 'displayName'
+                    : 'displayShortName',
+            uiLocale: keyUiLocale,
+        },
+    }
+}
 
 const AppWrapper = () => {
     const engine = useDataEngine()
@@ -43,16 +76,19 @@ const AppWrapper = () => {
 
     return (
         <ReduxProvider store={store}>
-            <CurrentUserProvider>
-                {({ userSettings }) =>
-                    userSettings?.uiLocale ? (
+            <CachedDataQueryProvider
+                query={query}
+                dataTransformation={providerDataTransformation}
+            >
+                {({ data }) =>
+                    data?.userSettings?.uiLocale ? (
                         <App
                             initialLocation={history.location}
                             ouLevels={ouLevels} // TODO: Unused by App.js?
                         />
                     ) : null
                 }
-            </CurrentUserProvider>
+            </CachedDataQueryProvider>
         </ReduxProvider>
     )
 }

@@ -1,4 +1,4 @@
-import { useCurrentUser } from '@dhis2/analytics'
+import { useCachedDataQuery } from '@dhis2/analytics'
 import { useDataQuery, useDataMutation } from '@dhis2/app-runtime'
 import { CssVariables } from '@dhis2/ui'
 import cx from 'classnames'
@@ -112,7 +112,7 @@ const App = ({
     setUser,
     showDetailsPanel,
 }) => {
-    const { currentUser, userSettings } = useCurrentUser()
+    const { data: providerCachedData } = useCachedDataQuery()
     const [previousLocation, setPreviousLocation] = useState(null)
     const [initialLoadIsComplete, setInitialLoadIsComplete] = useState(false)
     const { data, refetch } = useDataQuery(visualizationQuery, {
@@ -195,11 +195,11 @@ const App = ({
 
     useEffect(() => {
         const onMount = async () => {
-            await addSettings(userSettings)
+            await addSettings(providerCachedData.userSettings)
 
             setUser({
-                ...currentUser,
-                uiLocale: userSettings.uiLocale,
+                ...providerCachedData.currentUser,
+                uiLocale: providerCachedData.userSettings.uiLocale,
             })
 
             setInitMetadata()
