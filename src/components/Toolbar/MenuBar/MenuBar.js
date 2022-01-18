@@ -47,7 +47,7 @@ const MenuBar = ({
     setVisualization,
     onUpdate,
 }) => {
-    const { data: providerCachedData } = useCachedDataQuery()
+    const { currentUser } = useCachedDataQuery()
     const { show: showAlert } = useAlert(
         ({ message }) => message,
         ({ options }) => options
@@ -216,7 +216,7 @@ const MenuBar = ({
                 {i18n.t('Update')}
             </Button>
             <FileMenu
-                currentUser={providerCachedData.currentUser}
+                currentUser={currentUser}
                 fileType={apiObjectName}
                 fileObject={current}
                 onOpen={onOpen}

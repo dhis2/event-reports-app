@@ -80,14 +80,10 @@ const AppWrapper = () => {
                 query={query}
                 dataTransformation={providerDataTransformation}
             >
-                {({ data }) =>
-                    data?.userSettings?.uiLocale ? (
-                        <App
-                            initialLocation={history.location}
-                            ouLevels={ouLevels} // TODO: Unused by App.js?
-                        />
-                    ) : null
-                }
+                <App
+                    initialLocation={history.location}
+                    ouLevels={ouLevels} // TODO: Unused by App.js?
+                />
             </CachedDataQueryProvider>
         </ReduxProvider>
     )

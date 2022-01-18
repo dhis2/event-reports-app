@@ -112,7 +112,7 @@ const App = ({
     setUser,
     showDetailsPanel,
 }) => {
-    const { data: providerCachedData } = useCachedDataQuery()
+    const { currentUser, userSettings } = useCachedDataQuery()
     const [previousLocation, setPreviousLocation] = useState(null)
     const [initialLoadIsComplete, setInitialLoadIsComplete] = useState(false)
     const { data, refetch } = useDataQuery(visualizationQuery, {
@@ -195,11 +195,11 @@ const App = ({
 
     useEffect(() => {
         const onMount = async () => {
-            await addSettings(providerCachedData.userSettings)
+            await addSettings(userSettings)
 
             setUser({
-                ...providerCachedData.currentUser,
-                uiLocale: providerCachedData.userSettings.uiLocale,
+                ...currentUser,
+                uiLocale: userSettings.uiLocale,
             })
 
             setInitMetadata()
