@@ -15,9 +15,7 @@ const formatRowValue = (rowValue, valueType, rowValueItem) => {
     switch (valueType) {
         case VALUE_TYPE_BOOLEAN:
         case VALUE_TYPE_TRUE_ONLY:
-            return rowValue === ''
-                ? i18n.t('Not answered')
-                : booleanMap[rowValue]
+            return booleanMap[rowValue] || i18n.t('Not answered')
         default:
             return rowValueItem?.name || rowValue
     }
