@@ -21,6 +21,22 @@ const formatRowValue = (rowValue, valueType, rowValueItem) => {
     }
 }
 
+const extractHeadersFromColumns = (columns) =>
+    columns.reduce((headers, { dimension }) => {
+        switch (dimension) {
+            case 'pe':
+                break
+            case 'ou':
+                headers.push('ouname')
+                break
+            default:
+                headers.push(dimension)
+                break
+        }
+
+        return headers
+    }, [])
+
 const fetchAnalyticsData = async ({
     analyticsEngine,
     visualization,
@@ -32,6 +48,9 @@ const fetchAnalyticsData = async ({
 }) => {
     let req = new analyticsEngine.request()
         .fromVisualization(visualization)
+        .withParameters({
+            headers: extractHeadersFromColumns(visualization.columns).join(','),
+        })
         .withProgram(visualization.program.id)
         .withStage(visualization.programStage.id)
         .withDisplayProperty('NAME') // TODO from settings ?!
@@ -60,53 +79,30 @@ const fetchAnalyticsData = async ({
     return rawResponse
 }
 
-const reduceHeaders = (analyticsResponse, visualization) => {
-    // special handling for ou column, use the value from the ouname column instead of the id from ou
-    const ouNameHeaderIndex = analyticsResponse.headers.findIndex(
-        (header) => header.name === 'ouname'
-    )
-
-    return visualization.columns.reduce((headers, column) => {
-        const headerIndex = analyticsResponse.headers.findIndex(
-            (header) => header.name === column.dimension
-        )
-
-        if (headerIndex !== -1) {
-            headers.push({
-                ...analyticsResponse.headers[headerIndex],
-                index:
-                    column.dimension === 'ou' ? ouNameHeaderIndex : headerIndex,
-            })
-        } else {
-            // TODO figure out what to do when no header match the column (ie. pe)
-            headers.push(undefined)
-        }
-
-        return headers
-    }, [])
-}
+const reduceHeaders = (analyticsResponse) =>
+    analyticsResponse.headers.map((header, index) => ({
+        ...header,
+        index,
+    }))
 
 const reduceRows = (analyticsResponse, headers) =>
     analyticsResponse.rows.reduce((filteredRows, row) => {
         filteredRows.push(
             headers.reduce((filteredRow, header) => {
-                if (header) {
-                    const rowValue = row[header.index]
+                const rowValue = row[header.index]
 
-                    filteredRow.push(
-                        formatRowValue(
-                            rowValue,
-                            header.valueType,
-                            analyticsResponse.metaData.items[rowValue]
-                        )
+                filteredRow.push(
+                    formatRowValue(
+                        rowValue,
+                        header.valueType,
+                        analyticsResponse.metaData.items[rowValue]
                     )
-                } else {
-                    // TODO solve the case of visualization.column not mapping to any response.header (ie. "pe")
-                    filteredRow.push('-')
-                }
+                )
+
                 return filteredRow
             }, [])
         )
+
         return filteredRows
     }, [])
 
@@ -142,7 +138,7 @@ const useAnalyticsData = ({
                     sortField,
                     sortDirection,
                 })
-                const headers = reduceHeaders(analyticsResponse, visualization)
+                const headers = reduceHeaders(analyticsResponse)
                 const rows = reduceRows(analyticsResponse, headers)
                 const pageCount = analyticsResponse.metaData.pager.pageCount
                 const total = analyticsResponse.metaData.pager.total
