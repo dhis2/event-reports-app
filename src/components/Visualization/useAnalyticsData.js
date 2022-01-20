@@ -24,6 +24,7 @@ const formatRowValue = (rowValue, valueType, rowValueItem) => {
 const extractHeadersFromColumns = (columns) =>
     columns.reduce((headers, { dimension }) => {
         switch (dimension) {
+            // TODO remove when this is sorted out https://jira.dhis2.org/browse/TECH-869
             case 'pe':
                 break
             case 'ou':
