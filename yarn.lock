@@ -1952,9 +1952,9 @@
     prop-types "^15.7.2"
 
 "@dhis2/analytics@^21.5.0":
-  version "21.5.0"
-  resolved "https://registry.yarnpkg.com/@dhis2/analytics/-/analytics-21.5.0.tgz#d83d134e285a954e6a99e7925c9598a70c8cb147"
-  integrity sha512-akqkDbmQJBxVQhP+meCjxpyVfmeIVifESI6XdlQDhCvIi2lRrp5yiyRMmCxbuom+kNCRnn3XPlru7/Xs/XSgzg==
+  version "21.5.1"
+  resolved "https://registry.yarnpkg.com/@dhis2/analytics/-/analytics-21.5.1.tgz#0544d086c02d67e1f1e28340fbdd7fa3e42d4628"
+  integrity sha512-e0urfh9YFn/iyOmpGXddyKpKSeVUFu3fiaCj6aZM+GYAw+xj48UiE0SY6yDTOt+B/8juLsk+rfy5eWhiF6qhtA==
   dependencies:
     "@dhis2/d2-ui-translation-dialog" "^7.3.1"
     classnames "^2.3.1"
