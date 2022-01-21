@@ -80,32 +80,47 @@ const fetchAnalyticsData = async ({
     return rawResponse
 }
 
-const reduceHeaders = (analyticsResponse) =>
+const extractHeaders = (analyticsResponse) =>
     analyticsResponse.headers.map((header, index) => ({
         ...header,
         index,
     }))
 
-const reduceRows = (analyticsResponse, headers) =>
-    analyticsResponse.rows.reduce((filteredRows, row) => {
-        filteredRows.push(
-            headers.reduce((filteredRow, header) => {
-                const rowValue = row[header.index]
+const extractRows = (analyticsResponse, headers) => {
+    const filteredRows = []
 
-                filteredRow.push(
-                    formatRowValue(
-                        rowValue,
-                        header.valueType,
-                        analyticsResponse.metaData.items[rowValue]
-                    )
+    for (
+        let rowIndex = 0, rowsCount = analyticsResponse.rows.length;
+        rowIndex < rowsCount;
+        rowIndex++
+    ) {
+        const row = analyticsResponse.rows[rowIndex]
+
+        const filteredRow = []
+
+        for (
+            let headerIndex = 0, headersCount = headers.length;
+            headerIndex < headersCount;
+            headerIndex++
+        ) {
+            const header = headers[headerIndex]
+
+            const rowValue = row[header.index]
+
+            filteredRow.push(
+                formatRowValue(
+                    rowValue,
+                    header.valueType,
+                    analyticsResponse.metaData.items[rowValue]
                 )
+            )
+        }
 
-                return filteredRow
-            }, [])
-        )
+        filteredRows.push(filteredRow)
+    }
 
-        return filteredRows
-    }, [])
+    return filteredRows
+}
 
 const useAnalyticsData = ({
     visualization,
@@ -139,8 +154,8 @@ const useAnalyticsData = ({
                     sortField,
                     sortDirection,
                 })
-                const headers = reduceHeaders(analyticsResponse)
-                const rows = reduceRows(analyticsResponse, headers)
+                const headers = extractHeaders(analyticsResponse)
+                const rows = extractRows(analyticsResponse, headers)
                 const pageCount = analyticsResponse.metaData.pager.pageCount
                 const total = analyticsResponse.metaData.pager.total
 
