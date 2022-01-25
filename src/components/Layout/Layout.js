@@ -1,4 +1,5 @@
-import React from 'react'
+import cx from 'classnames'
+import React, { useState } from 'react'
 import { LAYOUT_TYPE_LINE_LIST } from '../../modules/layout.js'
 import LayoutAdjuster from './LayoutAdjuster.js'
 import LineListLayout from './LineListLayout/LineListLayout.js'
@@ -9,13 +10,26 @@ const componentMap = {
 }
 
 const Layout = () => {
+    const [expanded, setExpanded] = useState(false)
     const layoutType = LAYOUT_TYPE_LINE_LIST
     const LayoutComponent = componentMap[layoutType]
 
+    const setLayoutPanelHeight = () => setExpanded(!expanded)
+
     return (
         <div className={classes.container}>
-            <LayoutComponent />
-            <LayoutAdjuster />
+            <div
+                className={cx(
+                    classes.overflowContainer,
+                    expanded && classes.expanded
+                )}
+            >
+                <LayoutComponent expanded={expanded} />
+            </div>
+            <LayoutAdjuster
+                isExpanded={expanded}
+                onClick={setLayoutPanelHeight}
+            />
         </div>
     )
 }

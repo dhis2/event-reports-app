@@ -1,6 +1,5 @@
 .ct {
     display: flex;
-    min-height: 78px;
     flex: 1;
 }
 .axisGroup {

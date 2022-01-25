@@ -4,6 +4,7 @@
     height: 16px;
     width: 100%;
     background-color: var(--colors-grey050);
+    border-top: 1px solid var(--colors-grey300);
     border-bottom: 1px solid var(--colors-grey300);
 }
 

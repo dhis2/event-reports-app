@@ -1,4 +1,25 @@
 .container {
     display: flex;
     flex-direction: column;
+    min-height: 94px; /* 78px + 16px for layoutadjuster */
+}
+
+.overflowContainer {
+    overflow-x: hidden;
+    overflow-y: auto;
+    flex: 1;
+    height: auto;
+    min-height: 78px;
+    max-height: 20vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.expanded {
+    max-height: 100%;
+}
+
+.collapsed {
+    height: auto;
+    max-height: 20vh;
 }
