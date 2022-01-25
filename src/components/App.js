@@ -4,7 +4,7 @@ import { CssVariables } from '@dhis2/ui'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
 import React, { useState, useEffect, useRef } from 'react'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 import { acClearCurrent, acSetCurrent } from '../actions/current.js'
 import { acSetVisualizationLoading } from '../actions/loader.js'
 import { acAddMetadata, tSetInitMetadata } from '../actions/metadata.js'
@@ -13,6 +13,7 @@ import {
     tClearUi,
     acSetUiFromVisualization,
     acAddParentGraphMap,
+    acSetShowExpandedLayoutPanel,
 } from '../actions/ui.js'
 import { acSetUser } from '../actions/user.js'
 import {
@@ -77,7 +78,6 @@ const App = ({
     showDetailsPanel,
     userSettings,
 }) => {
-    const [currentLocation, setCurrentLocation] = useState(initialLocation)
     const [previousLocation, setPreviousLocation] = useState(null)
     const [initialLoadIsComplete, setInitialLoadIsComplete] = useState(false)
     const { data, refetch } = useDataQuery(visualizationQuery, {
@@ -85,6 +85,10 @@ const App = ({
     })
     const [postDataStatistics] = useDataMutation(dataStatisticsMutation)
     const { d2 } = useD2()
+    const dispatch = useDispatch()
+    const showExpandedLayoutPanel = (value) =>
+        dispatch(acSetShowExpandedLayoutPanel(value))
+
     const interpretationsUnitRef = useRef()
     const onInterpretationUpdate = () => {
         interpretationsUnitRef.current.refresh()
@@ -114,7 +118,8 @@ const App = ({
 
     const loadVisualization = (location) => {
         setVisualizationLoading(true)
-        if (location.pathname.length > 1) {
+        const isNew = location.pathname.length <= 1
+        if (!isNew) {
             // /currentAnalyticalObject
             // /${id}/
             // /${id}/interpretation/${interpretationId}
@@ -128,9 +133,12 @@ const App = ({
             clearVisualization()
             //const digitGroupSeparator = sGetSettingsDigitGroupSeparator(getState())
             clearUi()
+
             setVisualizationLoading(false)
         }
 
+        setVisualizationLoading(false)
+        showExpandedLayoutPanel(isNew)
         setInitialLoadIsComplete(true)
         setPreviousLocation(location.pathname)
     }
@@ -181,7 +189,6 @@ const App = ({
             // TODO navigation confirm dialog
 
             if (isSaving || isOpening || isResetting || isValidLocationChange) {
-                setCurrentLocation(location)
                 loadVisualization(location)
             }
         })
@@ -230,9 +237,7 @@ const App = ({
                         )}
                     >
                         <div className={classes.mainCenterLayout}>
-                            <Layout
-                                isNew={currentLocation.pathname.length <= 1}
-                            />
+                            <Layout />
                         </div>
                         <div className={classes.mainCenterTitlebar}>
                             <TitleBar />

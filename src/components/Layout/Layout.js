@@ -1,7 +1,9 @@
 import cx from 'classnames'
-import PropTypes from 'prop-types'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { acSetShowExpandedLayoutPanel } from '../../actions/ui.js'
 import { LAYOUT_TYPE_LINE_LIST } from '../../modules/layout.js'
+import { sGetUiShowExpandedLayoutPanel } from '../../reducers/ui.js'
 import LayoutAdjuster from './LayoutAdjuster.js'
 import LineListLayout from './LineListLayout/LineListLayout.js'
 import classes from './styles/Layout.module.css'
@@ -10,34 +12,31 @@ const componentMap = {
     [LAYOUT_TYPE_LINE_LIST]: LineListLayout,
 }
 
-const Layout = ({ isNew }) => {
-    const [expanded, setExpanded] = useState(isNew)
+const Layout = () => {
+    const isExpanded = useSelector((state) =>
+        sGetUiShowExpandedLayoutPanel(state)
+    )
+    const dispatch = useDispatch()
+    const toggleExpanded = () => {
+        return dispatch(acSetShowExpandedLayoutPanel(!isExpanded))
+    }
+
     const layoutType = LAYOUT_TYPE_LINE_LIST
     const LayoutComponent = componentMap[layoutType]
-
-    useEffect(() => {
-        setExpanded(isNew)
-    }, [isNew])
-
-    const toggleExpanded = () => setExpanded(!expanded)
 
     return (
         <div className={classes.container}>
             <div
                 className={cx(
                     classes.overflowContainer,
-                    expanded && classes.expanded
+                    isExpanded && classes.expanded
                 )}
             >
-                <LayoutComponent expanded={expanded} />
+                <LayoutComponent />
             </div>
-            <LayoutAdjuster isExpanded={expanded} onClick={toggleExpanded} />
+            <LayoutAdjuster isExpanded={isExpanded} onClick={toggleExpanded} />
         </div>
     )
-}
-
-Layout.propTypes = {
-    isNew: PropTypes.bool,
 }
 
 export default Layout
