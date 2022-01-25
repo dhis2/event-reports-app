@@ -1,6 +1,8 @@
 import {
     AXIS_ID_COLUMNS,
+    AXIS_ID_ROWS,
     AXIS_ID_FILTERS,
+    DIMENSION_ID_PERIOD,
     VIS_TYPE_LINE_LIST,
     VIS_TYPE_PIVOT_TABLE,
 } from '@dhis2/analytics'
@@ -26,25 +28,35 @@ export const outputTypeMap = {
     },
 }
 
-export const transformProgramDataElement = (visualization) => {
-    const replaceProgramDataElement = (dimension) =>
-        dimension.dimensionType === 'PROGRAM_DATA_ELEMENT'
-            ? { ...dimension, dimensionType: DIMENSION_TYPE_DATA_ELEMENT }
-            : dimension
+export const transformVisualization = (visualization) => ({
+    ...visualization,
+    [AXIS_ID_COLUMNS]: visualization[AXIS_ID_COLUMNS].map(transformDimension),
+    [AXIS_ID_ROWS]: visualization[AXIS_ID_ROWS].map(transformDimension),
+    [AXIS_ID_FILTERS]: visualization[AXIS_ID_FILTERS].map(transformDimension),
+})
 
-    return {
-        ...visualization,
-        [AXIS_ID_COLUMNS]: visualization[AXIS_ID_COLUMNS].map(
-            replaceProgramDataElement
-        ),
-        [AXIS_ID_FILTERS]: visualization[AXIS_ID_FILTERS].map(
-            replaceProgramDataElement
-        ),
+const transformDimension = (dimensionObj, outputType) => {
+    // TODO waiting for the time dimensions work to be completed.
+    // most likely there are going to be constants for these time dimensions
+    const timeDimensionMap = {
+        [OUTPUT_TYPE_EVENT]: 'eventDate',
+        [OUTPUT_TYPE_ENROLLMENT]: 'enrollmentDate',
+    }
+
+    if (dimensionObj.dimensionType === 'PROGRAM_DATA_ELEMENT') {
+        return {
+            ...dimensionObj,
+            dimensionType: DIMENSION_TYPE_DATA_ELEMENT,
+        }
+    } else if (dimensionObj.dimension === DIMENSION_ID_PERIOD) {
+        return {
+            ...dimensionObj,
+            dimension: timeDimensionMap[outputType],
+        }
+    } else {
+        return dimensionObj
     }
 }
-
-export const transformVisualization = (visualization) =>
-    transformProgramDataElement(visualization)
 
 export const visTypes = [
     { type: VIS_TYPE_LINE_LIST },
