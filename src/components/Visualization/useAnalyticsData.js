@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from 'react'
 import {
     OUTPUT_TYPE_ENROLLMENT,
     OUTPUT_TYPE_EVENT,
+    headersMap,
 } from '../../modules/visualization.js'
 
 const VALUE_TYPE_BOOLEAN = 'BOOLEAN'
@@ -36,21 +37,9 @@ const formatRowValue = (rowValue, header, metaDataItems) => {
 }
 
 const extractHeadersFromColumns = (columns) =>
-    columns.reduce((headers, { dimension }) => {
-        switch (dimension) {
-            // TODO remove when this is sorted out https://jira.dhis2.org/browse/TECH-869
-            case 'pe':
-                break
-            case 'ou':
-                headers.push('ouname')
-                break
-            default:
-                headers.push(dimension)
-                break
-        }
-
-        return headers
-    }, [])
+    columns.map(
+        ({ dimension: dimensionId }) => headersMap[dimensionId] || dimensionId
+    )
 
 const fetchAnalyticsData = async ({
     analyticsEngine,

@@ -15,6 +15,41 @@ import { default as options } from './options.js'
 export const OUTPUT_TYPE_EVENT = 'EVENT'
 export const OUTPUT_TYPE_ENROLLMENT = 'ENROLLMENT'
 
+export const TIME_DIMENSION_EVENT_DATE = 'eventDate'
+export const TIME_DIMENSION_ENROLLMENT_DATE = 'enrollmentDate'
+export const TIME_DIMENSION_INCIDENT_DATE = 'incidentDate'
+export const TIME_DIMENSION_SCHEDULED_DATE = 'scheduledDate'
+export const TIME_DIMENSION_LAST_UPDATED = 'lastUpdated'
+
+export const headersMap = {
+    ou: 'ouname',
+    programStatus: 'programstatus',
+    eventStatus: 'eventstatus',
+    storedBy: 'storedby',
+    lastUpdatedBy: 'lastupdatedby',
+    [TIME_DIMENSION_EVENT_DATE]: 'eventdate',
+    [TIME_DIMENSION_ENROLLMENT_DATE]: 'enrollmentdate',
+    [TIME_DIMENSION_INCIDENT_DATE]: 'incidentdate',
+    [TIME_DIMENSION_SCHEDULED_DATE]: 'scheduleddate',
+    [TIME_DIMENSION_LAST_UPDATED]: 'lastupdated',
+}
+
+export const visTypeMap = {
+    [VIS_TYPE_LINE_LIST]: {
+        name: i18n.t('Line list'),
+        description: 'TEXT description for Line list',
+        icon: PivotTableIcon,
+        disabled: false,
+    },
+    [VIS_TYPE_PIVOT_TABLE]: {
+        name: i18n.t('Pivot table'),
+        description: 'TEXT description for Pivot table',
+        icon: PivotTableIcon,
+        disabled: true,
+        disabledText: i18n.t('Pivot tables are not supported by this app yet'),
+    },
+}
+
 export const outputTypeMap = {
     [OUTPUT_TYPE_EVENT]: {
         name: i18n.t('Event'),
@@ -45,8 +80,8 @@ const transformDimension = (dimensionObj, outputType) => {
     // TODO waiting for the time dimensions work to be completed.
     // most likely there are going to be constants for these time dimensions
     const timeDimensionMap = {
-        [OUTPUT_TYPE_EVENT]: 'eventDate',
-        [OUTPUT_TYPE_ENROLLMENT]: 'enrollmentDate',
+        [OUTPUT_TYPE_EVENT]: TIME_DIMENSION_EVENT_DATE,
+        [OUTPUT_TYPE_ENROLLMENT]: TIME_DIMENSION_ENROLLMENT_DATE,
     }
 
     if (dimensionObj.dimensionType === 'PROGRAM_DATA_ELEMENT') {
