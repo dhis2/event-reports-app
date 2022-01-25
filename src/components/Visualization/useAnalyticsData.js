@@ -5,6 +5,11 @@ import { useEffect, useState, useRef } from 'react'
 import {
     OUTPUT_TYPE_ENROLLMENT,
     OUTPUT_TYPE_EVENT,
+    TIME_DIMENSION_EVENT_DATE,
+    TIME_DIMENSION_ENROLLMENT_DATE,
+    TIME_DIMENSION_INCIDENT_DATE,
+    TIME_DIMENSION_SCHEDULED_DATE,
+    TIME_DIMENSION_LAST_UPDATED,
     headersMap,
 } from '../../modules/visualization.js'
 
@@ -36,10 +41,52 @@ const formatRowValue = (rowValue, header, metaDataItems) => {
     }
 }
 
-const extractHeadersFromColumns = (columns) =>
-    columns.map(
-        ({ dimension: dimensionId }) => headersMap[dimensionId] || dimensionId
-    )
+const isTimeDimension = (dimensionId) =>
+    [
+        TIME_DIMENSION_EVENT_DATE,
+        TIME_DIMENSION_ENROLLMENT_DATE,
+        TIME_DIMENSION_INCIDENT_DATE,
+        TIME_DIMENSION_SCHEDULED_DATE,
+        TIME_DIMENSION_LAST_UPDATED,
+    ].includes(dimensionId)
+
+const getAdaptedVisualization = (visualization) => {
+    const adaptedColumns = []
+    const adaptedFilters = []
+    const headers = []
+    const timeDimensionParameters = {}
+
+    visualization.columns.forEach((dimensionObj) => {
+        const dimensionId = dimensionObj.dimension
+
+        headers.push(headersMap[dimensionId] || dimensionId)
+
+        isTimeDimension(dimensionId)
+            ? (timeDimensionParameters[dimensionId] = dimensionObj.items?.map(
+                  (item) => item.id
+              ))
+            : adaptedColumns.push(dimensionObj)
+    })
+
+    visualization.filters.forEach((dimensionObj) => {
+        const dimensionId = dimensionObj.dimension
+
+        isTimeDimension(dimensionId)
+            ? (timeDimensionParameters[dimensionId] = dimensionObj.items?.map(
+                  (item) => item.id
+              ))
+            : adaptedFilters(dimensionObj)
+    })
+
+    return {
+        adaptedVisualization: {
+            columns: adaptedColumns,
+            filters: adaptedFilters,
+        },
+        headers,
+        timeDimensionParameters,
+    }
+}
 
 const fetchAnalyticsData = async ({
     analyticsEngine,
@@ -50,10 +97,14 @@ const fetchAnalyticsData = async ({
     sortField,
     sortDirection,
 }) => {
+    const { adaptedVisualization, headers, timeDimensionParameters } =
+        getAdaptedVisualization(visualization)
+
     let req = new analyticsEngine.request()
-        .fromVisualization(visualization)
+        .fromVisualization(adaptedVisualization)
         .withParameters({
-            headers: extractHeadersFromColumns(visualization.columns).join(','),
+            headers: headers,
+            ...timeDimensionParameters,
         })
         .withProgram(visualization.program.id)
         .withStage(visualization.programStage.id)
