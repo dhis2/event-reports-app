@@ -30,9 +30,15 @@ export const outputTypeMap = {
 
 export const transformVisualization = (visualization) => ({
     ...visualization,
-    [AXIS_ID_COLUMNS]: visualization[AXIS_ID_COLUMNS].map(transformDimension),
-    [AXIS_ID_ROWS]: visualization[AXIS_ID_ROWS].map(transformDimension),
-    [AXIS_ID_FILTERS]: visualization[AXIS_ID_FILTERS].map(transformDimension),
+    [AXIS_ID_COLUMNS]: visualization[AXIS_ID_COLUMNS].map((dimensionObj) =>
+        transformDimension(dimensionObj, visualization.outputType)
+    ),
+    [AXIS_ID_ROWS]: visualization[AXIS_ID_ROWS].map((dimensionObj) =>
+        transformDimension(dimensionObj, visualization.outputType)
+    ),
+    [AXIS_ID_FILTERS]: visualization[AXIS_ID_FILTERS].map((dimensionObj) =>
+        transformDimension(dimensionObj, visualization.outputType)
+    ),
 })
 
 const transformDimension = (dimensionObj, outputType) => {
