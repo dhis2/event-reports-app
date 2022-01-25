@@ -86,8 +86,6 @@ const App = ({
     const [postDataStatistics] = useDataMutation(dataStatisticsMutation)
     const { d2 } = useD2()
     const dispatch = useDispatch()
-    const showExpandedLayoutPanel = (value) =>
-        dispatch(acSetShowExpandedLayoutPanel(value))
 
     const interpretationsUnitRef = useRef()
     const onInterpretationUpdate = () => {
@@ -118,8 +116,8 @@ const App = ({
 
     const loadVisualization = (location) => {
         setVisualizationLoading(true)
-        const isNew = location.pathname.length <= 1
-        if (!isNew) {
+        const isExisting = location.pathname.length > 1
+        if (isExisting) {
             // /currentAnalyticalObject
             // /${id}/
             // /${id}/interpretation/${interpretationId}
@@ -133,12 +131,10 @@ const App = ({
             clearVisualization()
             //const digitGroupSeparator = sGetSettingsDigitGroupSeparator(getState())
             clearUi()
-
             setVisualizationLoading(false)
         }
 
-        setVisualizationLoading(false)
-        showExpandedLayoutPanel(isNew)
+        dispatch(acSetShowExpandedLayoutPanel(!isExisting))
         setInitialLoadIsComplete(true)
         setPreviousLocation(location.pathname)
     }
