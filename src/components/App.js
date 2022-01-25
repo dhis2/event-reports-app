@@ -59,7 +59,7 @@ const dataStatisticsMutation = {
 }
 
 const App = ({
-    location,
+    initialLocation,
     current,
     addMetadata,
     addParentGraphMap,
@@ -77,6 +77,7 @@ const App = ({
     showDetailsPanel,
     userSettings,
 }) => {
+    const [currentLocation, setCurrentLocation] = useState(initialLocation)
     const [previousLocation, setPreviousLocation] = useState(null)
     const [initialLoadIsComplete, setInitialLoadIsComplete] = useState(false)
     const { data, refetch } = useDataQuery(visualizationQuery, {
@@ -161,7 +162,7 @@ const App = ({
 
             setInitMetadata()
 
-            loadVisualization(location)
+            loadVisualization(initialLocation)
         }
 
         onMount()
@@ -180,6 +181,7 @@ const App = ({
             // TODO navigation confirm dialog
 
             if (isSaving || isOpening || isResetting || isValidLocationChange) {
+                setCurrentLocation(location)
                 loadVisualization(location)
             }
         })
@@ -228,7 +230,9 @@ const App = ({
                         )}
                     >
                         <div className={classes.mainCenterLayout}>
-                            <Layout />
+                            <Layout
+                                isNew={currentLocation.pathname.length <= 1}
+                            />
                         </div>
                         <div className={classes.mainCenterTitlebar}>
                             <TitleBar />
@@ -317,8 +321,8 @@ App.propTypes = {
     clearUi: PropTypes.func,
     clearVisualization: PropTypes.func,
     current: PropTypes.object,
+    initialLocation: PropTypes.object,
     isLoading: PropTypes.bool,
-    location: PropTypes.object,
     setCurrent: PropTypes.func,
     setInitMetadata: PropTypes.func,
     setUiFromVisualization: PropTypes.func,
