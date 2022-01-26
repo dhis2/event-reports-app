@@ -6,7 +6,7 @@ import { acSetUiOptions } from '../../../actions/ui.js'
 import { sGetUiOptions } from '../../../reducers/ui.js'
 import { tabSectionOption } from '../styles/VisualizationOptions.style.js'
 
-export const TextBaseOption = ({
+const TextBaseOption = ({
     type,
     label,
     placeholder,
