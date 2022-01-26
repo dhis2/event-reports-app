@@ -2,6 +2,10 @@ import { Analytics } from '@dhis2/analytics'
 import { useDataEngine } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import { useEffect, useState, useRef } from 'react'
+import {
+    OUTPUT_TYPE_ENROLLMENT,
+    OUTPUT_TYPE_EVENT,
+} from '../../modules/visualization.js'
 
 const VALUE_TYPE_BOOLEAN = 'BOOLEAN'
 const VALUE_TYPE_TRUE_ONLY = 'TRUE_ONLY'
@@ -11,13 +15,23 @@ const booleanMap = {
     1: i18n.t('Yes'),
 }
 
-const formatRowValue = (rowValue, valueType, rowValueItem) => {
-    switch (valueType) {
+const analyticsApiEndpointMap = {
+    [OUTPUT_TYPE_ENROLLMENT]: 'enrollments',
+    [OUTPUT_TYPE_EVENT]: 'events',
+}
+
+const findOptionSetItem = (code, metaDataItems) =>
+    Object.values(metaDataItems).find((item) => item.code === code)
+
+const formatRowValue = (rowValue, header, metaDataItems) => {
+    switch (header.valueType) {
         case VALUE_TYPE_BOOLEAN:
         case VALUE_TYPE_TRUE_ONLY:
             return booleanMap[rowValue] || i18n.t('Not answered')
         default:
-            return rowValueItem?.name || rowValue
+            return header.optionSet
+                ? findOptionSetItem(rowValue, metaDataItems)?.name || rowValue
+                : metaDataItems[rowValue]?.name || rowValue
     }
 }
 
@@ -75,7 +89,13 @@ const fetchAnalyticsData = async ({
         }
     }
 
-    const rawResponse = await analyticsEngine.events.getQuery(req)
+    const analyticsApiEndpoint =
+        analyticsApiEndpointMap[visualization.outputType]
+
+    // for 2.38 only /query is used (since only Line List is enabled)
+    const rawResponse = await analyticsEngine[analyticsApiEndpoint].getQuery(
+        req
+    )
 
     return rawResponse
 }
@@ -110,8 +130,8 @@ const extractRows = (analyticsResponse, headers) => {
             filteredRow.push(
                 formatRowValue(
                     rowValue,
-                    header.valueType,
-                    analyticsResponse.metaData.items[rowValue]
+                    header,
+                    analyticsResponse.metaData.items
                 )
             )
         }
