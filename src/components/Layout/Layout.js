@@ -28,10 +28,9 @@ const Layout = () => {
     return (
         <div className={classes.container}>
             <div
-                className={cx(
-                    classes.overflowContainer,
-                    isExpanded && classes.expanded
-                )}
+                className={cx(classes.overflowContainer, {
+                    [classes.expanded]: isExpanded,
+                })}
             >
                 <LayoutComponent />
             </div>
