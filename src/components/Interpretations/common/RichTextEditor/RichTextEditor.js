@@ -14,7 +14,7 @@ import {
 } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React, { forwardRef, useRef, useEffect, useState } from 'react'
-import { UserMentionWrapper } from '../UserMention/UserMentionWrapper'
+import { UserMentionWrapper } from '../UserMention/UserMentionWrapper.js'
 import {
     convertCtrlKey,
     insertMarkdown,
@@ -23,6 +23,10 @@ import {
     EMOJI_SAD_FACE,
     EMOJI_THUMBS_UP,
     EMOJI_THUMBS_DOWN,
+    BOLD,
+    ITALIC,
+    LINK,
+    MENTION,
 } from './markdownHandler.js'
 import {
     mainClasses,
@@ -83,7 +87,7 @@ const Toolbar = ({
                                 small
                                 disabled={disabled}
                                 icon={<IconTextBold24 color={iconColor} />}
-                                onClick={() => onInsertMarkdown('bold')}
+                                onClick={() => onInsertMarkdown(BOLD)}
                             />
                         </Tooltip>
                         <Tooltip
@@ -96,7 +100,7 @@ const Toolbar = ({
                                 small
                                 disabled={disabled}
                                 icon={<IconTextItalic24 color={iconColor} />}
-                                onClick={() => onInsertMarkdown('italic')}
+                                onClick={() => onInsertMarkdown(ITALIC)}
                             />
                         </Tooltip>
                         <Tooltip
@@ -109,7 +113,7 @@ const Toolbar = ({
                                 small
                                 disabled={disabled}
                                 icon={<IconLink24 color={iconColor} />}
-                                onClick={() => onInsertMarkdown('link')}
+                                onClick={() => onInsertMarkdown(LINK)}
                             />
                         </Tooltip>
                         <Tooltip
@@ -122,7 +126,7 @@ const Toolbar = ({
                                 small
                                 disabled={disabled}
                                 icon={<IconAt24 color={iconColor} />}
-                                onClick={() => onInsertMarkdown('mention')}
+                                onClick={() => onInsertMarkdown(MENTION)}
                             />
                         </Tooltip>
                         <Tooltip
