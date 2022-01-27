@@ -15,12 +15,12 @@ import {
     resolvedHeaderStyle,
     userMentionWrapperClasses,
 } from './styles/UserMentionWrapper.style.js'
-import { UserList } from './UserList'
-import { useUserSearchResults } from './useUserSearchResults'
+import { UserList } from './UserList.js'
+import { useUserSearchResults } from './useUserSearchResults.js'
 
 const AT_SYMBOL_WIDTH = 14
 
-const getVirtualPopperReference = ref => {
+const getVirtualPopperReference = (ref) => {
     const rects = ref.current.getClientRects()
     const lastRect = rects[rects.length - 1]
     const left = lastRect.left + lastRect.width - AT_SYMBOL_WIDTH
@@ -132,7 +132,7 @@ export const UserMentionWrapper = ({
         }
     }
 
-    const onSelect = user => {
+    const onSelect = (user) => {
         const originalValue = inputReference.current.value
         const newValue = `${originalValue.slice(
             0,
@@ -159,7 +159,7 @@ export const UserMentionWrapper = ({
         )
     }
 
-    const onClick = user => () => onSelect(user)
+    const onClick = (user) => () => onSelect(user)
 
     return (
         <div onKeyDown={onKeyDown} onInput={onInput} className="wrapper">
