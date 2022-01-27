@@ -6,7 +6,7 @@ import React from 'react'
 export const UserList = ({ users, selectedUserIndex, onUserClick, pager }) => {
     return (
         <>
-            {users.map(u => (
+            {users.map((u) => (
                 <MenuItem
                     dense
                     key={u.id}
