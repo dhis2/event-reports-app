@@ -218,6 +218,15 @@ export const RichTextEditor = forwardRef(
                                 textareaRef.current.selectionEnd = caretPos
                             }
                         )
+
+                        if (markdown === MENTION) {
+                            textareaRef.current.dispatchEvent(
+                                new KeyboardEvent('keydown', {
+                                    key: '@',
+                                    bubbles: true,
+                                })
+                            )
+                        }
                     }}
                     onTogglePreview={() => setPreviewMode(!previewMode)}
                     previewMode={previewMode}
