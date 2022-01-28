@@ -55,7 +55,7 @@ const TimeDimensions = ({ selectedInputType }) => {
                 dimensionIds.push(TIME_DIMENSION_INCIDENT_DATE)
         }
 
-        if (withRegistration || (isEvent && !withRegistration)) {
+        if (isEvent || withRegistration) {
             dimensionIds.push(TIME_DIMENSION_LAST_UPDATED)
         }
 
