@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2022-01-27T14:44:57.373Z\n"
-"PO-Revision-Date: 2022-01-27T14:44:57.373Z\n"
+"POT-Creation-Date: 2022-01-28T12:03:37.078Z\n"
+"PO-Revision-Date: 2022-01-28T12:03:37.078Z\n"
 
 msgid "Add to {{axisName}}"
 msgstr "Add to {{axisName}}"
@@ -606,6 +606,21 @@ msgstr "Limit minimum/maximum values"
 
 msgid "Style"
 msgstr "Style"
+
+msgid "Date of registration"
+msgstr "Date of registration"
+
+msgid "Tracking date"
+msgstr "Tracking date"
+
+msgid "Test date"
+msgstr "Test date"
+
+msgid "Due/Scheduled date"
+msgstr "Due/Scheduled date"
+
+msgid "Last updated on"
+msgstr "Last updated on"
 
 msgid "Line list"
 msgstr "Line list"
