@@ -62,7 +62,13 @@ const MainSidebar = () => {
                     selected={open && selectedTabId === TAB_YOUR}
                     count={5}
                 />
-                <TimeDimensions selectedInputType={selectedInputType} />
+
+                <div className={styles.dimensionSection}>
+                    <div className={styles.dimensionSectionHeader}>
+                        {i18n.t('Time dimensions')}
+                    </div>
+                    <TimeDimensions selectedInputType={selectedInputType} />
+                </div>
             </div>
             <div
                 className={cx(styles.accessory, {
