@@ -10,17 +10,11 @@ import {
     TIME_DIMENSION_LAST_UPDATED,
     timeDimensions,
 } from '../../modules/timeDimensions.js'
-import {
-    OUTPUT_TYPE_EVENT,
-    OUTPUT_TYPE_ENROLLMENT,
-} from '../../modules/visualization.js'
+import { OUTPUT_TYPE_EVENT } from '../../modules/visualization.js'
 import { sGetMetadataById } from '../../reducers/metadata.js'
 import { sGetUiProgramId, sGetUiProgramStage } from '../../reducers/ui.js'
 import { DimensionsList } from './DimensionsList/index.js'
-import {
-    PROGRAM_TYPE_WITHOUT_REGISTRATION,
-    PROGRAM_TYPE_WITH_REGISTRATION,
-} from './ProgramDimensionsPanel/ProgramDimensionsPanel.js'
+import { PROGRAM_TYPE_WITH_REGISTRATION } from './ProgramDimensionsPanel/ProgramDimensionsPanel.js'
 
 const TimeDimensions = ({ selectedInputType }) => {
     const programId = useSelector(sGetUiProgramId)
@@ -31,59 +25,43 @@ const TimeDimensions = ({ selectedInputType }) => {
     if (selectedInputType && program && stageId) {
         const stages = program.programStages || [{}]
         const stage = stages.find(({ id }) => stageId === id)
+        const isEvent = selectedInputType === OUTPUT_TYPE_EVENT
+        const withRegistration =
+            program.programType === PROGRAM_TYPE_WITH_REGISTRATION
 
         const getName = (t) => {
             const name =
-                t.programOrStage === 'program'
+                t.nameParentProperty === 'program'
                     ? program[t.nameProperty]
                     : stage[t.nameProperty]
             return name || t.defaultName
         }
 
-        const programType = program.programType
+        const dimensionIds = []
+        if (isEvent) {
+            dimensionIds.push(TIME_DIMENSION_EVENT_DATE)
+        }
 
-        let dimensionIds = []
-        if (
-            selectedInputType === OUTPUT_TYPE_EVENT &&
-            programType === PROGRAM_TYPE_WITHOUT_REGISTRATION
-        ) {
-            dimensionIds = [
-                TIME_DIMENSION_EVENT_DATE,
-                TIME_DIMENSION_LAST_UPDATED,
-            ]
-        } else if (
-            selectedInputType === OUTPUT_TYPE_EVENT &&
-            programType === PROGRAM_TYPE_WITH_REGISTRATION
-        ) {
-            dimensionIds = [
-                TIME_DIMENSION_EVENT_DATE,
-                TIME_DIMENSION_ENROLLMENT_DATE,
-            ]
-            if (!stage.hideDueDate) {
+        if (withRegistration) {
+            dimensionIds.push(TIME_DIMENSION_ENROLLMENT_DATE)
+
+            isEvent &&
+                !stage.hideDueDate &&
                 dimensionIds.push(TIME_DIMENSION_SCHEDULED_DATE)
-            }
-            if (program.displayIncidentDate) {
+
+            program.displayIncidentDate &&
                 dimensionIds.push(TIME_DIMENSION_INCIDENT_DATE)
-            }
-            dimensionIds.push(TIME_DIMENSION_LAST_UPDATED)
-        } else if (
-            selectedInputType === OUTPUT_TYPE_ENROLLMENT &&
-            programType === PROGRAM_TYPE_WITH_REGISTRATION
-        ) {
-            dimensionIds = [TIME_DIMENSION_ENROLLMENT_DATE]
-            if (program.displayIncidentDate) {
-                dimensionIds.push(TIME_DIMENSION_INCIDENT_DATE)
-            }
+        }
+
+        if (withRegistration || (isEvent && !withRegistration)) {
             dimensionIds.push(TIME_DIMENSION_LAST_UPDATED)
         }
 
-        dimensions = dimensionIds.map((d) => {
-            return {
-                id: d,
-                dimensionType: DIMENSION_ID_PERIOD,
-                name: getName(timeDimensions[d]),
-            }
-        })
+        dimensions = dimensionIds.map((dimensionId) => ({
+            id: dimensionId,
+            dimensionType: DIMENSION_ID_PERIOD,
+            name: getName(timeDimensions[dimensionId]),
+        }))
     }
 
     return (

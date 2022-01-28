@@ -11,21 +11,21 @@ export const timeDimensions = {
         id: TIME_DIMENSION_EVENT_DATE,
         dimensionType: DIMENSION_ID_PERIOD,
         defaultName: 'Date of registration',
-        programOrStage: 'stage',
+        nameParentProperty: 'stage',
         nameProperty: 'displayExecutionDateLabel',
     },
     [TIME_DIMENSION_ENROLLMENT_DATE]: {
         id: TIME_DIMENSION_ENROLLMENT_DATE,
         dimensionType: DIMENSION_ID_PERIOD,
         defaultName: 'Tracking date',
-        programOrStage: 'program',
+        nameParentProperty: 'program',
         nameProperty: 'displayEnrollmentDateLabel',
     },
     [TIME_DIMENSION_INCIDENT_DATE]: {
         id: TIME_DIMENSION_INCIDENT_DATE,
         dimensionType: DIMENSION_ID_PERIOD,
         defaultName: 'Test date',
-        programOrStage: 'program',
+        nameParentProperty: 'program',
         nameProperty: 'displayIncidentDateLabel',
         // condition: 'displayIncidentDate'
     },
@@ -33,7 +33,7 @@ export const timeDimensions = {
         id: TIME_DIMENSION_SCHEDULED_DATE,
         dimensionType: DIMENSION_ID_PERIOD,
         defaultName: 'Due/Scheduled date',
-        programOrStage: 'stage',
+        nameParentProperty: 'stage',
         nameProperty: 'displayDueDateLabel',
         // condition: 'hideDueDate'
     },
