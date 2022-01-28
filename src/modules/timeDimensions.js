@@ -27,7 +27,6 @@ export const timeDimensions = {
         defaultName: 'Test date',
         nameParentProperty: 'program',
         nameProperty: 'displayIncidentDateLabel',
-        // condition: 'displayIncidentDate'
     },
     [TIME_DIMENSION_SCHEDULED_DATE]: {
         id: TIME_DIMENSION_SCHEDULED_DATE,
@@ -35,7 +34,6 @@ export const timeDimensions = {
         defaultName: 'Due/Scheduled date',
         nameParentProperty: 'stage',
         nameProperty: 'displayDueDateLabel',
-        // condition: 'hideDueDate'
     },
     [TIME_DIMENSION_LAST_UPDATED]: {
         id: TIME_DIMENSION_LAST_UPDATED,
