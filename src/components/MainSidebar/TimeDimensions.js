@@ -8,7 +8,8 @@ import {
     TIME_DIMENSION_INCIDENT_DATE,
     TIME_DIMENSION_SCHEDULED_DATE,
     TIME_DIMENSION_LAST_UPDATED,
-    timeDimensions,
+    getTimeDimensions,
+    NAME_PARENT_PROPERTY_PROGRAM,
 } from '../../modules/timeDimensions.js'
 import { OUTPUT_TYPE_EVENT } from '../../modules/visualization.js'
 import { sGetMetadataById } from '../../reducers/metadata.js'
@@ -23,6 +24,7 @@ const TimeDimensions = ({ selectedInputType }) => {
 
     let dimensions = []
     if (selectedInputType && program && stageId) {
+        const timeDimensions = getTimeDimensions()
         const stages = program.programStages || [{}]
         const stage = stages.find(({ id }) => stageId === id)
         const isEvent = selectedInputType === OUTPUT_TYPE_EVENT
@@ -31,7 +33,7 @@ const TimeDimensions = ({ selectedInputType }) => {
 
         const getName = (t) => {
             const name =
-                t.nameParentProperty === 'program'
+                t.nameParentProperty === NAME_PARENT_PROPERTY_PROGRAM
                     ? program[t.nameProperty]
                     : stage[t.nameProperty]
             return name || t.defaultName
