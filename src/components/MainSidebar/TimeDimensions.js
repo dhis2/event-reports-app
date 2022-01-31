@@ -14,63 +14,82 @@ import {
 import { OUTPUT_TYPE_EVENT } from '../../modules/visualization.js'
 import { sGetMetadataById } from '../../reducers/metadata.js'
 import { sGetUiProgramId, sGetUiProgramStage } from '../../reducers/ui.js'
-import { DimensionsList } from './DimensionsList/index.js'
+import { DimensionListItem } from './DimensionsList/DimensionListItem.js'
 import { PROGRAM_TYPE_WITH_REGISTRATION } from './ProgramDimensionsPanel/ProgramDimensionsPanel.js'
+import styles from './TimeDimensions.module.css'
+
+const getName = (dimension, program, stage) => {
+    const name =
+        dimension.nameParentProperty === NAME_PARENT_PROPERTY_PROGRAM
+            ? program[dimension.nameProperty]
+            : stage[dimension.nameProperty]
+    return name || dimension.defaultName
+}
 
 const TimeDimensions = ({ selectedInputType }) => {
     const programId = useSelector(sGetUiProgramId)
     const stageId = useSelector(sGetUiProgramStage)
-    const program = useSelector((state) => sGetMetadataById(state, programId))
+    const program =
+        useSelector((state) => sGetMetadataById(state, programId)) || {}
+    const timeDimensions = getTimeDimensions()
 
-    let dimensions = []
-    if (selectedInputType && program && stageId) {
-        const timeDimensions = getTimeDimensions()
+    const dimensionIds = [
+        TIME_DIMENSION_EVENT_DATE,
+        TIME_DIMENSION_ENROLLMENT_DATE,
+        TIME_DIMENSION_SCHEDULED_DATE,
+        TIME_DIMENSION_INCIDENT_DATE,
+        TIME_DIMENSION_LAST_UPDATED,
+    ]
+    const enabledDimensionIds = []
+    let stage = {}
+    if (selectedInputType && stageId) {
         const stages = program.programStages || [{}]
-        const stage = stages.find(({ id }) => stageId === id)
+        stage = stages.find(({ id }) => stageId === id)
         const isEvent = selectedInputType === OUTPUT_TYPE_EVENT
         const withRegistration =
             program.programType === PROGRAM_TYPE_WITH_REGISTRATION
 
-        const getName = (t) => {
-            const name =
-                t.nameParentProperty === NAME_PARENT_PROPERTY_PROGRAM
-                    ? program[t.nameProperty]
-                    : stage[t.nameProperty]
-            return name || t.defaultName
-        }
-
-        const dimensionIds = []
         if (isEvent) {
-            dimensionIds.push(TIME_DIMENSION_EVENT_DATE)
+            enabledDimensionIds.push(TIME_DIMENSION_EVENT_DATE)
         }
 
         if (withRegistration) {
-            dimensionIds.push(TIME_DIMENSION_ENROLLMENT_DATE)
+            enabledDimensionIds.push(TIME_DIMENSION_ENROLLMENT_DATE)
 
             isEvent &&
                 !stage.hideDueDate &&
-                dimensionIds.push(TIME_DIMENSION_SCHEDULED_DATE)
+                enabledDimensionIds.push(TIME_DIMENSION_SCHEDULED_DATE)
 
             program.displayIncidentDate &&
-                dimensionIds.push(TIME_DIMENSION_INCIDENT_DATE)
+                enabledDimensionIds.push(TIME_DIMENSION_INCIDENT_DATE)
         }
 
         if (isEvent || withRegistration) {
-            dimensionIds.push(TIME_DIMENSION_LAST_UPDATED)
+            enabledDimensionIds.push(TIME_DIMENSION_LAST_UPDATED)
         }
-
-        dimensions = dimensionIds.map((dimensionId) => ({
-            id: dimensionId,
-            dimensionType: DIMENSION_ID_PERIOD,
-            name: getName(timeDimensions[dimensionId]),
-        }))
     }
 
+    const dimensions = dimensionIds.map((dimensionId) => ({
+        id: dimensionId,
+        dimensionType: DIMENSION_ID_PERIOD,
+        name: getName(timeDimensions[dimensionId], program, stage),
+        isDisabled: !enabledDimensionIds.includes(dimensionId),
+    }))
+
     return (
-        <DimensionsList
-            setIsListEndVisible={Function.prototype}
-            dimensions={dimensions}
-        />
+        <div className={styles.list}>
+            {dimensions.map((dimension) => (
+                <DimensionListItem
+                    key={dimension.id}
+                    dimensionType={dimension.dimensionType}
+                    name={dimension.name}
+                    id={dimension.id}
+                    isDisabled={dimension.isDisabled}
+                    optionSet={dimension.optionSet}
+                    valueType={dimension.valueType}
+                />
+            ))}
+        </div>
     )
 }
 

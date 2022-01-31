@@ -50,6 +50,7 @@ const DimensionListItem = ({
     dimensionType,
     name,
     id,
+    isDisabled,
     optionSet,
     valueType,
 }) => {
@@ -64,7 +65,6 @@ const DimensionListItem = ({
 
     // TODO: populate with proper values
     const picked = false
-    const disabled = false
     const recommended = false
     const dragOnly = false
     const locked = false
@@ -73,7 +73,7 @@ const DimensionListItem = ({
         <div
             className={cx(styles.dimensionItem, {
                 [styles.picked]: picked,
-                [styles.disabled]: disabled,
+                [styles.disabled]: isDisabled,
                 [styles.recommended]: recommended,
                 [styles.dragOnly]: dragOnly,
             })}
@@ -99,6 +99,7 @@ DimensionListItem.propTypes = {
     dimensionType: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
+    isDisabled: PropTypes.bool,
     optionSet: PropTypes.string,
     valueType: PropTypes.string,
 }
