@@ -13,7 +13,11 @@ import {
 } from '../../modules/timeDimensions.js'
 import { OUTPUT_TYPE_EVENT } from '../../modules/visualization.js'
 import { sGetMetadataById } from '../../reducers/metadata.js'
-import { sGetUiProgramId, sGetUiProgramStage } from '../../reducers/ui.js'
+import {
+    sGetUiInputType,
+    sGetUiProgramId,
+    sGetUiProgramStage,
+} from '../../reducers/ui.js'
 import { DimensionListItem } from './DimensionsList/DimensionListItem.js'
 import { PROGRAM_TYPE_WITH_REGISTRATION } from './ProgramDimensionsPanel/ProgramDimensionsPanel.js'
 import styles from './TimeDimensions.module.css'
@@ -26,7 +30,8 @@ const getName = (dimension, program, stage) => {
     return name || dimension.defaultName
 }
 
-const TimeDimensions = ({ selectedInputType }) => {
+const TimeDimensions = () => {
+    const selectedInputType = useSelector(sGetUiInputType)
     const programId = useSelector(sGetUiProgramId)
     const stageId = useSelector(sGetUiProgramStage)
     const program =

@@ -67,7 +67,7 @@ const MainSidebar = () => {
                     <div className={styles.dimensionSectionHeader}>
                         {i18n.t('Time dimensions')}
                     </div>
-                    <TimeDimensions selectedInputType={selectedInputType} />
+                    <TimeDimensions />
                 </div>
             </div>
             <div
