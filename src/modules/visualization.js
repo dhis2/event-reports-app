@@ -5,9 +5,10 @@ import { DEFAULT_CURRENT } from '../reducers/current.js'
 import { DEFAULT_VISUALIZATION } from '../reducers/visualization.js'
 import { default as options } from './options.js'
 
-export const DIMENSION_TYPE_DE = 'DATA_ELEMENT'
-export const DIMENSION_TYPE_PA = 'PROGRAM_ATTRIBUTE'
-export const DIMENSION_TYPE_PI = 'PROGRAM_INDICATOR'
+export const DIMENSION_TYPE_ALL = 'ALL'
+export const DIMENSION_TYPE_DATA_ELEMENT = 'DATA_ELEMENT'
+export const DIMENSION_TYPE_PROGRAM_ATTRIBUTE = 'PROGRAM_ATTRIBUTE'
+export const DIMENSION_TYPE_PROGRAM_INDICATOR = 'PROGRAM_INDICATOR'
 
 export const VIS_TYPE_PIVOT_TABLE = 'PIVOT_TABLE'
 export const VIS_TYPE_LINE_LIST = 'LINE_LIST'
@@ -47,7 +48,7 @@ export const outputTypeMap = {
 export const transformProgramDataElement = (visualization) => {
     const replaceProgramDataElement = (dimension) =>
         dimension.dimensionType === 'PROGRAM_DATA_ELEMENT'
-            ? { ...dimension, dimensionType: DIMENSION_TYPE_DE }
+            ? { ...dimension, dimensionType: DIMENSION_TYPE_DATA_ELEMENT }
             : dimension
 
     return {
