@@ -24,12 +24,15 @@ test('input type EVENT, WITHOUT_REGISTRATION no custom labels', () => {
                 id: 'theProgramId',
                 stage: 'theOnlyStage',
             },
+            input: {
+                type: 'EVENT',
+            },
         },
     }
 
     const { container } = render(
         <Provider store={mockStore(store)}>
-            <TimeDimensions selectedInputType="EVENT" />
+            <TimeDimensions />
         </Provider>
     )
     expect(container).toMatchSnapshot()
@@ -54,12 +57,15 @@ test('input type EVENT, WITHOUT_REGISTRATION with custom labels', () => {
                 id: 'theProgramId',
                 stage: 'theOnlyStage',
             },
+            input: {
+                type: 'EVENT',
+            },
         },
     }
 
     const { container } = render(
         <Provider store={mockStore(store)}>
-            <TimeDimensions selectedInputType="EVENT" />
+            <TimeDimensions />
         </Provider>
     )
     expect(container).toMatchSnapshot()
@@ -90,12 +96,15 @@ test('input type EVENT, WITH_REGISTRATION', () => {
                 id: 'theProgramId',
                 stage: 'stage1',
             },
+            input: {
+                type: 'EVENT',
+            },
         },
     }
 
     const { container } = render(
         <Provider store={mockStore(store)}>
-            <TimeDimensions selectedInputType="EVENT" />
+            <TimeDimensions />
         </Provider>
     )
     expect(container).toMatchSnapshot()
@@ -130,12 +139,15 @@ test('input type EVENT, WITH_REGISTRATION, custom labels', () => {
                 id: 'theProgramId',
                 stage: 'stage1',
             },
+            input: {
+                type: 'EVENT',
+            },
         },
     }
 
     const { container } = render(
         <Provider store={mockStore(store)}>
-            <TimeDimensions selectedInputType="EVENT" />
+            <TimeDimensions />
         </Provider>
     )
     expect(container).toMatchSnapshot()
@@ -170,12 +182,15 @@ test('input type EVENT, WITH_REGISTRATION, custom labels, hide due date', () => 
                 id: 'theProgramId',
                 stage: 'stage2',
             },
+            input: {
+                type: 'EVENT',
+            },
         },
     }
 
     const { container } = render(
         <Provider store={mockStore(store)}>
-            <TimeDimensions selectedInputType="EVENT" />
+            <TimeDimensions />
         </Provider>
     )
     expect(container).toMatchSnapshot()
@@ -210,12 +225,15 @@ test('input type EVENT, WITH_REGISTRATION, custom labels, hide incident date', (
                 id: 'theProgramId',
                 stage: 'stage1',
             },
+            input: {
+                type: 'EVENT',
+            },
         },
     }
 
     const { container } = render(
         <Provider store={mockStore(store)}>
-            <TimeDimensions selectedInputType="EVENT" />
+            <TimeDimensions />
         </Provider>
     )
     expect(container).toMatchSnapshot()
@@ -250,12 +268,15 @@ test('input type ENROLLMENT, WITH_REGISTRATION, custom labels, hide incident dat
                 id: 'theProgramId',
                 stage: 'stage1',
             },
+            input: {
+                type: 'ENROLLMENT',
+            },
         },
     }
 
     const { container } = render(
         <Provider store={mockStore(store)}>
-            <TimeDimensions selectedInputType="ENROLLMENT" />
+            <TimeDimensions />
         </Provider>
     )
     expect(container).toMatchSnapshot()
@@ -290,12 +311,15 @@ test('input type ENROLLMENT, WITH_REGISTRATION, custom labels', () => {
                 id: 'theProgramId',
                 stage: 'stage1',
             },
+            input: {
+                type: 'ENROLLMENT',
+            },
         },
     }
 
     const { container } = render(
         <Provider store={mockStore(store)}>
-            <TimeDimensions selectedInputType="ENROLLMENT" />
+            <TimeDimensions />
         </Provider>
     )
     expect(container).toMatchSnapshot()
@@ -323,12 +347,15 @@ test('input type ENROLLMENT, WITHOUT_REGISTRATION', () => {
                 id: 'theProgramId',
                 stage: 'stage1',
             },
+            input: {
+                type: 'ENROLLMENT',
+            },
         },
     }
 
     const { container } = render(
         <Provider store={mockStore(store)}>
-            <TimeDimensions selectedInputType="ENROLLMENT" />
+            <TimeDimensions />
         </Provider>
     )
     expect(container).toMatchSnapshot()
@@ -362,12 +389,15 @@ test('stage missing', () => {
             program: {
                 id: 'theProgramId',
             },
+            input: {
+                type: 'EVENT',
+            },
         },
     }
 
     const { container } = render(
         <Provider store={mockStore(store)}>
-            <TimeDimensions selectedInputType="EVENT" />
+            <TimeDimensions />
         </Provider>
     )
     expect(container).toMatchSnapshot()
