@@ -1,8 +1,13 @@
+import { AXIS_ID_COLUMNS, AXIS_ID_FILTERS } from '@dhis2/analytics'
 import i18n from '@dhis2/d2-i18n'
 import PivotTableIcon from '../assets/PivotTableIcon.js'
 import { DEFAULT_CURRENT } from '../reducers/current.js'
 import { DEFAULT_VISUALIZATION } from '../reducers/visualization.js'
 import { default as options } from './options.js'
+
+export const DIMENSION_TYPE_DE = 'DATA_ELEMENT'
+export const DIMENSION_TYPE_PA = 'PROGRAM_ATTRIBUTE'
+export const DIMENSION_TYPE_PI = 'PROGRAM_INDICATOR'
 
 export const VIS_TYPE_PIVOT_TABLE = 'PIVOT_TABLE'
 export const VIS_TYPE_LINE_LIST = 'LINE_LIST'
@@ -38,6 +43,26 @@ export const outputTypeMap = {
         description: i18n.t('Programs track enrollments across time'),
     },
 }
+
+export const transformProgramDataElement = (visualization) => {
+    const replaceProgramDataElement = (dimension) =>
+        dimension.dimensionType === 'PROGRAM_DATA_ELEMENT'
+            ? { ...dimension, dimensionType: DIMENSION_TYPE_DE }
+            : dimension
+
+    return {
+        ...visualization,
+        [AXIS_ID_COLUMNS]: visualization[AXIS_ID_COLUMNS].map(
+            replaceProgramDataElement
+        ),
+        [AXIS_ID_FILTERS]: visualization[AXIS_ID_FILTERS].map(
+            replaceProgramDataElement
+        ),
+    }
+}
+
+export const transformVisualization = (visualization) =>
+    transformProgramDataElement(visualization)
 
 export const getVisualizationFromCurrent = (current) => {
     const visualization = Object.assign({}, current)

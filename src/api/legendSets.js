@@ -1,6 +1,8 @@
-const TYPE_PA = 'PROGRAM_ATTRIBUTE'
-const TYPE_DE = 'PROGRAM_DATA_ELEMENT'
-const TYPE_PI = 'PROGRAM_INDICATOR'
+import {
+    DIMENSION_TYPE_DE,
+    DIMENSION_TYPE_PA,
+    DIMENSION_TYPE_PI,
+} from '../modules/visualization.js'
 
 const dataElementsQuery = {
     resource: 'dataElements',
@@ -60,13 +62,13 @@ export const apiFetchLegendSetsByDimension = async ({
 }) => {
     let query
     switch (dimensionType) {
-        case TYPE_DE:
+        case DIMENSION_TYPE_DE:
             query = dataElementsQuery
             break
-        case TYPE_PA:
+        case DIMENSION_TYPE_PA:
             query = trackedEntityAttributesQuery
             break
-        case TYPE_PI:
+        case DIMENSION_TYPE_PI:
             query = programIndicatorsQuery
             break
         default:
