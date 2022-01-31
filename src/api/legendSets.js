@@ -33,7 +33,7 @@ const legendSetsQuery = {
         fields: [
             'id',
             'displayName~rename(name)',
-            'legends[id,displayName~rename(name),startValue,endValue,color]',
+            'legends[id,displayName~rename(name),startValue,endValue]',
         ],
         paging: 'false',
     },
@@ -69,6 +69,8 @@ export const apiFetchLegendSetsByDimension = async ({
         case TYPE_PI:
             query = programIndicatorsQuery
             break
+        default:
+            throw new Error(`${dimensionType} is not a valid dimension type`)
     }
     const response = await dataEngine.query(
         { legendSets: query },

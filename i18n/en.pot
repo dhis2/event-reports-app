@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2022-01-24T11:09:31.062Z\n"
-"PO-Revision-Date: 2022-01-24T11:09:31.062Z\n"
+"POT-Creation-Date: 2022-01-28T14:22:26.535Z\n"
+"PO-Revision-Date: 2022-01-28T14:22:26.535Z\n"
 
 msgid "Add to {{axisName}}"
 msgstr "Add to {{axisName}}"
@@ -102,8 +102,14 @@ msgstr "not equal to (≠)"
 msgid "is one of preset options"
 msgstr "is one of preset options"
 
+msgid "Loading..."
+msgstr "Loading..."
+
 msgid "Choose a set of options"
 msgstr "Choose a set of options"
+
+msgid "Choose options"
+msgstr "Choose options"
 
 msgid "Available options"
 msgstr "Available options"
@@ -238,6 +244,18 @@ msgstr "Preview"
 msgid "Back to write mode"
 msgstr "Back to write mode"
 
+msgid "Too many results. Try refining the search."
+msgstr "Too many results. Try refining the search."
+
+msgid "Search for a user"
+msgstr "Search for a user"
+
+msgid "Searching for \"{{searchText}}\""
+msgstr "Searching for \"{{searchText}}\""
+
+msgid "No results found"
+msgstr "No results found"
+
 msgid "None selected"
 msgstr "None selected"
 
@@ -261,6 +279,25 @@ msgstr "And 1 other..."
 
 msgid "And {{numberOfItems}} others..."
 msgstr "And {{numberOfItems}} others..."
+
+msgid "No dimensions found for '{{searchTerm}}'"
+msgstr "No dimensions found for '{{searchTerm}}'"
+
+msgid "No dimensions found in the {{programName}} program"
+msgstr "No dimensions found in the {{programName}} program"
+
+msgid "No dimensions found"
+msgstr "No dimensions found"
+
+msgid "Couldn't load dimensions"
+msgstr "Couldn't load dimensions"
+
+msgid ""
+"There was a problem loading the dimensions. Try again, or contact your "
+"system administrator."
+msgstr ""
+"There was a problem loading the dimensions. Try again, or contact your "
+"system administrator."
 
 msgid "Event"
 msgstr "Event"
@@ -301,22 +338,6 @@ msgstr "Program attribute"
 msgid "Program indicator"
 msgstr "Program indicator"
 
-msgid "Couldn't load dimensions"
-msgstr "Couldn't load dimensions"
-
-msgid ""
-"There was a problem loading dimensions. Try again, or contact your system "
-"administrator."
-msgstr ""
-"There was a problem loading dimensions. Try again, or contact your system "
-"administrator."
-
-msgid "No dimensions found for '{{searchTerm}}'"
-msgstr "No dimensions found for '{{searchTerm}}'"
-
-msgid "No dimensions found in the {{programName}} program"
-msgstr "No dimensions found in the {{programName}} program"
-
 msgid "Could not load programs"
 msgstr "Could not load programs"
 
@@ -344,6 +365,9 @@ msgstr "Clear"
 
 msgid "Stage"
 msgstr "Stage"
+
+msgid "Search your dimensions"
+msgstr "Search your dimensions"
 
 msgid "Unsaved visualization"
 msgstr "Unsaved visualization"

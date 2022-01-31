@@ -80,11 +80,14 @@ const OptionSetCondition = ({
     const setValues = (selected) => {
         addMetadata(
             state.options
-                .filter((item) => selected.includes(item.code))
-                .map((item) => ({
-                    [item.id]: item,
-                }))
+                .filter(
+                    (item) =>
+                        selected.includes(item.code) &&
+                        !selectedOptions.find((so) => so.code === item.code)
+                )
+                .reduce((acc, item) => ({ ...acc, [item.id]: item }), {})
         )
+
         onChange(`${OPERATOR_IN}:${selected.join(';') || ''}`)
     }
 
@@ -97,7 +100,7 @@ const OptionSetCondition = ({
     const dataEngine = useDataEngine()
     const setSearchTerm = (searchTerm) =>
         setState((state) => ({ ...state, searchTerm }))
-    const debouncedSearchTerm = useDebounce(state.searchTerm, 500)
+    const debouncedSearchTerm = useDebounce(state.searchTerm)
     const fetchItems = async (page) => {
         setState((state) => ({ ...state, loading: true }))
         const result = await apiFetchOptions({

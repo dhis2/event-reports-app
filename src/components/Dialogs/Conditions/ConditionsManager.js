@@ -1,12 +1,10 @@
-import { useDataEngine } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import { Button, IconInfo16, Tooltip } from '@dhis2/ui'
 import PropTypes from 'prop-types'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { tSetCurrentFromUi } from '../../../actions/current.js'
 import { acSetUiConditions } from '../../../actions/ui.js'
-import { apiFetchLegendSetsByDimension } from '../../../api/legendSets.js'
 import {
     OPERATOR_IN,
     parseConditionsArrayToString,
@@ -72,6 +70,29 @@ const SINGLETON_TYPES = [
     VALUE_TYPE_ORGANISATION_UNIT,
 ]
 
+const SUPPORTED_TYPES = [
+    VALUE_TYPE_NUMBER,
+    VALUE_TYPE_UNIT_INTERVAL,
+    VALUE_TYPE_PERCENTAGE,
+    VALUE_TYPE_INTEGER,
+    VALUE_TYPE_INTEGER_POSITIVE,
+    VALUE_TYPE_INTEGER_NEGATIVE,
+    VALUE_TYPE_INTEGER_ZERO_OR_POSITIVE,
+    VALUE_TYPE_TEXT,
+    VALUE_TYPE_LONG_TEXT,
+    VALUE_TYPE_LETTER,
+    VALUE_TYPE_PHONE_NUMBER,
+    VALUE_TYPE_EMAIL,
+    VALUE_TYPE_USERNAME,
+    VALUE_TYPE_URL,
+    VALUE_TYPE_BOOLEAN,
+    VALUE_TYPE_TRUE_ONLY,
+    VALUE_TYPE_DATE,
+    VALUE_TYPE_TIME,
+    VALUE_TYPE_DATETIME,
+    VALUE_TYPE_ORGANISATION_UNIT,
+]
+
 const EMPTY_CONDITION = ''
 
 const ConditionsManager = ({
@@ -89,6 +110,8 @@ const ConditionsManager = ({
         valueType === VALUE_TYPE_TEXT && dimension.optionSet
     const canHaveLegendSets =
         NUMERIC_TYPES.includes(valueType) || isProgramIndicator
+    const isSupported =
+        SUPPORTED_TYPES.includes(valueType) || isProgramIndicator
 
     const getInitConditions = () =>
         conditions.condition?.length
@@ -109,24 +132,6 @@ const ConditionsManager = ({
     const [selectedLegendSet, setSelectedLegendSet] = useState(
         conditions.legendSet
     )
-
-    const [availableLegendSets, setAvailableLegendSets] = useState()
-
-    const dataEngine = useDataEngine()
-
-    useEffect(() => {
-        const fetchLegendSets = async () => {
-            const result = await apiFetchLegendSetsByDimension({
-                dataEngine,
-                dimensionId: dimension.id,
-                dimensionType: dimension.dimensionType,
-            })
-            setAvailableLegendSets(result)
-        }
-        if (canHaveLegendSets) {
-            fetchLegendSets()
-        }
-    }, [])
 
     const addCondition = () =>
         setConditionsList([...conditionsList, EMPTY_CONDITION])
@@ -195,10 +200,6 @@ const ConditionsManager = ({
         }
 
         const renderNumericCondition = () => {
-            if (!availableLegendSets) {
-                return null
-            }
-
             const enableDecimalSteps = valueType === VALUE_TYPE_UNIT_INTERVAL
 
             return (
@@ -217,8 +218,8 @@ const ConditionsManager = ({
                         onLegendSetChange={(value) =>
                             setSelectedLegendSet(value)
                         }
-                        availableLegendSets={availableLegendSets}
                         enableDecimalSteps={enableDecimalSteps}
+                        dimension={dimension}
                     />
                     {getDividerContent(index)}
                 </div>
@@ -348,24 +349,27 @@ const ConditionsManager = ({
             isInLayout={isInLayout}
             onClose={closeModal}
             onUpdate={primaryOnClick}
-            title={dimension.name}
+            title={
+                dimension.name +
+                ` | valueType: ${valueType}, dimensionType: ${dimension.dimensionType}` // FIXME: For testing only
+            }
         >
             <div>
-                {!valueType && !isProgramIndicator ? (
-                    <p className={classes.paragraph}>
-                        {i18n.t(
-                            "This dimension can't be filtered. All values will be shown."
-                        )}
-                    </p>
-                ) : (
+                {isSupported ? (
                     <p className={classes.paragraph}>
                         {i18n.t(
                             'Show items that meet the following conditions for this data item:'
                         )}
                     </p>
+                ) : (
+                    <p className={classes.paragraph}>
+                        {i18n.t(
+                            "This dimension can't be filtered. All values will be shown."
+                        )}
+                    </p>
                 )}
             </div>
-            {(valueType || isProgramIndicator) && (
+            {isSupported && (
                 <div className={classes.mainSection}>
                     {!conditionsList.length &&
                     !selectedLegendSet &&
