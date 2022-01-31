@@ -4,7 +4,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { acSetUiOptions } from '../../../actions/ui.js'
 import { sGetUiOptions } from '../../../reducers/ui.js'
-import { tabSectionOption } from '../styles/VisualizationOptions.style.js'
+import styles from '../styles/VisualizationOptions.module.css'
 
 const CheckboxBaseOption = ({
     option,
@@ -14,7 +14,7 @@ const CheckboxBaseOption = ({
     inverted,
     dataTest,
 }) => (
-    <div className={tabSectionOption.className}>
+    <div className={styles.tabSectionOption}>
         <Checkbox
             checked={inverted ? !value : value}
             label={label}

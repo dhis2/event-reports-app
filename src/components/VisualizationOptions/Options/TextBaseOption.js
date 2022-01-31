@@ -4,7 +4,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { acSetUiOptions } from '../../../actions/ui.js'
 import { sGetUiOptions } from '../../../reducers/ui.js'
-import { tabSectionOption } from '../styles/VisualizationOptions.style.js'
+import styles from '../styles/VisualizationOptions.module.css'
 
 const TextBaseOption = ({
     type,
@@ -17,7 +17,7 @@ const TextBaseOption = ({
     disabled,
     dataTest,
 }) => (
-    <div className={tabSectionOption.className}>
+    <div className={styles.tabSectionOption}>
         <InputField
             type={type}
             label={label}

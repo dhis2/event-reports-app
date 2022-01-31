@@ -44,7 +44,10 @@
         ],
         "setupFilesAfterEnv": [
             "./config/testSetup.js"
-        ]
+        ],
+        "moduleNameMapper": {
+            "\\.css$": "identity-obj-proxy"
+        }
     },
     "resolutions": {
         "@dhis2/prop-types": "^1.6.4"
