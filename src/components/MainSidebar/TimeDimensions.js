@@ -1,5 +1,4 @@
 import { DIMENSION_ID_PERIOD } from '@dhis2/analytics'
-import PropTypes from 'prop-types'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import {
@@ -96,10 +95,6 @@ const TimeDimensions = () => {
             ))}
         </div>
     )
-}
-
-TimeDimensions.propTypes = {
-    selectedInputType: PropTypes.string,
 }
 
 export default TimeDimensions
