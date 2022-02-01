@@ -26,7 +26,7 @@ exports[`input type ENROLLMENT, WITH_REGISTRATION, custom labels 1`] = `
       <div
         class="label"
       >
-        le event date
+        Date of registration
       </div>
       <div
         class="menuTrigger"
@@ -106,7 +106,7 @@ exports[`input type ENROLLMENT, WITH_REGISTRATION, custom labels 1`] = `
       <div
         class="label"
       >
-        le due date
+        Due/Scheduled date
       </div>
       <div
         class="menuTrigger"
@@ -235,7 +235,7 @@ exports[`input type ENROLLMENT, WITH_REGISTRATION, custom labels, hide incident 
       <div
         class="label"
       >
-        le event date
+        Date of registration
       </div>
       <div
         class="menuTrigger"
@@ -315,7 +315,7 @@ exports[`input type ENROLLMENT, WITH_REGISTRATION, custom labels, hide incident 
       <div
         class="label"
       >
-        le due date
+        Due/Scheduled date
       </div>
       <div
         class="menuTrigger"
@@ -862,7 +862,7 @@ exports[`input type EVENT, WITH_REGISTRATION 1`] = `
       <div
         class="label"
       >
-        le event date
+        Date of registration
       </div>
       <div
         class="menuTrigger"
@@ -1071,7 +1071,7 @@ exports[`input type EVENT, WITH_REGISTRATION, custom labels 1`] = `
       <div
         class="label"
       >
-        le event date
+        Date of registration
       </div>
       <div
         class="menuTrigger"
@@ -1151,7 +1151,7 @@ exports[`input type EVENT, WITH_REGISTRATION, custom labels 1`] = `
       <div
         class="label"
       >
-        le due date
+        Due/Scheduled date
       </div>
       <div
         class="menuTrigger"
@@ -1280,7 +1280,7 @@ exports[`input type EVENT, WITH_REGISTRATION, custom labels, hide due date 1`] =
       <div
         class="label"
       >
-        le 2nd event date
+        Date of registration
       </div>
       <div
         class="menuTrigger"
@@ -1340,7 +1340,7 @@ exports[`input type EVENT, WITH_REGISTRATION, custom labels, hide due date 1`] =
       </div>
     </div>
     <div
-      class="dimensionItem disabled"
+      class="dimensionItem"
     >
       <div
         class="icon"
@@ -1360,7 +1360,7 @@ exports[`input type EVENT, WITH_REGISTRATION, custom labels, hide due date 1`] =
       <div
         class="label"
       >
-        le 2nd due date
+        Due/Scheduled date
       </div>
       <div
         class="menuTrigger"
@@ -1489,7 +1489,7 @@ exports[`input type EVENT, WITH_REGISTRATION, custom labels, hide incident date 
       <div
         class="label"
       >
-        le event date
+        Date of registration
       </div>
       <div
         class="menuTrigger"
@@ -1569,7 +1569,7 @@ exports[`input type EVENT, WITH_REGISTRATION, custom labels, hide incident date 
       <div
         class="label"
       >
-        le due date
+        Due/Scheduled date
       </div>
       <div
         class="menuTrigger"
@@ -1907,7 +1907,7 @@ exports[`input type EVENT, WITHOUT_REGISTRATION with custom labels 1`] = `
       <div
         class="label"
       >
-        le event date
+        Date of registration
       </div>
       <div
         class="menuTrigger"
