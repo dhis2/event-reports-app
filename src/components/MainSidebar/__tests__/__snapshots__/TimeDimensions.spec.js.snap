@@ -633,7 +633,7 @@ exports[`input type EVENT and program metadata missing 1`] = `
     class="list"
   >
     <div
-      class="dimensionItem"
+      class="dimensionItem disabled"
     >
       <div
         class="icon"
@@ -793,7 +793,7 @@ exports[`input type EVENT and program metadata missing 1`] = `
       </div>
     </div>
     <div
-      class="dimensionItem"
+      class="dimensionItem disabled"
     >
       <div
         class="icon"

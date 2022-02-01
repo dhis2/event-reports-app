@@ -44,7 +44,7 @@ const TimeDimensions = () => {
     const dimensionIds = Object.keys(timeDimensions)
     const enabledDimensionIds = []
 
-    if (selectedInputType && program && stage) {
+    if (selectedInputType && program.programType && stage.id) {
         const isEvent = selectedInputType === OUTPUT_TYPE_EVENT
         const withRegistration =
             program.programType === PROGRAM_TYPE_WITH_REGISTRATION
