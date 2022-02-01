@@ -9,6 +9,11 @@ import { DEFAULT_CURRENT } from '../reducers/current.js'
 import { DEFAULT_VISUALIZATION } from '../reducers/visualization.js'
 import { default as options } from './options.js'
 
+export const DIMENSION_TYPE_ALL = 'ALL'
+export const DIMENSION_TYPE_DATA_ELEMENT = 'DATA_ELEMENT'
+export const DIMENSION_TYPE_PROGRAM_ATTRIBUTE = 'PROGRAM_ATTRIBUTE'
+export const DIMENSION_TYPE_PROGRAM_INDICATOR = 'PROGRAM_INDICATOR'
+
 export const OUTPUT_TYPE_EVENT = 'EVENT'
 export const OUTPUT_TYPE_ENROLLMENT = 'ENROLLMENT'
 
