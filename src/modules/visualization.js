@@ -7,6 +7,14 @@ import {
     VIS_TYPE_PIVOT_TABLE,
 } from '@dhis2/analytics'
 import i18n from '@dhis2/d2-i18n'
+import PivotTableIcon from '../assets/PivotTableIcon.js'
+import {
+    TIME_DIMENSION_EVENT_DATE,
+    TIME_DIMENSION_ENROLLMENT_DATE,
+    TIME_DIMENSION_INCIDENT_DATE,
+    TIME_DIMENSION_SCHEDULED_DATE,
+    TIME_DIMENSION_LAST_UPDATED,
+} from '../modules/timeDimensions.js'
 import { DEFAULT_CURRENT } from '../reducers/current.js'
 import { DEFAULT_VISUALIZATION } from '../reducers/visualization.js'
 import { DIMENSION_TYPE_DATA_ELEMENT } from './dimensionTypes.js'
@@ -14,12 +22,6 @@ import { default as options } from './options.js'
 
 export const OUTPUT_TYPE_EVENT = 'EVENT'
 export const OUTPUT_TYPE_ENROLLMENT = 'ENROLLMENT'
-
-export const TIME_DIMENSION_EVENT_DATE = 'eventDate'
-export const TIME_DIMENSION_ENROLLMENT_DATE = 'enrollmentDate'
-export const TIME_DIMENSION_INCIDENT_DATE = 'incidentDate'
-export const TIME_DIMENSION_SCHEDULED_DATE = 'scheduledDate'
-export const TIME_DIMENSION_LAST_UPDATED = 'lastUpdated'
 
 export const headersMap = {
     ou: 'ouname',

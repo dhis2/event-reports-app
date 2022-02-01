@@ -3,13 +3,15 @@ import { useDataEngine } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import { useEffect, useState, useRef } from 'react'
 import {
-    OUTPUT_TYPE_ENROLLMENT,
-    OUTPUT_TYPE_EVENT,
     TIME_DIMENSION_EVENT_DATE,
     TIME_DIMENSION_ENROLLMENT_DATE,
     TIME_DIMENSION_INCIDENT_DATE,
     TIME_DIMENSION_SCHEDULED_DATE,
     TIME_DIMENSION_LAST_UPDATED,
+} from '../../modules/timeDimensions.js'
+import {
+    OUTPUT_TYPE_ENROLLMENT,
+    OUTPUT_TYPE_EVENT,
     headersMap,
 } from '../../modules/visualization.js'
 
