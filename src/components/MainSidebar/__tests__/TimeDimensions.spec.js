@@ -361,6 +361,28 @@ test('input type ENROLLMENT, WITHOUT_REGISTRATION', () => {
     expect(container).toMatchSnapshot()
 })
 
+test('input type EVENT and program metadata missing', () => {
+    const store = {
+        metadata: {},
+        ui: {
+            program: {
+                id: 'theProgramId',
+                stage: 'theOnlyStage',
+            },
+            input: {
+                type: 'EVENT',
+            },
+        },
+    }
+
+    const { container } = render(
+        <Provider store={mockStore(store)}>
+            <TimeDimensions />
+        </Provider>
+    )
+    expect(container).toMatchSnapshot()
+})
+
 test('stage missing', () => {
     const store = {
         metadata: {

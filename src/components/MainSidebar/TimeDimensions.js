@@ -48,7 +48,7 @@ const TimeDimensions = () => {
     let stage = {}
     if (selectedInputType && stageId) {
         const stages = program.programStages || [{}]
-        stage = stages.find(({ id }) => stageId === id)
+        stage = stages.find(({ id }) => stageId === id) || {}
         const isEvent = selectedInputType === OUTPUT_TYPE_EVENT
         const withRegistration =
             program.programType === PROGRAM_TYPE_WITH_REGISTRATION
