@@ -22,6 +22,9 @@ import { PROGRAM_TYPE_WITH_REGISTRATION } from './ProgramDimensionsPanel/Program
 import styles from './TimeDimensions.module.css'
 
 const getName = (dimension, program, stage) => {
+    if (!dimension.nameParentProperty) {
+        return dimension.defaultName
+    }
     const name =
         dimension.nameParentProperty === NAME_PARENT_PROPERTY_PROGRAM
             ? program[dimension.nameProperty]
@@ -36,17 +39,12 @@ const TimeDimensions = () => {
     const program =
         useSelector((state) => sGetMetadataById(state, programId)) || {}
     const stage = useSelector((state) => sGetMetadataById(state, stageId)) || {}
-    const timeDimensions = getTimeDimensions()
 
-    const dimensionIds = [
-        TIME_DIMENSION_EVENT_DATE,
-        TIME_DIMENSION_ENROLLMENT_DATE,
-        TIME_DIMENSION_SCHEDULED_DATE,
-        TIME_DIMENSION_INCIDENT_DATE,
-        TIME_DIMENSION_LAST_UPDATED,
-    ]
+    const timeDimensions = getTimeDimensions()
+    const dimensionIds = Object.keys(timeDimensions)
     const enabledDimensionIds = []
-    if (selectedInputType && stageId) {
+
+    if (selectedInputType && program && stage) {
         const isEvent = selectedInputType === OUTPUT_TYPE_EVENT
         const withRegistration =
             program.programType === PROGRAM_TYPE_WITH_REGISTRATION
