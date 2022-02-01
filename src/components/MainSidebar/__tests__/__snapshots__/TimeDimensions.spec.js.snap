@@ -2096,7 +2096,7 @@ exports[`stage missing 1`] = `
     class="list"
   >
     <div
-      class="dimensionItem"
+      class="dimensionItem disabled"
     >
       <div
         class="icon"
@@ -2136,7 +2136,7 @@ exports[`stage missing 1`] = `
       </div>
     </div>
     <div
-      class="dimensionItem"
+      class="dimensionItem disabled"
     >
       <div
         class="icon"
@@ -2216,7 +2216,7 @@ exports[`stage missing 1`] = `
       </div>
     </div>
     <div
-      class="dimensionItem"
+      class="dimensionItem disabled"
     >
       <div
         class="icon"
@@ -2256,7 +2256,7 @@ exports[`stage missing 1`] = `
       </div>
     </div>
     <div
-      class="dimensionItem"
+      class="dimensionItem disabled"
     >
       <div
         class="icon"
