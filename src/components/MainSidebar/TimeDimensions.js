@@ -35,6 +35,7 @@ const TimeDimensions = () => {
     const stageId = useSelector(sGetUiProgramStage)
     const program =
         useSelector((state) => sGetMetadataById(state, programId)) || {}
+    const stage = useSelector((state) => sGetMetadataById(state, stageId)) || {}
     const timeDimensions = getTimeDimensions()
 
     const dimensionIds = [
@@ -45,10 +46,7 @@ const TimeDimensions = () => {
         TIME_DIMENSION_LAST_UPDATED,
     ]
     const enabledDimensionIds = []
-    let stage = {}
     if (selectedInputType && stageId) {
-        const stages = program.programStages || [{}]
-        stage = stages.find(({ id }) => stageId === id) || {}
         const isEvent = selectedInputType === OUTPUT_TYPE_EVENT
         const withRegistration =
             program.programType === PROGRAM_TYPE_WITH_REGISTRATION
