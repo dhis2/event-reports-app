@@ -53,19 +53,18 @@ const ProgramDimensionsPanel = ({ visible }) => {
     const inputType = useSelector(sGetUiInputType)
     const selectedProgramId = useSelector(sGetUiProgramId)
     const selectedStageId = useSelector(sGetUiProgramStageId)
-    const setSelectedProgramId = (programId) => {
-        const program = filteredPrograms.find(({ id }) => id === programId)
-        console.log('program selected', program)
-
+    const setSelectedProgramId = (programId) =>
         dispatch(
             tSetUiProgram({
                 programId,
                 metadata: {
-                    [programId]: program,
+                    [programId]: filteredPrograms.find(
+                        ({ id }) => id === programId
+                    ),
                 },
             })
         )
-    }
+
     const { fetching, error, data, refetch, called } = useDataQuery(query, {
         lazy: true,
     })
