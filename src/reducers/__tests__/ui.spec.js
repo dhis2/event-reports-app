@@ -50,7 +50,7 @@ describe('reducer: store.ui', () => {
         const prevState = {
             program: {
                 id: 'P',
-                stage: 'S',
+                stageId: 'S',
             },
         }
 
@@ -100,8 +100,8 @@ describe('reducer: store.ui', () => {
             value: programStage,
         }
 
-        it('sets the new program stage', () => {
-            expect(reducer({}, programStageAction).program.stage).toBe(
+        it('sets the new program stage id', () => {
+            expect(reducer({}, programStageAction).program.stageId).toBe(
                 programStage
             )
         })
