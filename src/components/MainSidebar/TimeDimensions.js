@@ -84,7 +84,9 @@ const TimeDimensions = () => {
             id: dimensionId,
             dimensionType: DIMENSION_ID_PERIOD,
             name: getName(timeDimensions[dimensionId], program, stage),
-            isDisabled: !enabledDimensionIds.includes(dimensionId),
+            disabled: !enabledDimensionIds.includes(dimensionId),
+            //optionSet
+            //valueType
         }))
 
         setDimensions(dimensionsArr)
@@ -123,21 +125,17 @@ const TimeDimensions = () => {
                                         {...provided.dragHandleProps}
                                     >
                                         <DimensionItem
-                                            dimensionType={
-                                                dimension.dimensionType
-                                            }
-                                            name={dimension.name}
-                                            id={dimension.id}
                                             selected={getIsDimensionSelected(
                                                 dimension.id
                                             )}
-                                            disabled={dimension.isDisabled}
-                                            optionSet={dimension.optionSet}
-                                            valueType={dimension.valueType}
+                                            {...dimension}
                                         />
                                     </div>
                                     {snapshot.isDragging && (
-                                        <div>Placeholder</div>
+                                        <DimensionItem
+                                            ghost={true}
+                                            {...dimension}
+                                        />
                                     )}
                                 </>
                             )}
