@@ -84,6 +84,7 @@ const TimeDimensions = () => {
             id: dimensionId,
             dimensionType: DIMENSION_ID_PERIOD,
             name: getName(timeDimensions[dimensionId], program, stage),
+            selected: getIsDimensionSelected(dimensionId),
             disabled: !enabledDimensionIds.includes(dimensionId),
             //optionSet
             //valueType
@@ -124,12 +125,7 @@ const TimeDimensions = () => {
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
                                     >
-                                        <DimensionItem
-                                            selected={getIsDimensionSelected(
-                                                dimension.id
-                                            )}
-                                            {...dimension}
-                                        />
+                                        <DimensionItem {...dimension} />
                                     </div>
                                     {snapshot.isDragging && (
                                         <DimensionItem
