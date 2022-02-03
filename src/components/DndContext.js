@@ -81,9 +81,9 @@ const mapStateToProps = (state) => ({
     itemsByDimension: sGetUiItems(state),
 })
 
-const mapDispatchToProps = (dispatch) => ({
-    onAddDimensions: (map) => dispatch(acAddUiLayoutDimensions(map)),
-    onReorderDimensions: (layout) => dispatch(acSetUiLayout(layout)),
-})
+const mapDispatchToProps = {
+    onAddDimensions: acAddUiLayoutDimensions,
+    onReorderDimensions: acSetUiLayout,
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(DndContext)

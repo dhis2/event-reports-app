@@ -16,3 +16,17 @@
     font-size: 13px;
     margin-bottom: var(--spacers-dp8);
 }
+
+/*
+This keeps the dimension item clone from causing
+a ripple effect in the Dimension list during drag
+*/
+
+.notDragging {
+    transform: none !important;
+}
+
+.dragging {
+    background-color: #e8edf2;
+    border-radius: 2px;
+}
