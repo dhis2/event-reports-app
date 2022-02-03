@@ -30,7 +30,7 @@ const VisualizationTypeSelector = ({ visualizationType }) => {
                 label={visTypeDisplayNames[type]}
                 description={visTypeDescriptions[type]}
                 isSelected={type === visualizationType}
-                onClick={disabled ? null : handleListItemClick(type)}
+                onClick={!disabled && handleListItemClick(type)}
                 disabled={disabled}
             />
         )
@@ -95,7 +95,7 @@ const VisualizationTypeSelector = ({ visualizationType }) => {
 }
 
 VisualizationTypeSelector.propTypes = {
-    visualizationType: PropTypes.oneOf(Object.keys(visTypeDescriptions)),
+    visualizationType: PropTypes.oneOf(visTypes.map(({ type }) => type)),
 }
 
 const mapStateToProps = (state) => ({
