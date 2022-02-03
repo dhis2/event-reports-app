@@ -7,7 +7,6 @@ import {
     VIS_TYPE_PIVOT_TABLE,
 } from '@dhis2/analytics'
 import i18n from '@dhis2/d2-i18n'
-import PivotTableIcon from '../assets/PivotTableIcon.js'
 import {
     TIME_DIMENSION_EVENT_DATE,
     TIME_DIMENSION_ENROLLMENT_DATE,
@@ -34,22 +33,6 @@ export const headersMap = {
     [TIME_DIMENSION_INCIDENT_DATE]: 'incidentdate',
     [TIME_DIMENSION_SCHEDULED_DATE]: 'scheduleddate',
     [TIME_DIMENSION_LAST_UPDATED]: 'lastupdated',
-}
-
-export const visTypeMap = {
-    [VIS_TYPE_LINE_LIST]: {
-        name: i18n.t('Line list'),
-        description: 'TEXT description for Line list',
-        icon: PivotTableIcon,
-        disabled: false,
-    },
-    [VIS_TYPE_PIVOT_TABLE]: {
-        name: i18n.t('Pivot table'),
-        description: 'TEXT description for Pivot table',
-        icon: PivotTableIcon,
-        disabled: true,
-        disabledText: i18n.t('Pivot tables are not supported by this app yet'),
-    },
 }
 
 export const outputTypeMap = {
