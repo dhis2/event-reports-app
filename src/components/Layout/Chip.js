@@ -1,11 +1,12 @@
 import i18n from '@dhis2/d2-i18n'
 import { Tooltip } from '@dhis2/ui'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
 import DynamicDimensionIcon from '../../assets/DynamicDimensionIcon.js'
-import { setDataTransfer } from '../../modules/dnd.js'
 import { sGetMetadataById } from '../../reducers/metadata.js'
 import styles from './styles/Chip.module.css'
 import { default as TooltipContent } from './TooltipContent.js'
@@ -14,18 +15,23 @@ const Chip = ({
     numberOfConditions,
     dimensionId,
     dimensionName,
-    axisId,
     items,
     onClick,
     contextMenu,
 }) => {
+    const { attributes, listeners, setNodeRef, transform, transition } =
+        useSortable({ id: dimensionId })
+
+    const style = transform
+        ? {
+              transform: CSS.Transform.toString(transform),
+              transition,
+          }
+        : undefined
+
     const id = Math.random().toString(36)
 
     const dataTest = `layout-chip-${dimensionId}`
-
-    const getDragStartHandler = () => (event) => {
-        setDataTransfer(event, axisId)
-    }
 
     const renderChipLabelSuffix = () => {
         let itemsLabel = ''
@@ -62,11 +68,14 @@ const Chip = ({
 
     return (
         <div
+            ref={setNodeRef}
+            style={style}
+            {...listeners}
+            {...attributes}
             className={cx(styles.chipWrapper, {
                 [styles.chipEmpty]: !items.length && !numberOfConditions,
             })}
             data-dimensionid={dimensionId}
-            onDragStart={getDragStartHandler()}
         >
             {
                 <Tooltip content={renderTooltipContent()} placement="bottom">

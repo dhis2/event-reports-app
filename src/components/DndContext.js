@@ -1,12 +1,12 @@
+import { DndContext } from '@dnd-kit/core'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { DragDropContext } from 'react-beautiful-dnd'
 import { connect } from 'react-redux'
 import { acAddUiLayoutDimensions, acSetUiLayout } from '../actions/ui.js'
 import { SOURCE_DIMENSIONS } from '../modules/layout.js'
 import { sGetUiLayout, sGetUiItems } from '../reducers/ui.js'
 
-const DndContext = ({
+const OuterDndContext = ({
     children,
     layout,
     onAddDimensions,
@@ -14,8 +14,8 @@ const DndContext = ({
 }) => {
     const rearrangeLayoutDimensions = ({
         sourceAxisId,
-        sourceIndex,
         destinationAxisId,
+        sourceIndex,
         destinationIndex,
     }) => {
         const sourceList = Array.from(layout[sourceAxisId])
@@ -44,32 +44,40 @@ const DndContext = ({
     }
 
     const onDragEnd = (result) => {
-        const { source, destination, draggableId } = result
+        const { active, over } = result
 
-        if (!destination) {
+        if (!over?.id) {
             return
         }
 
-        if (source.droppableId === SOURCE_DIMENSIONS) {
+        const sourceAxisId = active.data.current.sortable.containerId
+        const sourceIndex = active.data.current.sortable.index
+        const dimensionId = active.id
+        const destinationIndex = over.data.current?.sortable?.index || 0
+        const destinationAxisId = over.data.current
+            ? over.data.current.sortable.containerId
+            : over.id
+
+        if (destinationAxisId === SOURCE_DIMENSIONS) {
             addDimensionToLayout({
-                axisId: destination.droppableId,
-                index: destination.index,
-                dimensionId: draggableId,
+                axisId: destinationAxisId,
+                index: destinationIndex,
+                dimensionId,
             })
         } else {
             rearrangeLayoutDimensions({
-                sourceAxisId: source.droppableId,
-                sourceIndex: source.index,
-                destinationAxisId: destination.droppableId,
-                destinationIndex: destination.index,
+                sourceAxisId,
+                destinationAxisId,
+                sourceIndex,
+                destinationIndex,
             })
         }
     }
 
-    return <DragDropContext onDragEnd={onDragEnd}>{children}</DragDropContext>
+    return <DndContext onDragEnd={onDragEnd}>{children}</DndContext>
 }
 
-DndContext.propTypes = {
+OuterDndContext.propTypes = {
     children: PropTypes.node,
     layout: PropTypes.object,
     onAddDimensions: PropTypes.func,
@@ -86,4 +94,4 @@ const mapDispatchToProps = {
     onReorderDimensions: acSetUiLayout,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DndContext)
+export default connect(mapStateToProps, mapDispatchToProps)(OuterDndContext)

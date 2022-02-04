@@ -1,6 +1,6 @@
 import { DIMENSION_ID_PERIOD } from '@dhis2/analytics'
+import { useDraggable, useDroppable } from '@dnd-kit/core'
 import React, { useState, useEffect } from 'react'
-import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { useSelector, useDispatch } from 'react-redux'
 import { acAddMetadata } from '../../actions/metadata.js'
 import {
@@ -39,6 +39,12 @@ const getName = (dimension, program, stage) => {
 }
 
 const TimeDimensions = () => {
+    const { isOver, setNodeRef } = useDroppable({
+        id: SOURCE_DIMENSIONS,
+    })
+    const style = {
+        color: isOver ? 'green' : undefined,
+    }
     const dispatch = useDispatch()
     const [dimensions, setDimensions] = useState([])
     const { getIsDimensionSelected } = useSelectedDimensions()
@@ -104,43 +110,11 @@ const TimeDimensions = () => {
     }, [selectedInputType, programId, stageId])
 
     return (
-        <Droppable droppableId={SOURCE_DIMENSIONS} isDropDisabled={true}>
-            {(droppableProvided) => (
-                <div
-                    className={styles.list}
-                    ref={droppableProvided.innerRef}
-                    {...droppableProvided.droppableProps}
-                >
-                    {dimensions.map((dimension, i) => (
-                        <Draggable
-                            draggableId={dimension.id}
-                            index={i}
-                            isDragDisabled={false}
-                            key={dimension.id}
-                        >
-                            {(provided, snapshot) => (
-                                <>
-                                    <div
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                    >
-                                        <DimensionItem {...dimension} />
-                                    </div>
-                                    {snapshot.isDragging && (
-                                        <DimensionItem
-                                            ghost={true}
-                                            {...dimension}
-                                        />
-                                    )}
-                                </>
-                            )}
-                        </Draggable>
-                    ))}
-                    {droppableProvided.placeholder}
-                </div>
-            )}
-        </Droppable>
+        <div className={styles.list} ref={setNodeRef} style={style}>
+            {dimensions.map((dimension) => (
+                <DimensionItem key={dimension.id} {...dimension} />
+            ))}
+        </div>
     )
 }
 

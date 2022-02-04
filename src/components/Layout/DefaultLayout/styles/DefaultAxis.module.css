@@ -33,3 +33,7 @@
     user-select: none;
     letter-spacing: 0.2px;
 }
+
+.isOver {
+    background-color: green;
+}
