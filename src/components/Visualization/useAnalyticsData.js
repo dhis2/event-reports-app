@@ -3,12 +3,12 @@ import { useDataEngine } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import { useEffect, useState, useRef } from 'react'
 import {
-    TIME_DIMENSION_EVENT_DATE,
-    TIME_DIMENSION_ENROLLMENT_DATE,
-    TIME_DIMENSION_INCIDENT_DATE,
-    TIME_DIMENSION_SCHEDULED_DATE,
-    TIME_DIMENSION_LAST_UPDATED,
-} from '../../modules/timeDimensions.js'
+    DIMENSION_TYPE_EVENT_DATE,
+    DIMENSION_TYPE_ENROLLMENT_DATE,
+    DIMENSION_TYPE_INCIDENT_DATE,
+    DIMENSION_TYPE_SCHEDULED_DATE,
+    DIMENSION_TYPE_LAST_UPDATED,
+} from '../../modules/dimensionTypes.js'
 import {
     OUTPUT_TYPE_ENROLLMENT,
     OUTPUT_TYPE_EVENT,
@@ -45,11 +45,11 @@ const formatRowValue = (rowValue, header, metaDataItems) => {
 
 const isTimeDimension = (dimensionId) =>
     [
-        TIME_DIMENSION_EVENT_DATE,
-        TIME_DIMENSION_ENROLLMENT_DATE,
-        TIME_DIMENSION_INCIDENT_DATE,
-        TIME_DIMENSION_SCHEDULED_DATE,
-        TIME_DIMENSION_LAST_UPDATED,
+        DIMENSION_TYPE_EVENT_DATE,
+        DIMENSION_TYPE_ENROLLMENT_DATE,
+        DIMENSION_TYPE_INCIDENT_DATE,
+        DIMENSION_TYPE_SCHEDULED_DATE,
+        DIMENSION_TYPE_LAST_UPDATED,
     ].includes(dimensionId)
 
 const getAdaptedVisualization = (visualization) => {

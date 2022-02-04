@@ -7,16 +7,16 @@ import {
     VIS_TYPE_PIVOT_TABLE,
 } from '@dhis2/analytics'
 import i18n from '@dhis2/d2-i18n'
-import {
-    TIME_DIMENSION_EVENT_DATE,
-    TIME_DIMENSION_ENROLLMENT_DATE,
-    TIME_DIMENSION_INCIDENT_DATE,
-    TIME_DIMENSION_SCHEDULED_DATE,
-    TIME_DIMENSION_LAST_UPDATED,
-} from '../modules/timeDimensions.js'
 import { DEFAULT_CURRENT } from '../reducers/current.js'
 import { DEFAULT_VISUALIZATION } from '../reducers/visualization.js'
-import { DIMENSION_TYPE_DATA_ELEMENT } from './dimensionTypes.js'
+import {
+    DIMENSION_TYPE_DATA_ELEMENT,
+    DIMENSION_TYPE_EVENT_DATE,
+    DIMENSION_TYPE_ENROLLMENT_DATE,
+    DIMENSION_TYPE_INCIDENT_DATE,
+    DIMENSION_TYPE_SCHEDULED_DATE,
+    DIMENSION_TYPE_LAST_UPDATED,
+} from './dimensionTypes.js'
 import { default as options } from './options.js'
 
 export const OUTPUT_TYPE_EVENT = 'EVENT'
@@ -28,11 +28,11 @@ export const headersMap = {
     eventStatus: 'eventstatus',
     storedBy: 'storedby',
     lastUpdatedBy: 'lastupdatedby',
-    [TIME_DIMENSION_EVENT_DATE]: 'eventdate',
-    [TIME_DIMENSION_ENROLLMENT_DATE]: 'enrollmentdate',
-    [TIME_DIMENSION_INCIDENT_DATE]: 'incidentdate',
-    [TIME_DIMENSION_SCHEDULED_DATE]: 'scheduleddate',
-    [TIME_DIMENSION_LAST_UPDATED]: 'lastupdated',
+    [DIMENSION_TYPE_EVENT_DATE]: 'eventdate',
+    [DIMENSION_TYPE_ENROLLMENT_DATE]: 'enrollmentdate',
+    [DIMENSION_TYPE_INCIDENT_DATE]: 'incidentdate',
+    [DIMENSION_TYPE_SCHEDULED_DATE]: 'scheduleddate',
+    [DIMENSION_TYPE_LAST_UPDATED]: 'lastupdated',
 }
 
 export const outputTypeMap = {
@@ -49,8 +49,8 @@ export const outputTypeMap = {
 }
 
 export const outputTypeTimeDimensionMap = {
-    [OUTPUT_TYPE_EVENT]: TIME_DIMENSION_EVENT_DATE,
-    [OUTPUT_TYPE_ENROLLMENT]: TIME_DIMENSION_ENROLLMENT_DATE,
+    [OUTPUT_TYPE_EVENT]: DIMENSION_TYPE_EVENT_DATE,
+    [OUTPUT_TYPE_ENROLLMENT]: DIMENSION_TYPE_ENROLLMENT_DATE,
 }
 
 export const transformVisualization = (visualization) => ({
