@@ -40,11 +40,11 @@ const DefaultAxis = ({
         >
             <div className={styles.label}>{getAxisName(axisId)}</div>
             <Droppable droppableId={axisId} direction="horizontal">
-                {(provided) => (
+                {(droppableProvided) => (
                     <div
                         className={styles.content}
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
+                        ref={droppableProvided.innerRef}
+                        {...droppableProvided.droppableProps}
                     >
                         {renderChips &&
                             axis.map((dimensionId, index) => {
@@ -100,7 +100,7 @@ const DefaultAxis = ({
                                     </Draggable>
                                 )
                             })}
-                        {provided.placeholder}
+                        {droppableProvided.placeholder}
                     </div>
                 )}
             </Droppable>
