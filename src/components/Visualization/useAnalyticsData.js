@@ -54,6 +54,7 @@ const isTimeDimension = (dimensionId) =>
 
 const getAdaptedVisualization = (visualization) => {
     const adaptedColumns = []
+    const adaptedRows = []
     const adaptedFilters = []
     const headers = []
     const timeDimensionParameters = {}
@@ -70,6 +71,18 @@ const getAdaptedVisualization = (visualization) => {
             : adaptedColumns.push(dimensionObj)
     })
 
+    visualization.rows.forEach((dimensionObj) => {
+        const dimensionId = dimensionObj.dimension
+
+        headers.push(headersMap[dimensionId] || dimensionId)
+
+        isTimeDimension(dimensionId)
+            ? (timeDimensionParameters[dimensionId] = dimensionObj.items?.map(
+                  (item) => item.id
+              ))
+            : adaptedRows.push(dimensionObj)
+    })
+
     visualization.filters.forEach((dimensionObj) => {
         const dimensionId = dimensionObj.dimension
 
@@ -83,6 +96,7 @@ const getAdaptedVisualization = (visualization) => {
     return {
         adaptedVisualization: {
             columns: adaptedColumns,
+            rows: adaptedRows,
             filters: adaptedFilters,
         },
         headers,
@@ -99,6 +113,7 @@ const fetchAnalyticsData = async ({
     sortField,
     sortDirection,
 }) => {
+    // XXX must be reviewed when PT comes around. Most likely LL and PT have quite different handling
     const { adaptedVisualization, headers, timeDimensionParameters } =
         getAdaptedVisualization(visualization)
 
