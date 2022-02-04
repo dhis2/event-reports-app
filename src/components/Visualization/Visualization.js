@@ -21,6 +21,7 @@ import {
     FONT_SIZE_NORMAL,
     FONT_SIZE_SMALL,
 } from '../../modules/options.js'
+import { headersMap } from '../../modules/visualization.js'
 import styles from './styles/Visualization.module.css'
 import { useAnalyticsData } from './useAnalyticsData.js'
 import { useAvailableWidth } from './useAvailableWidth.js'
@@ -44,8 +45,8 @@ export const Visualization = ({
 }) => {
     const maxWidth = useAvailableWidth()
     const [{ sortField, sortDirection }, setSorting] = useState({
-        sortField: 'eventdate', // TODO get field name corresponding to visualization.sortOrder ?!
-        sortDirection: 'desc',
+        sortField: headersMap[visualization.columns[0].dimension],
+        sortDirection: 'asc',
     })
     const [page, setPage] = useState(1)
     const [pageSize, setPageSize] = useState(100)
