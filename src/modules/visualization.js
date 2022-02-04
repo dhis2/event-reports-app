@@ -48,36 +48,37 @@ export const outputTypeMap = {
     },
 }
 
+export const outputTypeTimeDimensionMap = {
+    [OUTPUT_TYPE_EVENT]: TIME_DIMENSION_EVENT_DATE,
+    [OUTPUT_TYPE_ENROLLMENT]: TIME_DIMENSION_ENROLLMENT_DATE,
+}
+
 export const transformVisualization = (visualization) => ({
     ...visualization,
     [AXIS_ID_COLUMNS]: visualization[AXIS_ID_COLUMNS].map((dimensionObj) =>
-        transformDimension(dimensionObj, visualization.outputType)
+        transformDimension(dimensionObj, visualization)
     ),
     [AXIS_ID_ROWS]: visualization[AXIS_ID_ROWS].map((dimensionObj) =>
-        transformDimension(dimensionObj, visualization.outputType)
+        transformDimension(dimensionObj, visualization)
     ),
     [AXIS_ID_FILTERS]: visualization[AXIS_ID_FILTERS].map((dimensionObj) =>
-        transformDimension(dimensionObj, visualization.outputType)
+        transformDimension(dimensionObj, visualization)
     ),
 })
 
-const transformDimension = (dimensionObj, outputType) => {
-    // TODO waiting for the time dimensions work to be completed.
-    // most likely there are going to be constants for these time dimensions
-    const timeDimensionMap = {
-        [OUTPUT_TYPE_EVENT]: TIME_DIMENSION_EVENT_DATE,
-        [OUTPUT_TYPE_ENROLLMENT]: TIME_DIMENSION_ENROLLMENT_DATE,
-    }
-
+const transformDimension = (dimensionObj, { outputType, type }) => {
     if (dimensionObj.dimensionType === 'PROGRAM_DATA_ELEMENT') {
         return {
             ...dimensionObj,
             dimensionType: DIMENSION_TYPE_DATA_ELEMENT,
         }
-    } else if (dimensionObj.dimension === DIMENSION_ID_PERIOD) {
+    } else if (
+        dimensionObj.dimension === DIMENSION_ID_PERIOD &&
+        type === VIS_TYPE_LINE_LIST
+    ) {
         return {
             ...dimensionObj,
-            dimension: timeDimensionMap[outputType],
+            dimension: outputTypeTimeDimensionMap[outputType],
         }
     } else {
         return dimensionObj
