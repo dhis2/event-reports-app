@@ -1,21 +1,17 @@
-import { DndContext } from '@dnd-kit/core'
+import { DndContext, closestCenter } from '@dnd-kit/core'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { connect, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import {
     acAddUiLayoutDimensions,
     acSetUiLayout,
     acSetUiDraggingId,
 } from '../actions/ui.js'
 import { SOURCE_DIMENSIONS } from '../modules/layout.js'
-import { sGetUiLayout, sGetUiItems } from '../reducers/ui.js'
+import { sGetUiLayout } from '../reducers/ui.js'
 
-const OuterDndContext = ({
-    children,
-    layout,
-    onAddDimensions,
-    onReorderDimensions,
-}) => {
+const OuterDndContext = ({ children }) => {
+    const layout = useSelector(sGetUiLayout)
     const dispatch = useDispatch()
     const rearrangeLayoutDimensions = ({
         sourceAxisId,
@@ -29,22 +25,26 @@ const OuterDndContext = ({
         if (sourceAxisId === destinationAxisId) {
             sourceList.splice(destinationIndex, 0, moved)
 
-            onReorderDimensions({
-                ...layout,
-                [sourceAxisId]: sourceList,
-            })
+            dispatch(
+                acSetUiLayout({
+                    ...layout,
+                    [sourceAxisId]: sourceList,
+                })
+            )
         } else {
-            onAddDimensions({
-                [moved]: {
-                    axisId: destinationAxisId,
-                    index: destinationIndex,
-                },
-            })
+            dispatch(
+                acAddUiLayoutDimensions({
+                    [moved]: {
+                        axisId: destinationAxisId,
+                        index: destinationIndex,
+                    },
+                })
+            )
         }
     }
 
     const addDimensionToLayout = ({ axisId, index, dimensionId }) => {
-        onAddDimensions({ [dimensionId]: { axisId, index } })
+        dispatch(acAddUiLayoutDimensions({ [dimensionId]: { axisId, index } }))
         //TODO: Add onDropWithoutItems
     }
 
@@ -54,6 +54,7 @@ const OuterDndContext = ({
 
     const onDragCancel = () => {
         dispatch(acSetUiDraggingId(null))
+    }
 
     const onDragEnd = (result) => {
         const { active, over } = result
@@ -88,7 +89,12 @@ const OuterDndContext = ({
     }
 
     return (
-        <DndContext onDragStart={onDragStart} onDragEnd={onDragEnd} onDragCancel={onDragCancel}>
+        <DndContext
+            collisionDetection={closestCenter}
+            onDragStart={onDragStart}
+            onDragEnd={onDragEnd}
+            onDragCancel={onDragCancel}
+        >
             {children}
         </DndContext>
     )
@@ -96,19 +102,6 @@ const OuterDndContext = ({
 
 OuterDndContext.propTypes = {
     children: PropTypes.node,
-    layout: PropTypes.object,
-    onAddDimensions: PropTypes.func,
-    onReorderDimensions: PropTypes.func,
 }
 
-const mapStateToProps = (state) => ({
-    layout: sGetUiLayout(state),
-    itemsByDimension: sGetUiItems(state),
-})
-
-const mapDispatchToProps = {
-    onAddDimensions: acAddUiLayoutDimensions,
-    onReorderDimensions: acSetUiLayout,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(OuterDndContext)
+export default OuterDndContext

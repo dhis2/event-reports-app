@@ -21,6 +21,7 @@ const Chip = ({
     items,
     onClick,
     contextMenu,
+    activeIndex,
 }) => {
     const {
         attributes,
@@ -37,14 +38,19 @@ const Chip = ({
         animateLayoutChanges: () => true, //TODO what does this do?
     })
 
+    const insertPosition =
+        over?.id === dimensionId ? (index > activeIndex ? 1 : -1) : undefined
+
     const style = transform
         ? {
-              transform: CSS.Transform.toString({
-                  x: transform.x,
-                  y: transform.y,
-                  scaleX: 1,
-                  scaleY: 1,
-              }),
+              transform: isSorting
+                  ? undefined
+                  : CSS.Translate.toString({
+                        x: transform.x,
+                        y: transform.y,
+                        scaleX: 1,
+                        scaleY: 1,
+                    }),
               transition,
           }
         : undefined
@@ -95,31 +101,38 @@ const Chip = ({
             className={cx(styles.chipWrapper, {
                 [styles.chipEmpty]: !items.length && !numberOfConditions,
                 [styles.active]: isDragging,
+                [styles.insertBefore]: insertPosition === -1,
+                [styles.insertAfter]: insertPosition === 1,
             })}
             data-dimensionid={dimensionId}
         >
-            {
-                <Tooltip content={renderTooltipContent()} placement="bottom">
-                    {({ ref, onMouseOver, onMouseOut }) => (
-                        <div
-                            data-test={dataTest}
-                            id={id}
-                            className={cx(styles.chip, styles.chipLeft)}
-                            onClick={onClick}
-                            ref={ref}
-                            onMouseOver={onMouseOver}
-                            onMouseOut={onMouseOut}
-                        >
-                            {renderChipContent()}
-                        </div>
-                    )}
-                </Tooltip>
-            }
-            {contextMenu && (
-                <div className={cx(styles.chip, styles.chipRight)}>
-                    {contextMenu}
-                </div>
-            )}
+            <div className={styles.content}>
+                {
+                    <Tooltip
+                        content={renderTooltipContent()}
+                        placement="bottom"
+                    >
+                        {({ ref, onMouseOver, onMouseOut }) => (
+                            <div
+                                data-test={dataTest}
+                                id={id}
+                                className={cx(styles.chip, styles.chipLeft)}
+                                onClick={onClick}
+                                ref={ref}
+                                onMouseOver={onMouseOver}
+                                onMouseOut={onMouseOut}
+                            >
+                                {renderChipContent()}
+                            </div>
+                        )}
+                    </Tooltip>
+                }
+                {contextMenu && (
+                    <div className={cx(styles.chip, styles.chipRight)}>
+                        {contextMenu}
+                    </div>
+                )}
+            </div>
         </div>
     )
 }
@@ -128,6 +141,7 @@ Chip.propTypes = {
     dimensionId: PropTypes.string.isRequired,
     dimensionName: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
+    activeIndex: PropTypes.number,
     contextMenu: PropTypes.object,
     items: PropTypes.array,
     numberOfConditions: PropTypes.number,

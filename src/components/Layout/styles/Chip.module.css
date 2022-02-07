@@ -1,10 +1,36 @@
 .chipWrapper {
+    position: relative;
     display: flex;
     margin: var(--spacers-dp4);
     background-color: var(--colors-teal200);
     border-radius: 2px;
     align-items: center;
     max-width: 400px;
+}
+
+.chipWrapper:not(.active).insertBefore .content:after,
+.chipWrapper:not(.active).insertAfter .content:after {
+    content: '';
+    position: absolute;
+    background-color: #4c9ffe;
+}
+
+.chipWrapper.insertBefore .content:after,
+.chipWrapper.insertAfter .content:after {
+    top: 0;
+    bottom: 0;
+    width: 2px;
+}
+
+.chipWrapper.insertBefore .content:after {
+    left: -4px;
+}
+.chipWrapper.insertAfter .content:after {
+    right: -4px;
+}
+
+.content {
+    display: inline-flex;
 }
 
 .chip {
@@ -61,4 +87,9 @@
 
 .active {
     opacity: 0.3;
+}
+
+.dragOverlay {
+    border: 2px solid #4c9ffe;
+    border-radius: 2px;
 }

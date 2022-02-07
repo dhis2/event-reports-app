@@ -44,7 +44,7 @@ const ChipOverlay = ({
 
     return (
         <div
-            className={cx(styles.chipWrapper, {
+            className={cx(styles.chipWrapper, styles.dragOverlay, {
                 [styles.chipEmpty]: !items.length && !numberOfConditions,
             })}
             data-dimensionid={dimensionId}

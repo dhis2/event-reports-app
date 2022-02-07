@@ -35,7 +35,6 @@ const DefaultAxis = ({
     const { isOver, setNodeRef } = useDroppable({
         id: axisId,
     })
-    const style = isOver ? { backgroundColor: 'green' } : undefined
 
     const activeIndex = draggingId ? axis.indexOf(draggingId) : -1
 
@@ -62,7 +61,10 @@ const DefaultAxis = ({
                 items={axis}
                 strategy={rectSortingStrategy}
             >
-                <div ref={setNodeRef} className={styles.content} style={style}>
+                <div
+                    ref={setNodeRef}
+                    className={cx(styles.content, { [styles.isOver]: isOver })}
+                >
                     {renderChips &&
                         axis.map((dimensionId) => {
                             return (
@@ -81,6 +83,7 @@ const DefaultAxis = ({
                                             visType={visType}
                                         />
                                     }
+                                    activeIndex={activeIndex}
                                 />
                             )
                         })}

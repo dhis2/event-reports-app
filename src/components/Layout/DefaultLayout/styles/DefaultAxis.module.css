@@ -35,5 +35,5 @@
 }
 
 .isOver {
-    background-color: green;
+    background-color: var(--colors-grey100);
 }
