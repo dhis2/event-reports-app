@@ -1,4 +1,4 @@
-import { useDroppable, DragOverlay } from '@dnd-kit/core'
+import { useDroppable } from '@dnd-kit/core'
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
@@ -17,7 +17,6 @@ import {
 } from '../../../reducers/ui.js'
 import Chip from '../Chip.js'
 import ChipMenu from '../ChipMenu.js'
-import ChipOverlay from '../ChipOverlay.js'
 import styles from './styles/DefaultAxis.module.css'
 
 const DefaultAxis = ({
@@ -30,7 +29,6 @@ const DefaultAxis = ({
     renderChips,
     visType,
 }) => {
-    const metadata = useSelector(sGetMetadata)
     const draggingId = useSelector(sGetUiDraggingId)
     const { isOver, setNodeRef } = useDroppable({
         id: axisId,
@@ -62,7 +60,8 @@ const DefaultAxis = ({
                 strategy={rectSortingStrategy}
             >
                 <div
-                    ref={setNodeRef}
+                    ref={!axis.length ? setNodeRef : null}
+                    // disabled={!!axis.length}
                     className={cx(styles.content, { [styles.isOver]: isOver })}
                 >
                     {renderChips &&
@@ -89,16 +88,6 @@ const DefaultAxis = ({
                         })}
                 </div>
             </SortableContext>
-            <DragOverlay dropAnimation={null}>
-                {draggingId ? (
-                    <ChipOverlay
-                        dimensionId={draggingId}
-                        dimensionName={metadata[draggingId].name}
-                        numberOfConditions={getNumberOfConditions(draggingId)}
-                        items={getItemsByDimension(draggingId)}
-                    />
-                ) : null}
-            </DragOverlay>
         </div>
     )
 }

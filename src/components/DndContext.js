@@ -1,18 +1,60 @@
-import { DndContext, closestCenter } from '@dnd-kit/core'
+import { DndContext, DragOverlay, pointerWithin } from '@dnd-kit/core'
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import ChipOverlay from './Layout/ChipOverlay.js'
+import { DimensionItemOverlay } from './MainSidebar/DimensionItem/DimensionItemOverlay.js'
 import {
     acAddUiLayoutDimensions,
     acSetUiLayout,
     acSetUiDraggingId,
 } from '../actions/ui.js'
 import { SOURCE_DIMENSIONS } from '../modules/layout.js'
-import { sGetUiLayout } from '../reducers/ui.js'
+import { sGetMetadata } from '../reducers/metadata.js'
+import {
+    sGetUiLayout,
+    sGetUiItemsByDimension,
+    sGetUiDraggingId,
+} from '../reducers/ui.js'
 
 const OuterDndContext = ({ children }) => {
+    const [sourceAxis, setSourceAxis] = useState(null)
+
+    const draggingId = useSelector(sGetUiDraggingId)
     const layout = useSelector(sGetUiLayout)
+    const metadata = useSelector(sGetMetadata)
+
+    const chipItems = useSelector((state) =>
+        sGetUiItemsByDimension(state, draggingId)
+    )
     const dispatch = useDispatch()
+
+    const getDragOverlay = () => {
+        if (!draggingId) {
+            return null
+        }
+
+        const name = metadata[draggingId].name
+        const dimensionType = metadata[draggingId].dimensionType
+
+        if (sourceAxis === SOURCE_DIMENSIONS) {
+            return (
+                <DimensionItemOverlay
+                    name={name}
+                    dimensionType={dimensionType}
+                />
+            )
+        } else {
+            return (
+                <ChipOverlay
+                    dimensionType={dimensionType}
+                    dimensionId={draggingId}
+                    dimensionName={name}
+                    items={chipItems}
+                />
+            )
+        }
+    }
     const rearrangeLayoutDimensions = ({
         sourceAxisId,
         destinationAxisId,
@@ -48,8 +90,9 @@ const OuterDndContext = ({ children }) => {
         //TODO: Add onDropWithoutItems
     }
 
-    const onDragStart = (event) => {
-        dispatch(acSetUiDraggingId(event.active.id))
+    const onDragStart = ({ active }) => {
+        setSourceAxis(active.data.current.sortable.containerId)
+        dispatch(acSetUiDraggingId(active.id))
     }
 
     const onDragCancel = () => {
@@ -71,7 +114,7 @@ const OuterDndContext = ({ children }) => {
             ? over.data.current.sortable.containerId
             : over.id
 
-        if (destinationAxisId === SOURCE_DIMENSIONS) {
+        if (sourceAxisId === SOURCE_DIMENSIONS) {
             addDimensionToLayout({
                 axisId: destinationAxisId,
                 index: destinationIndex,
@@ -90,12 +133,13 @@ const OuterDndContext = ({ children }) => {
 
     return (
         <DndContext
-            collisionDetection={closestCenter}
+            collisionDetection={pointerWithin}
             onDragStart={onDragStart}
             onDragEnd={onDragEnd}
             onDragCancel={onDragCancel}
         >
             {children}
+            <DragOverlay dropAnimation={null}>{getDragOverlay()}</DragOverlay>
         </DndContext>
     )
 }

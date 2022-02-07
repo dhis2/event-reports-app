@@ -1,5 +1,11 @@
 import { DIMENSION_ID_PERIOD } from '@dhis2/analytics'
-import { useDraggable, useDroppable } from '@dnd-kit/core'
+import {
+    useSortable,
+    SortableContext,
+    verticalListSortingStrategy,
+} from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+import cx from 'classnames'
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { acAddMetadata } from '../../actions/metadata.js'
@@ -38,13 +44,51 @@ const getName = (dimension, program, stage) => {
     return name || dimension.defaultName
 }
 
-const TimeDimensions = () => {
-    const { isOver, setNodeRef } = useDroppable({
-        id: SOURCE_DIMENSIONS,
+const DraggableDimensionItem = (props) => {
+    const {
+        attributes,
+        listeners,
+        // index,
+        isDragging,
+        isSorting,
+        over,
+        setNodeRef,
+        transform,
+        transition,
+    } = useSortable({
+        id: props.id,
+        animateLayoutChanges: () => true, //TODO what does this do?
     })
-    const style = {
-        color: isOver ? 'green' : undefined,
-    }
+
+    const style = transform
+        ? {
+              transform: isSorting
+                  ? undefined
+                  : CSS.Translate.toString({
+                        x: transform.x,
+                        y: transform.y,
+                        scaleX: 1,
+                        scaleY: 1,
+                    }),
+              transition,
+          }
+        : undefined
+    return (
+        <div
+            {...attributes}
+            {...listeners}
+            ref={setNodeRef}
+            style={style}
+            className={cx(styles.chipWrapper, {
+                [styles.active]: isDragging,
+            })}
+        >
+            {props.children}
+        </div>
+    )
+}
+
+const TimeDimensions = () => {
     const dispatch = useDispatch()
     const [dimensions, setDimensions] = useState([])
     const { getIsDimensionSelected } = useSelectedDimensions()
@@ -100,7 +144,7 @@ const TimeDimensions = () => {
 
         const dimensionsMetadata = dimensionsArr.reduce(
             (metadata, { id, name }) => {
-                metadata[id] = { id, name }
+                metadata[id] = { id, name, dimensionType: DIMENSION_ID_PERIOD }
                 return metadata
             },
             {}
@@ -110,10 +154,23 @@ const TimeDimensions = () => {
     }, [selectedInputType, programId, stageId])
 
     return (
-        <div className={styles.list} ref={setNodeRef} style={style}>
-            {dimensions.map((dimension) => (
-                <DimensionItem key={dimension.id} {...dimension} />
-            ))}
+        <div>
+            <SortableContext
+                id={SOURCE_DIMENSIONS}
+                items={dimensions}
+                strategy={verticalListSortingStrategy}
+            >
+                <div className={styles.list}>
+                    {dimensions.map((dimension) => (
+                        <DraggableDimensionItem
+                            key={dimension.id}
+                            {...dimension}
+                        >
+                            <DimensionItem {...dimension} />
+                        </DraggableDimensionItem>
+                    ))}
+                </div>
+            </SortableContext>
         </div>
     )
 }
