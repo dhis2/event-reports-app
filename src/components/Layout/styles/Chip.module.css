@@ -56,3 +56,9 @@
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
+
+/* dnd */
+
+.active {
+    opacity: 0.3;
+}

@@ -11,6 +11,9 @@ import { sGetMetadataById } from '../../reducers/metadata.js'
 import styles from './styles/Chip.module.css'
 import { default as TooltipContent } from './TooltipContent.js'
 
+const BEFORE = -1
+const AFTER = 1
+
 const Chip = ({
     numberOfConditions,
     dimensionId,
@@ -19,12 +22,29 @@ const Chip = ({
     onClick,
     contextMenu,
 }) => {
-    const { attributes, listeners, setNodeRef, transform, transition } =
-        useSortable({ id: dimensionId })
+    const {
+        attributes,
+        listeners,
+        index,
+        isDragging,
+        isSorting,
+        over,
+        setNodeRef,
+        transform,
+        transition,
+    } = useSortable({
+        id: dimensionId,
+        animateLayoutChanges: () => true, //TODO what does this do?
+    })
 
     const style = transform
         ? {
-              transform: CSS.Transform.toString(transform),
+              transform: CSS.Transform.toString({
+                  x: transform.x,
+                  y: transform.y,
+                  scaleX: 1,
+                  scaleY: 1,
+              }),
               transition,
           }
         : undefined
@@ -74,6 +94,7 @@ const Chip = ({
             {...attributes}
             className={cx(styles.chipWrapper, {
                 [styles.chipEmpty]: !items.length && !numberOfConditions,
+                [styles.active]: isDragging,
             })}
             data-dimensionid={dimensionId}
         >
@@ -104,7 +125,6 @@ const Chip = ({
 }
 
 Chip.propTypes = {
-    axisId: PropTypes.string.isRequired,
     dimensionId: PropTypes.string.isRequired,
     dimensionName: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,

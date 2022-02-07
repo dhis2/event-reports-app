@@ -9,6 +9,7 @@ import { getOptionsForUi } from '../modules/options.js'
 import { getAdaptedUiByType, getUiFromVisualization } from '../modules/ui.js'
 import { OUTPUT_TYPE_EVENT } from '../modules/visualization.js'
 
+export const SET_UI_DRAGGING_ID = 'SET_UI_DRAGGING_ID'
 export const SET_UI_INPUT = 'SET_UI_INPUT'
 export const CLEAR_UI_PROGRAM_ID = 'CLEAR_UI_PROGRAM_ID'
 export const CLEAR_UI_STAGE_ID = 'CLEAR_UI_STAGE_ID'
@@ -31,6 +32,7 @@ export const SET_UI_CONDITIONS = 'SET_UI_CONDITIONS'
 export const SET_UI_REPETITION = 'SET_UI_REPETITION'
 
 const EMPTY_UI = {
+    draggingId: null,
     type: VIS_TYPE_LINE_LIST,
     input: {
         type: OUTPUT_TYPE_EVENT,
@@ -50,6 +52,7 @@ const EMPTY_UI = {
 }
 
 export const DEFAULT_UI = {
+    draggingId: null,
     type: VIS_TYPE_LINE_LIST,
     input: {
         type: OUTPUT_TYPE_EVENT,
@@ -98,6 +101,9 @@ const getPreselectedUi = (options) => {
 
 export default (state = EMPTY_UI, action) => {
     switch (action.type) {
+        case SET_UI_DRAGGING_ID: {
+            return { ...state, draggingId: action.value }
+        }
         case SET_UI_INPUT: {
             return {
                 ...state,
@@ -282,6 +288,7 @@ export default (state = EMPTY_UI, action) => {
 // Selectors
 
 export const sGetUi = (state) => state.ui
+export const sGetUiDraggingId = (state) => sGetUi(state).draggingId
 export const sGetUiInput = (state) => sGetUi(state).input
 export const sGetUiProgram = (state) => sGetUi(state).program
 export const sGetUiOptions = (state) => sGetUi(state).options

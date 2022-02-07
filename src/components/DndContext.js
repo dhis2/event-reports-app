@@ -1,8 +1,12 @@
 import { DndContext } from '@dnd-kit/core'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { connect } from 'react-redux'
-import { acAddUiLayoutDimensions, acSetUiLayout } from '../actions/ui.js'
+import { connect, useDispatch } from 'react-redux'
+import {
+    acAddUiLayoutDimensions,
+    acSetUiLayout,
+    acSetUiDraggingId,
+} from '../actions/ui.js'
 import { SOURCE_DIMENSIONS } from '../modules/layout.js'
 import { sGetUiLayout, sGetUiItems } from '../reducers/ui.js'
 
@@ -12,6 +16,7 @@ const OuterDndContext = ({
     onAddDimensions,
     onReorderDimensions,
 }) => {
+    const dispatch = useDispatch()
     const rearrangeLayoutDimensions = ({
         sourceAxisId,
         destinationAxisId,
@@ -43,6 +48,13 @@ const OuterDndContext = ({
         //TODO: Add onDropWithoutItems
     }
 
+    const onDragStart = (event) => {
+        dispatch(acSetUiDraggingId(event.active.id))
+    }
+
+    const onDragCancel = () => {
+        dispatch(acSetUiDraggingId(null))
+
     const onDragEnd = (result) => {
         const { active, over } = result
 
@@ -72,9 +84,14 @@ const OuterDndContext = ({
                 destinationIndex,
             })
         }
+        onDragCancel()
     }
 
-    return <DndContext onDragEnd={onDragEnd}>{children}</DndContext>
+    return (
+        <DndContext onDragStart={onDragStart} onDragEnd={onDragEnd} onDragCancel={onDragCancel}>
+            {children}
+        </DndContext>
+    )
 }
 
 OuterDndContext.propTypes = {
