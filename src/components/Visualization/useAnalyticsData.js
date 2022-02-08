@@ -122,7 +122,7 @@ const fetchAnalyticsData = async ({
     sortField,
     sortDirection,
 }) => {
-    // XXX must be reviewed when PT comes around. Most likely LL and PT have quite different handling
+    // TODO must be reviewed when PT comes around. Most likely LL and PT have quite different handling
     const { adaptedVisualization, headers, timeDimensionParameters } =
         getAdaptedVisualization(visualization)
 
