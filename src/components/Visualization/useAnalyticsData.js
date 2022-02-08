@@ -1,4 +1,9 @@
-import { Analytics } from '@dhis2/analytics'
+import {
+    AXIS_ID_COLUMNS,
+    AXIS_ID_ROWS,
+    AXIS_ID_FILTERS,
+    Analytics,
+} from '@dhis2/analytics'
 import { useDataEngine } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import { useEffect, useState, useRef } from 'react'
@@ -59,45 +64,49 @@ const getAdaptedVisualization = (visualization) => {
     const headers = []
     const timeDimensionParameters = {}
 
-    visualization.columns.forEach((dimensionObj) => {
+    const adaptDimension = ({
+        dimensionObj,
+        targetArray,
+        addToHeaders = false,
+    }) => {
         const dimensionId = dimensionObj.dimension
 
-        headers.push(headersMap[dimensionId] || dimensionId)
+        if (addToHeaders) {
+            headers.push(headersMap[dimensionId] || dimensionId)
+        }
 
         isTimeDimension(dimensionId)
             ? (timeDimensionParameters[dimensionId] = dimensionObj.items?.map(
                   (item) => item.id
               ))
-            : adaptedColumns.push(dimensionObj)
-    })
+            : targetArray.push(dimensionObj)
+    }
 
-    visualization.rows.forEach((dimensionObj) => {
-        const dimensionId = dimensionObj.dimension
+    visualization[AXIS_ID_COLUMNS].forEach((dimensionObj) =>
+        adaptDimension({
+            dimensionObj,
+            targetArray: adaptedColumns,
+            addToHeaders: true,
+        })
+    )
 
-        headers.push(headersMap[dimensionId] || dimensionId)
+    visualization[AXIS_ID_ROWS].forEach((dimensionObj) =>
+        adaptDimension({
+            dimensionObj,
+            targetArray: adaptedRows,
+            addToHeaders: true,
+        })
+    )
 
-        isTimeDimension(dimensionId)
-            ? (timeDimensionParameters[dimensionId] = dimensionObj.items?.map(
-                  (item) => item.id
-              ))
-            : adaptedRows.push(dimensionObj)
-    })
-
-    visualization.filters.forEach((dimensionObj) => {
-        const dimensionId = dimensionObj.dimension
-
-        isTimeDimension(dimensionId)
-            ? (timeDimensionParameters[dimensionId] = dimensionObj.items?.map(
-                  (item) => item.id
-              ))
-            : adaptedFilters(dimensionObj)
-    })
+    visualization[AXIS_ID_FILTERS].forEach((dimensionObj) =>
+        adaptDimension({ dimensionObj, targetArray: adaptedFilters })
+    )
 
     return {
         adaptedVisualization: {
-            columns: adaptedColumns,
-            rows: adaptedRows,
-            filters: adaptedFilters,
+            [AXIS_ID_COLUMNS]: adaptedColumns,
+            [AXIS_ID_ROWS]: adaptedRows,
+            [AXIS_ID_FILTERS]: adaptedFilters,
         },
         headers,
         timeDimensionParameters,
