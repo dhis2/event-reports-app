@@ -58,48 +58,30 @@ const isTimeDimension = (dimensionId) =>
     ].includes(dimensionId)
 
 const getAdaptedVisualization = (visualization) => {
-    const adaptedColumns = []
-    const adaptedRows = []
-    const adaptedFilters = []
-    const headers = []
     const timeDimensionParameters = {}
 
-    const adaptDimension = ({
-        dimensionObj,
-        targetArray,
-        addToHeaders = false,
-    }) => {
-        const dimensionId = dimensionObj.dimension
+    const adaptDimensions = (dimensions) => {
+        const adaptedDimensions = []
+        dimensions.forEach((dimensionObj) => {
+            const dimensionId = dimensionObj.dimension
 
-        if (addToHeaders) {
-            headers.push(headersMap[dimensionId] || dimensionId)
-        }
-
-        isTimeDimension(dimensionId)
-            ? (timeDimensionParameters[dimensionId] = dimensionObj.items?.map(
-                  (item) => item.id
-              ))
-            : targetArray.push(dimensionObj)
+            isTimeDimension(dimensionId)
+                ? (timeDimensionParameters[dimensionId] =
+                      dimensionObj.items?.map((item) => item.id))
+                : adaptedDimensions.push(dimensionObj)
+        })
+        return adaptedDimensions
     }
 
-    visualization[AXIS_ID_COLUMNS].forEach((dimensionObj) =>
-        adaptDimension({
-            dimensionObj,
-            targetArray: adaptedColumns,
-            addToHeaders: true,
-        })
-    )
+    const adaptedColumns = adaptDimensions(visualization[AXIS_ID_COLUMNS])
+    const adaptedRows = adaptDimensions(visualization[AXIS_ID_ROWS])
+    const adaptedFilters = adaptDimensions(visualization[AXIS_ID_FILTERS])
 
-    visualization[AXIS_ID_ROWS].forEach((dimensionObj) =>
-        adaptDimension({
-            dimensionObj,
-            targetArray: adaptedRows,
-            addToHeaders: true,
-        })
-    )
-
-    visualization[AXIS_ID_FILTERS].forEach((dimensionObj) =>
-        adaptDimension({ dimensionObj, targetArray: adaptedFilters })
+    const headers = [
+        ...visualization[AXIS_ID_COLUMNS],
+        ...visualization[AXIS_ID_ROWS],
+    ].map(
+        ({ dimension: dimensionId }) => headersMap[dimensionId] || dimensionId
     )
 
     return {
