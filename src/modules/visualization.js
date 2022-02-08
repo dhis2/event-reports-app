@@ -55,35 +55,39 @@ export const outputTypeTimeDimensionMap = {
 
 export const transformVisualization = (visualization) => ({
     ...visualization,
-    [AXIS_ID_COLUMNS]: visualization[AXIS_ID_COLUMNS].map((dimensionObj) =>
-        transformDimension(dimensionObj, visualization)
+    [AXIS_ID_COLUMNS]: transformDimensions(
+        visualization[AXIS_ID_COLUMNS],
+        visualization
     ),
-    [AXIS_ID_ROWS]: visualization[AXIS_ID_ROWS].map((dimensionObj) =>
-        transformDimension(dimensionObj, visualization)
+    [AXIS_ID_ROWS]: transformDimensions(
+        visualization[AXIS_ID_ROWS],
+        visualization
     ),
-    [AXIS_ID_FILTERS]: visualization[AXIS_ID_FILTERS].map((dimensionObj) =>
-        transformDimension(dimensionObj, visualization)
+    [AXIS_ID_FILTERS]: transformDimensions(
+        visualization[AXIS_ID_FILTERS],
+        visualization
     ),
 })
 
-const transformDimension = (dimensionObj, { outputType, type }) => {
-    if (dimensionObj.dimensionType === 'PROGRAM_DATA_ELEMENT') {
-        return {
-            ...dimensionObj,
-            dimensionType: DIMENSION_TYPE_DATA_ELEMENT,
+const transformDimensions = (dimensions, { outputType, type }) =>
+    dimensions.map((dimensionObj) => {
+        if (dimensionObj.dimensionType === 'PROGRAM_DATA_ELEMENT') {
+            return {
+                ...dimensionObj,
+                dimensionType: DIMENSION_TYPE_DATA_ELEMENT,
+            }
+        } else if (
+            dimensionObj.dimension === DIMENSION_ID_PERIOD &&
+            type === VIS_TYPE_LINE_LIST
+        ) {
+            return {
+                ...dimensionObj,
+                dimension: outputTypeTimeDimensionMap[outputType],
+            }
+        } else {
+            return dimensionObj
         }
-    } else if (
-        dimensionObj.dimension === DIMENSION_ID_PERIOD &&
-        type === VIS_TYPE_LINE_LIST
-    ) {
-        return {
-            ...dimensionObj,
-            dimension: outputTypeTimeDimensionMap[outputType],
-        }
-    } else {
-        return dimensionObj
-    }
-}
+    })
 
 export const visTypes = [
     { type: VIS_TYPE_LINE_LIST },
