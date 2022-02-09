@@ -1,4 +1,4 @@
-import { visTypeIcons } from '@dhis2/analytics'
+import { VisTypeIcon, VIS_TYPE_LINE_LIST } from '@dhis2/analytics'
 import { useDataQuery } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import { colors } from '@dhis2/ui'
@@ -13,21 +13,53 @@ import { sGetLoadError } from '../../reducers/loader.js'
 import { sGetUsername } from '../../reducers/user.js'
 import styles from './styles/StartScreen.module.css'
 
-const mostViewedVisualizationsQuery = {
-    mostViewedVisualizations: {
+const mostViewedQuery = {
+    mostViewed: {
         resource: 'dataStatistics/favorites',
-        params: ({ pageSize, username }) => ({
+        params: ({ username }) => ({
             eventType: EVENT_TYPE,
-            pageSize: pageSize || 10,
+            pageSize: 6,
             ...(username ? { username } : {}),
         }),
     },
 }
 
-const StartScreen = ({ error, username }) => {
-    const { data } = useDataQuery(mostViewedVisualizationsQuery, {
-        variables: { pageSize: 6, username },
+const visualizationsQuery = {
+    visualizations: {
+        resource: 'eventVisualizations',
+        params: ({ ids }) => ({
+            filter: `id:in:[${ids.join(',')}]`,
+            fields: ['id', 'displayName~rename(name)', 'type'],
+        }),
+    },
+}
+
+const useMostViewedVisualizations = (username) => {
+    const visualizations = useDataQuery(visualizationsQuery, {
+        lazy: true,
     })
+
+    const mostViewed = useDataQuery(mostViewedQuery, {
+        variables: { username },
+        onComplete: (data) => {
+            visualizations.refetch({
+                ids: data.mostViewed.map((obj) => obj.id),
+            })
+        },
+    })
+
+    return {
+        mostViewed: visualizations.data
+            ? visualizations.data.visualizations.eventVisualizations
+            : undefined,
+        loading: mostViewed.loading || visualizations.loading,
+        fetching: mostViewed.fetching || visualizations.fetching,
+        error: mostViewed.error || visualizations.error,
+    }
+}
+
+const StartScreen = ({ error, username }) => {
+    const data = useMostViewedVisualizations(username)
 
     const getContent = () =>
         error ? (
@@ -58,7 +90,7 @@ const StartScreen = ({ error, username }) => {
                     </ul>
                 </div>
                 {/* TODO add a spinner when loading?! */}
-                {data?.mostViewedVisualizations.length > 0 && (
+                {data?.mostViewed?.length > 0 && (
                     <div className={styles.section}>
                         <h3
                             className={styles.title}
@@ -66,30 +98,25 @@ const StartScreen = ({ error, username }) => {
                         >
                             {i18n.t('Your most viewed event reports')}
                         </h3>
-                        {data.mostViewedVisualizations.map(
-                            (visualization, index) => {
-                                const VisualizationIcon =
-                                    visTypeIcons[visualization.type]
-
-                                return (
-                                    <p
-                                        key={index}
-                                        className={styles.visualization}
-                                        onClick={() =>
-                                            history.push(`/${visualization.id}`)
-                                        }
-                                        data-test="start-screen-most-viewed-list-item"
-                                    >
-                                        <span className={styles.visIcon}>
-                                            <VisualizationIcon
-                                                color={colors.grey600}
-                                            />
-                                        </span>
-                                        <span>{visualization.name}</span>
-                                    </p>
-                                )
-                            }
-                        )}
+                        {data.mostViewed
+                            .filter((vis) => vis.type === VIS_TYPE_LINE_LIST)
+                            .map((vis, index) => (
+                                <p
+                                    key={index}
+                                    className={styles.visualization}
+                                    onClick={() => history.push(`/${vis.id}`)}
+                                    data-test="start-screen-most-viewed-list-item"
+                                >
+                                    <span className={styles.visIcon}>
+                                        <VisTypeIcon
+                                            type={vis.type}
+                                            useSmall
+                                            color={colors.grey600}
+                                        />
+                                    </span>
+                                    <span>{vis.name}</span>
+                                </p>
+                            ))}
                     </div>
                 )}
             </div>
