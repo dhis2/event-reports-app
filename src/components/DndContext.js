@@ -1,9 +1,7 @@
-import { DndContext, DragOverlay, pointerWithin } from '@dnd-kit/core'
+import { DndContext, DragOverlay } from '@dnd-kit/core'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import ChipOverlay from './Layout/ChipOverlay.js'
-import { DimensionItemOverlay } from './MainSidebar/DimensionItem/DimensionItemOverlay.js'
 import {
     acAddUiLayoutDimensions,
     acSetUiLayout,
@@ -16,6 +14,121 @@ import {
     sGetUiItemsByDimension,
     sGetUiDraggingId,
 } from '../reducers/ui.js'
+import styles from './DndContext.module.css'
+import ChipOverlay from './Layout/ChipOverlay.js'
+import { DimensionItemOverlay } from './MainSidebar/DimensionItem/DimensionItemOverlay.js'
+
+function isPointWithinRect(point, rect) {
+    const { top, left, bottom, right } = rect
+    return (
+        top <= point.y &&
+        point.y <= bottom &&
+        left <= point.x &&
+        point.x <= right
+    )
+}
+function cornersOfRectangle({ left, top, height, width }) {
+    return [
+        {
+            x: left,
+            y: top,
+        },
+        {
+            x: left + width,
+            y: top,
+        },
+        {
+            x: left,
+            y: top + height,
+        },
+        {
+            x: left + width,
+            y: top + height,
+        },
+    ]
+}
+
+function distanceBetween(p1, p2) {
+    return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2))
+}
+function sortCollisionsAsc({ data: { value: a } }, { data: { value: b } }) {
+    return a - b
+}
+const pointerWithin = ({ droppableContainers, pointerCoordinates }) => {
+    if (!pointerCoordinates) {
+        return []
+    }
+
+    const collisions = []
+
+    for (const droppableContainer of droppableContainers) {
+        const {
+            id,
+            rect: { current: rect },
+        } = droppableContainer
+
+        if (rect && isPointWithinRect(pointerCoordinates, rect)) {
+            /* There may be more than a single rectangle intersecting
+             * with the pointer coordinates. In order to sort the
+             * colliding rectangles, we measure the distance between
+             * the pointer and the corners of the intersecting rectangle
+             */
+            const corners = cornersOfRectangle(rect)
+            console.log('pointer is within rect, rect corners', corners)
+            const distances = corners.reduce((accumulator, corner) => {
+                return accumulator + distanceBetween(pointerCoordinates, corner)
+            }, 0)
+            const effectiveDistance = Number((distances / 4).toFixed(4))
+            collisions.push({
+                id,
+                data: {
+                    droppableContainer,
+                    value: effectiveDistance,
+                },
+            })
+        }
+    }
+
+    return collisions.sort(sortCollisionsAsc)
+}
+function centerOfRectangle(rect, left = rect.left, top = rect.top) {
+    return {
+        x: left + rect.width * 0.5,
+        y: top + rect.height * 0.5,
+    }
+}
+
+const closestCenter = ({ collisionRect, droppableContainers }) => {
+    const centerRect = centerOfRectangle(
+        collisionRect,
+        collisionRect.left,
+        collisionRect.top
+    )
+    const collisions = []
+
+    for (const droppableContainer of droppableContainers) {
+        const {
+            id,
+            rect: { current: rect },
+        } = droppableContainer
+
+        if (rect) {
+            const distBetween = distanceBetween(
+                centerOfRectangle(rect),
+                centerRect
+            )
+            collisions.push({
+                id,
+                data: {
+                    droppableContainer,
+                    value: distBetween,
+                },
+            })
+        }
+    }
+
+    return collisions.sort(sortCollisionsAsc)
+}
 
 const OuterDndContext = ({ children }) => {
     const [sourceAxis, setSourceAxis] = useState(null)
@@ -39,19 +152,23 @@ const OuterDndContext = ({ children }) => {
 
         if (sourceAxis === SOURCE_DIMENSIONS) {
             return (
-                <DimensionItemOverlay
-                    name={name}
-                    dimensionType={dimensionType}
-                />
+                <div className={styles.overlay}>
+                    <DimensionItemOverlay
+                        name={name}
+                        dimensionType={dimensionType}
+                    />
+                </div>
             )
         } else {
             return (
-                <ChipOverlay
-                    dimensionType={dimensionType}
-                    dimensionId={draggingId}
-                    dimensionName={name}
-                    items={chipItems}
-                />
+                <div className={styles.overlay}>
+                    <ChipOverlay
+                        dimensionType={dimensionType}
+                        dimensionId={draggingId}
+                        dimensionName={name}
+                        items={chipItems}
+                    />
+                </div>
             )
         }
     }
@@ -106,21 +223,30 @@ const OuterDndContext = ({ children }) => {
             return
         }
 
+        console.log(
+            'onDragEnd',
+            over.id,
+            result.delta.x,
+            result.delta.y,
+            result.collisions[0].data.value
+        )
+        // console.log('over id, sortable', over.id, over.data.current?.sortable)
+
         const sourceAxisId = active.data.current.sortable.containerId
-        const sourceIndex = active.data.current.sortable.index
         const dimensionId = active.id
         const destinationIndex = over.data.current?.sortable?.index || 0
-        const destinationAxisId = over.data.current
-            ? over.data.current.sortable.containerId
-            : over.id
+        const destinationAxisId =
+            over.data.current?.sortable?.containerId || over.id
 
         if (sourceAxisId === SOURCE_DIMENSIONS) {
+            // console.log('add ', dimensionId, 'at index', destinationIndex)
             addDimensionToLayout({
                 axisId: destinationAxisId,
                 index: destinationIndex,
                 dimensionId,
             })
         } else {
+            const sourceIndex = active.data.current.sortable.index
             rearrangeLayoutDimensions({
                 sourceAxisId,
                 destinationAxisId,
@@ -133,13 +259,20 @@ const OuterDndContext = ({ children }) => {
 
     return (
         <DndContext
-            collisionDetection={pointerWithin}
+            collisionDetection={closestCenter}
             onDragStart={onDragStart}
             onDragEnd={onDragEnd}
             onDragCancel={onDragCancel}
         >
             {children}
-            <DragOverlay dropAnimation={null}>{getDragOverlay()}</DragOverlay>
+            <DragOverlay
+                dropAnimation={{
+                    duration: 400,
+                    easing: 'ease',
+                }}
+            >
+                {getDragOverlay()}
+            </DragOverlay>
         </DndContext>
     )
 }

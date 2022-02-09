@@ -8,6 +8,12 @@
     max-width: 400px;
 }
 
+.chipWrapperOverlay {
+    margin: 0;
+    opacity: 0.5;
+}
+/* 
+
 .chipWrapper:not(.active).insertBefore .content:after,
 .chipWrapper:not(.active).insertAfter .content:after {
     content: '';
@@ -27,6 +33,35 @@
 }
 .chipWrapper.insertAfter .content:after {
     right: -4px;
+}
+ */
+
+.chipWrapper:not(.active).insertBefore .content:before,
+.chipWrapper:not(.active).insertAfter .content:before,
+.chipWrapper:not(.active).insertBefore .content:after,
+.chipWrapper:not(.active).insertAfter .content:after {
+    content: '';
+    position: absolute;
+}
+
+/* the vertical line */
+.content:before {
+    top: 6px;
+    bottom: 0;
+    width: 4px;
+    left: -6px;
+    background-color: #4c9ffe;
+}
+
+/* the circle */
+.content:after {
+    top: -4px;
+    left: -10px;
+    width: 12px;
+    height: 12px;
+    border: 4px solid #4c9ffe;
+    background: transparent;
+    border-radius: 12px;
 }
 
 .content {
@@ -87,9 +122,4 @@
 
 .active {
     opacity: 0.4;
-}
-
-.dragOverlay {
-    border: 2px solid #4c9ffe;
-    border-radius: 2px;
 }

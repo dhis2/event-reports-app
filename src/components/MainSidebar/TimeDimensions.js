@@ -6,6 +6,7 @@ import {
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import cx from 'classnames'
+import PropTypes from 'prop-types'
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { acAddMetadata } from '../../actions/metadata.js'
@@ -51,13 +52,12 @@ const DraggableDimensionItem = (props) => {
         // index,
         isDragging,
         isSorting,
-        over,
+        // over,
         setNodeRef,
         transform,
         transition,
     } = useSortable({
         id: props.id,
-        animateLayoutChanges: () => true, //TODO what does this do?
     })
 
     const style = transform
@@ -86,6 +86,11 @@ const DraggableDimensionItem = (props) => {
             {props.children}
         </div>
     )
+}
+
+DraggableDimensionItem.propTypes = {
+    children: PropTypes.node,
+    id: PropTypes.string,
 }
 
 const TimeDimensions = () => {

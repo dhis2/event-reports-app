@@ -54,7 +54,7 @@ const DimensionItemOverlay = ({ dimensionType, name, selected, stageName }) => {
 
     return (
         <div
-            className={cx(styles.dimensionItem, {
+            className={cx(styles.dimensionItem, styles.dimensionItemOverlay, {
                 [styles.selected]: selected,
             })}
         >

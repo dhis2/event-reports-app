@@ -9,6 +9,10 @@
     cursor: pointer;
 }
 
+.dimensionItemOverlay {
+    margin: 0;
+}
+
 .dimensionItem:hover {
     background-color: var(--colors-grey200);
 }

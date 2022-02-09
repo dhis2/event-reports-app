@@ -11,8 +11,8 @@ import { sGetMetadataById } from '../../reducers/metadata.js'
 import styles from './styles/Chip.module.css'
 import { default as TooltipContent } from './TooltipContent.js'
 
-const BEFORE = -1
-const AFTER = 1
+const BEFORE = 'BEFORE'
+const AFTER = 'AFTER'
 
 const Chip = ({
     numberOfConditions,
@@ -24,6 +24,7 @@ const Chip = ({
     activeIndex,
 }) => {
     const {
+        active,
         attributes,
         listeners,
         index,
@@ -35,11 +36,32 @@ const Chip = ({
         transition,
     } = useSortable({
         id: dimensionId,
-        animateLayoutChanges: () => true, //TODO what does this do?
     })
 
-    const insertPosition =
-        over?.id === dimensionId ? (index > activeIndex ? 1 : -1) : undefined
+    let insertPosition = undefined
+    if (over?.id === dimensionId) {
+        //This chip is being hovered over on the drag
+        // const { top, bottom, left, right } = over.rect
+        // console.log(
+        //     'active',
+        //     active.id,
+        //     active.rect.current.initial.top,
+        //     active.rect.current.initial.left
+        // )
+        // console.log('over', over.id, top, left)
+        if (activeIndex === -1) {
+            //This item came from the dimensions panel
+            insertPosition = BEFORE
+        } else {
+            insertPosition = index > activeIndex ? AFTER : BEFORE
+        }
+    }
+    // const insertPosition =
+    //     over?.id === dimensionId
+    //         ? index > activeIndex
+    //             ? AFTER
+    //             : BEFORE
+    //         : undefined
 
     const style = transform
         ? {
@@ -101,8 +123,8 @@ const Chip = ({
             className={cx(styles.chipWrapper, {
                 [styles.chipEmpty]: !items.length && !numberOfConditions,
                 [styles.active]: isDragging,
-                [styles.insertBefore]: insertPosition === -1,
-                [styles.insertAfter]: insertPosition === 1,
+                [styles.insertBefore]: insertPosition === BEFORE,
+                [styles.insertAfter]: insertPosition === AFTER,
             })}
             data-dimensionid={dimensionId}
         >

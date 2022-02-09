@@ -1,5 +1,9 @@
 import { useDroppable } from '@dnd-kit/core'
-import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
+import {
+    SortableContext,
+    rectSortingStrategy,
+    verticalListSortingStrategy,
+} from '@dnd-kit/sortable'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -57,11 +61,10 @@ const DefaultAxis = ({
             <SortableContext
                 id={axisId}
                 items={axis}
-                strategy={rectSortingStrategy}
+                // strategy={verticalListSortingStrategy}
             >
                 <div
                     ref={!axis.length ? setNodeRef : null}
-                    // disabled={!!axis.length}
                     className={cx(styles.content, { [styles.isOver]: isOver })}
                 >
                     {renderChips &&
