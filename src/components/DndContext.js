@@ -182,7 +182,9 @@ const OuterDndContext = ({ children }) => {
         const [moved] = sourceList.splice(sourceIndex, 1)
 
         if (sourceAxisId === destinationAxisId) {
-            sourceList.splice(destinationIndex, 0, moved)
+            const idx =
+                destinationIndex !== -1 ? destinationIndex : sourceList.length
+            sourceList.splice(idx, 0, moved)
 
             dispatch(
                 acSetUiLayout({
@@ -191,11 +193,14 @@ const OuterDndContext = ({ children }) => {
                 })
             )
         } else {
+            const destList = Array.from(layout[destinationAxisId])
+            const index =
+                destinationIndex !== -1 ? destinationIndex : destList.length
             dispatch(
                 acAddUiLayoutDimensions({
                     [moved]: {
                         axisId: destinationAxisId,
-                        index: destinationIndex,
+                        index,
                     },
                 })
             )
@@ -203,7 +208,11 @@ const OuterDndContext = ({ children }) => {
     }
 
     const addDimensionToLayout = ({ axisId, index, dimensionId }) => {
-        dispatch(acAddUiLayoutDimensions({ [dimensionId]: { axisId, index } }))
+        const sourceList = Array.from(layout[axisId])
+        const idx = index !== -1 ? index : sourceList.length
+        dispatch(
+            acAddUiLayoutDimensions({ [dimensionId]: { axisId, index: idx } })
+        )
         //TODO: Add onDropWithoutItems
     }
 
@@ -223,20 +232,15 @@ const OuterDndContext = ({ children }) => {
             return
         }
 
-        console.log(
-            'onDragEnd',
-            over.id,
-            result.delta.x,
-            result.delta.y,
-            result.collisions[0].data.value
-        )
-        // console.log('over id, sortable', over.id, over.data.current?.sortable)
-
         const sourceAxisId = active.data.current.sortable.containerId
         const dimensionId = active.id
-        const destinationIndex = over.data.current?.sortable?.index || 0
+        let destinationIndex = over.data.current?.sortable?.index || 0
         const destinationAxisId =
             over.data.current?.sortable?.containerId || over.id
+
+        if (['columns', 'filters'].includes(over.id)) {
+            destinationIndex = -1
+        }
 
         if (sourceAxisId === SOURCE_DIMENSIONS) {
             // console.log('add ', dimensionId, 'at index', destinationIndex)

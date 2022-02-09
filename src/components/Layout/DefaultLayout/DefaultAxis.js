@@ -1,9 +1,5 @@
 import { useDroppable } from '@dnd-kit/core'
-import {
-    SortableContext,
-    rectSortingStrategy,
-    verticalListSortingStrategy,
-} from '@dnd-kit/sortable'
+import { SortableContext } from '@dnd-kit/sortable'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -58,15 +54,8 @@ const DefaultAxis = ({
             className={cx(styles.axisContainer, className)}
         >
             <div className={styles.label}>{getAxisName(axisId)}</div>
-            <SortableContext
-                id={axisId}
-                items={axis}
-                // strategy={verticalListSortingStrategy}
-            >
-                <div
-                    ref={!axis.length ? setNodeRef : null}
-                    className={cx(styles.content, { [styles.isOver]: isOver })}
-                >
+            <SortableContext id={axisId} items={axis}>
+                <div className={styles.content}>
                     {renderChips &&
                         axis.map((dimensionId) => {
                             return (
@@ -89,6 +78,14 @@ const DefaultAxis = ({
                                 />
                             )
                         })}
+                    <div
+                        ref={setNodeRef}
+                        className={cx(styles.lastItemDroppableArea, {
+                            [styles.isOver]: isOver,
+                        })}
+                    >
+                        <div className={styles.dropIndicator} />
+                    </div>
                 </div>
             </SortableContext>
         </div>
