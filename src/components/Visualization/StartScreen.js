@@ -1,5 +1,7 @@
+import { visTypeIcons } from '@dhis2/analytics'
 import { useDataQuery } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
+import { colors } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
@@ -66,6 +68,9 @@ const StartScreen = ({ error, username }) => {
                         </h3>
                         {data.mostViewedVisualizations.map(
                             (visualization, index) => {
+                                const VisualizationIcon =
+                                    visTypeIcons[visualization.type]
+
                                 return (
                                     <p
                                         key={index}
@@ -75,6 +80,11 @@ const StartScreen = ({ error, username }) => {
                                         }
                                         data-test="start-screen-most-viewed-list-item"
                                     >
+                                        <span className={styles.visIcon}>
+                                            <VisualizationIcon
+                                                color={colors.grey600}
+                                            />
+                                        </span>
                                         <span>{visualization.name}</span>
                                     </p>
                                 )
