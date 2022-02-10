@@ -61,66 +61,66 @@ const useMostViewedVisualizations = (username) => {
 const StartScreen = ({ error, username }) => {
     const data = useMostViewedVisualizations(username)
 
-    const getContent = () =>
-        error ? (
-            getErrorContent()
-        ) : (
-            <div data-test="start-screen">
+    /* TODO remove this when pivot tables are supported */
+    const mostViewed = data?.mostViewed?.filter(
+        (vis) => vis.type === VIS_TYPE_LINE_LIST
+    )
+
+    const getContent = () => (
+        <div data-test="start-screen">
+            <div className={styles.section}>
+                <h3
+                    className={styles.title}
+                    data-test="start-screen-primary-section-title"
+                >
+                    {i18n.t('Getting started')}
+                </h3>
+                <ul className={styles.guide}>
+                    <li className={styles.guideItem}>
+                        {i18n.t(
+                            'All dimensions that you can use to build visualizations are shown in the sections in the left sidebar.'
+                        )}
+                    </li>
+                    <li className={styles.guideItem}>
+                        {i18n.t('Add dimensions to the layout above.')}
+                    </li>
+                    <li className={styles.guideItem}>
+                        {i18n.t(
+                            'Click a dimension to add or remove conditions.'
+                        )}
+                    </li>
+                </ul>
+            </div>
+            {/* TODO add a spinner when loading?! */}
+            {mostViewed?.length > 0 && (
                 <div className={styles.section}>
                     <h3
                         className={styles.title}
-                        data-test="start-screen-primary-section-title"
+                        data-test="start-screen-secondary-section-title"
                     >
-                        {i18n.t('Getting started')}
+                        {i18n.t('Your most viewed event reports')}
                     </h3>
-                    <ul className={styles.guide}>
-                        <li className={styles.guideItem}>
-                            {i18n.t(
-                                'All dimensions that you can use to build visualizations are shown in the sections in the left sidebar.'
-                            )}
-                        </li>
-                        <li className={styles.guideItem}>
-                            {i18n.t('Add dimensions to the layout above.')}
-                        </li>
-                        <li className={styles.guideItem}>
-                            {i18n.t(
-                                'Click a dimension to add or remove conditions.'
-                            )}
-                        </li>
-                    </ul>
-                </div>
-                {/* TODO add a spinner when loading?! */}
-                {data?.mostViewed?.length > 0 && (
-                    <div className={styles.section}>
-                        <h3
-                            className={styles.title}
-                            data-test="start-screen-secondary-section-title"
+                    {mostViewed.map((vis, index) => (
+                        <p
+                            key={index}
+                            className={styles.visualization}
+                            onClick={() => history.push(`/${vis.id}`)}
+                            data-test="start-screen-most-viewed-list-item"
                         >
-                            {i18n.t('Your most viewed event reports')}
-                        </h3>
-                        {data.mostViewed
-                            .filter((vis) => vis.type === VIS_TYPE_LINE_LIST)
-                            .map((vis, index) => (
-                                <p
-                                    key={index}
-                                    className={styles.visualization}
-                                    onClick={() => history.push(`/${vis.id}`)}
-                                    data-test="start-screen-most-viewed-list-item"
-                                >
-                                    <span className={styles.visIcon}>
-                                        <VisTypeIcon
-                                            type={vis.type}
-                                            useSmall
-                                            color={colors.grey600}
-                                        />
-                                    </span>
-                                    <span>{vis.name}</span>
-                                </p>
-                            ))}
-                    </div>
-                )}
-            </div>
-        )
+                            <span className={styles.visIcon}>
+                                <VisTypeIcon
+                                    type={vis.type}
+                                    useSmall
+                                    color={colors.grey600}
+                                />
+                            </span>
+                            <span>{vis.name}</span>
+                        </p>
+                    ))}
+                </div>
+            )}
+        </div>
+    )
 
     const getErrorContent = () => (
         <div
@@ -149,7 +149,11 @@ const StartScreen = ({ error, username }) => {
 
     return (
         <div className={styles.outer}>
-            <div className={styles.inner}>{getContent()}</div>
+            <div className={styles.inner}>
+                {error || data.error
+                    ? getErrorContent(error || data.error)
+                    : getContent()}
+            </div>
         </div>
     )
 }
