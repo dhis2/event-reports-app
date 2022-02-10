@@ -1,4 +1,9 @@
-import { DndContext, DragOverlay } from '@dnd-kit/core'
+import {
+    DndContext,
+    DragOverlay,
+    rectIntersection,
+    closestCorners,
+} from '@dnd-kit/core'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -74,7 +79,7 @@ const pointerWithin = ({ droppableContainers, pointerCoordinates }) => {
              * the pointer and the corners of the intersecting rectangle
              */
             const corners = cornersOfRectangle(rect)
-            console.log('pointer is within rect, rect corners', corners)
+            // console.log('pointer is within rect, rect corners', corners)
             const distances = corners.reduce((accumulator, corner) => {
                 return accumulator + distanceBetween(pointerCoordinates, corner)
             }, 0)
@@ -131,6 +136,9 @@ const closestCenter = ({ collisionRect, droppableContainers }) => {
 }
 
 const OuterDndContext = ({ children }) => {
+    const [{ algorithm }, setCollisionDetectionAlgorithm] = useState({
+        algorithm: rectIntersection,
+    })
     const [sourceAxis, setSourceAxis] = useState(null)
 
     const draggingId = useSelector(sGetUiDraggingId)
@@ -141,6 +149,18 @@ const OuterDndContext = ({ children }) => {
         sGetUiItemsByDimension(state, draggingId)
     )
     const dispatch = useDispatch()
+
+    const onChange = (e) => {
+        const strategyMap = {
+            closestCenter: closestCenter,
+            rectIntersection: rectIntersection,
+            closestCorners: closestCorners,
+            pointerWithin: pointerWithin,
+        }
+        setCollisionDetectionAlgorithm({
+            algorithm: strategyMap[e.target.value],
+        })
+    }
 
     const getDragOverlay = () => {
         if (!draggingId) {
@@ -263,7 +283,7 @@ const OuterDndContext = ({ children }) => {
 
     return (
         <DndContext
-            collisionDetection={closestCenter}
+            collisionDetection={algorithm}
             onDragStart={onDragStart}
             onDragEnd={onDragEnd}
             onDragCancel={onDragCancel}
@@ -277,6 +297,18 @@ const OuterDndContext = ({ children }) => {
             >
                 {getDragOverlay()}
             </DragOverlay>
+            <select
+                name="collisionStrategy"
+                id="collision-strategy"
+                className={styles.strategy}
+                onChange={onChange}
+            >
+                <option value="">--Choose collision strategy--</option>
+                <option value="rectIntersection">RectIntersection</option>
+                <option value="pointerWithin">PointerWithin</option>
+                <option value="closestCenter">ClosestCenter</option>
+                <option value="closestCorners">ClosestCorners</option>
+            </select>
         </DndContext>
     )
 }
