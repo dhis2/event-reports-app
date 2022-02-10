@@ -70,9 +70,15 @@ export const transformVisualization = (visualization) => {
         visualization
     )
 
-    if (visualization.completedOnly) {
+    // convert completedOnly option to eventStatus = COMPLETED filter
+    if (
+        visualization.completedOnly &&
+        visualization.outputType === OUTPUT_TYPE_EVENT
+    ) {
         transformedFilters.push({
-            [DIMENSION_TYPE_EVENT_STATUS]: STATUS_COMPLETED,
+            dimensionType: DIMENSION_TYPE_EVENT_STATUS,
+            dimension: DIMENSION_TYPE_EVENT_STATUS,
+            items: [{ id: STATUS_COMPLETED }],
         })
     }
 
