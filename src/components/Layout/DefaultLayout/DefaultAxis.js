@@ -56,6 +56,14 @@ const DefaultAxis = ({
             <div className={styles.label}>{getAxisName(axisId)}</div>
             <SortableContext id={axisId} items={axis}>
                 <div className={styles.content}>
+                    <div
+                        ref={setNodeRef}
+                        className={cx(styles.lastItemDroppableArea, {
+                            [styles.isOver]: isOver,
+                        })}
+                    >
+                        <div className={styles.dropIndicator} />
+                    </div>
                     {renderChips &&
                         axis.map((dimensionId) => {
                             return (
@@ -78,14 +86,6 @@ const DefaultAxis = ({
                                 />
                             )
                         })}
-                    <div
-                        ref={setNodeRef}
-                        className={cx(styles.lastItemDroppableArea, {
-                            [styles.isOver]: isOver,
-                        })}
-                    >
-                        <div className={styles.dropIndicator} />
-                    </div>
                 </div>
             </SortableContext>
         </div>

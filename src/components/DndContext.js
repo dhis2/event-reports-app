@@ -3,6 +3,7 @@ import {
     DragOverlay,
     rectIntersection,
     closestCorners,
+    pointerWithin,
 } from '@dnd-kit/core'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
@@ -22,6 +23,8 @@ import {
 import styles from './DndContext.module.css'
 import ChipOverlay from './Layout/ChipOverlay.js'
 import { DimensionItemOverlay } from './MainSidebar/DimensionItem/DimensionItemOverlay.js'
+
+const FIRST_POSITION = 0
 
 function isPointWithinRect(point, rect) {
     const { top, left, bottom, right } = rect
@@ -59,7 +62,7 @@ function distanceBetween(p1, p2) {
 function sortCollisionsAsc({ data: { value: a } }, { data: { value: b } }) {
     return a - b
 }
-const pointerWithin = ({ droppableContainers, pointerCoordinates }) => {
+const pointerWithinCustom = ({ droppableContainers, pointerCoordinates }) => {
     if (!pointerCoordinates) {
         return []
     }
@@ -155,6 +158,7 @@ const OuterDndContext = ({ children }) => {
             rectIntersection: rectIntersection,
             closestCorners: closestCorners,
             pointerWithin: pointerWithin,
+            pointerCustom: pointerWithinCustom,
         }
         setCollisionDetectionAlgorithm({
             algorithm: strategyMap[e.target.value],
@@ -201,9 +205,7 @@ const OuterDndContext = ({ children }) => {
         const [moved] = sourceList.splice(sourceIndex, 1)
 
         if (sourceAxisId === destinationAxisId) {
-            const idx =
-                destinationIndex !== -1 ? destinationIndex : sourceList.length
-            sourceList.splice(idx, 0, moved)
+            sourceList.splice(destinationIndex, 0, moved)
 
             dispatch(
                 acSetUiLayout({
@@ -212,14 +214,11 @@ const OuterDndContext = ({ children }) => {
                 })
             )
         } else {
-            const destList = Array.from(layout[destinationAxisId])
-            const index =
-                destinationIndex !== -1 ? destinationIndex : destList.length
             dispatch(
                 acAddUiLayoutDimensions({
                     [moved]: {
                         axisId: destinationAxisId,
-                        index,
+                        index: destinationIndex,
                     },
                 })
             )
@@ -251,27 +250,42 @@ const OuterDndContext = ({ children }) => {
             !over?.id ||
             over?.data?.current?.sortable?.containerId === SOURCE_DIMENSIONS
         ) {
+            // dropped over non-droppable, or over dimension panel
             return
         }
-
         const sourceAxisId = active.data.current.sortable.containerId
-        const dimensionId = active.id
-        let destinationIndex = over.data.current?.sortable?.index || 0
         const destinationAxisId =
             over.data.current?.sortable?.containerId || over.id
+        let destinationIndex =
+            over.data.current?.sortable?.index || FIRST_POSITION
 
-        if (['columns', 'filters'].includes(over.id)) {
-            destinationIndex = -1
+        const isDroppingInFirstPosition = () => {
+            return ['columns', 'filters'].includes(over.id)
         }
 
         if (sourceAxisId === SOURCE_DIMENSIONS) {
+            if (isDroppingInFirstPosition()) {
+                destinationIndex = FIRST_POSITION
+            } else {
+                ++destinationIndex
+            }
+
             addDimensionToLayout({
                 axisId: destinationAxisId,
                 index: destinationIndex,
-                dimensionId,
+                dimensionId: active.id,
             })
         } else {
             const sourceIndex = active.data.current.sortable.index
+
+            if (sourceAxisId !== destinationAxisId) {
+                ++destinationIndex
+            }
+
+            if (isDroppingInFirstPosition()) {
+                destinationIndex = FIRST_POSITION
+            }
+
             rearrangeLayoutDimensions({
                 sourceAxisId,
                 destinationAxisId,
@@ -304,6 +318,7 @@ const OuterDndContext = ({ children }) => {
                 className={styles.strategy}
                 onChange={onChange}
             >
+                <option value="pointerCustom">PointerWithin Custom</option>
                 <option value="rectIntersection" selected>
                     RectIntersection
                 </option>
