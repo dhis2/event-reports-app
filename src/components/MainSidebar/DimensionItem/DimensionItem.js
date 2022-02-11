@@ -54,30 +54,28 @@ const DIMENSION_TYPE_ICONS = {
 const DimensionItem = ({
     dimensionType,
     id,
-    name,
     disabled,
-    ghost,
+    name,
     optionSet,
     selected,
     stageName,
     valueType,
 }) => {
     const dispatch = useDispatch()
-    const onClick =
-        disabled || ghost
-            ? undefined
-            : () =>
-                  dispatch(
-                      acSetUiOpenDimensionModal(id, {
-                          [id]: {
-                              id,
-                              name,
-                              dimensionType,
-                              valueType,
-                              optionSet,
-                          },
-                      })
-                  )
+    const onClick = disabled
+        ? undefined
+        : () =>
+              dispatch(
+                  acSetUiOpenDimensionModal(id, {
+                      [id]: {
+                          id,
+                          name,
+                          dimensionType,
+                          valueType,
+                          optionSet,
+                      },
+                  })
+              )
     const Icon = DIMENSION_TYPE_ICONS[dimensionType]
 
     return (
@@ -106,15 +104,10 @@ DimensionItem.propTypes = {
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     disabled: PropTypes.bool,
-    ghost: PropTypes.bool,
     optionSet: PropTypes.string,
     selected: PropTypes.bool,
     stageName: PropTypes.string,
     valueType: PropTypes.string,
-}
-
-DimensionItem.defaultValues = {
-    ghost: false,
 }
 
 export { DimensionItem }
