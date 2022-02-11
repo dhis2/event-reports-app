@@ -79,7 +79,6 @@ const pointerWithin = ({ droppableContainers, pointerCoordinates }) => {
              * the pointer and the corners of the intersecting rectangle
              */
             const corners = cornersOfRectangle(rect)
-            // console.log('pointer is within rect, rect corners', corners)
             const distances = corners.reduce((accumulator, corner) => {
                 return accumulator + distanceBetween(pointerCoordinates, corner)
             }, 0)
@@ -248,7 +247,10 @@ const OuterDndContext = ({ children }) => {
     const onDragEnd = (result) => {
         const { active, over } = result
 
-        if (!over?.id) {
+        if (
+            !over?.id ||
+            over?.data?.current?.sortable?.containerId === SOURCE_DIMENSIONS
+        ) {
             return
         }
 
@@ -263,7 +265,6 @@ const OuterDndContext = ({ children }) => {
         }
 
         if (sourceAxisId === SOURCE_DIMENSIONS) {
-            // console.log('add ', dimensionId, 'at index', destinationIndex)
             addDimensionToLayout({
                 axisId: destinationAxisId,
                 index: destinationIndex,
@@ -303,8 +304,9 @@ const OuterDndContext = ({ children }) => {
                 className={styles.strategy}
                 onChange={onChange}
             >
-                <option value="">--Choose collision strategy--</option>
-                <option value="rectIntersection">RectIntersection</option>
+                <option value="rectIntersection" selected>
+                    RectIntersection
+                </option>
                 <option value="pointerWithin">PointerWithin</option>
                 <option value="closestCenter">ClosestCenter</option>
                 <option value="closestCorners">ClosestCorners</option>

@@ -60,6 +60,10 @@ const DraggableDimensionItem = (props) => {
         id: props.id,
     })
 
+    if (props.disabled) {
+        return <>{props.children}</>
+    }
+
     const style = transform
         ? {
               transform: isSorting
@@ -79,7 +83,7 @@ const DraggableDimensionItem = (props) => {
             {...listeners}
             ref={setNodeRef}
             style={style}
-            className={cx(styles.chipWrapper, {
+            className={cx(styles.draggableDimensionItem, {
                 [styles.active]: isDragging,
             })}
         >
@@ -90,6 +94,7 @@ const DraggableDimensionItem = (props) => {
 
 DraggableDimensionItem.propTypes = {
     children: PropTypes.node,
+    disabled: PropTypes.bool,
     id: PropTypes.string,
 }
 

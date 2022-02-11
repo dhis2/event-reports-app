@@ -30,6 +30,7 @@ export const SET_UI_ITEMS = 'SET_UI_ITEMS'
 export const ADD_UI_PARENT_GRAPH_MAP = 'ADD_UI_PARENT_GRAPH_MAP'
 export const SET_UI_CONDITIONS = 'SET_UI_CONDITIONS'
 export const SET_UI_REPETITION = 'SET_UI_REPETITION'
+export const SET_UI_FILE_MENU_OPEN_COUNTER = 'SET_UI_FILE_MENU_OPEN_COUNTER'
 
 const EMPTY_UI = {
     draggingId: null,
@@ -73,6 +74,7 @@ export const DEFAULT_UI = {
     activeModalDialog: null,
     parentGraphMap: {},
     repetitionByDimension: {},
+    fileMenuNewCounter: 0,
 }
 
 const getPreselectedUi = (options) => {
@@ -101,6 +103,9 @@ const getPreselectedUi = (options) => {
 
 export default (state = EMPTY_UI, action) => {
     switch (action.type) {
+        case SET_UI_FILE_MENU_OPEN_COUNTER: {
+            return { ...state, fileMenuNewCounter: ++state.fileMenuNewCounter }
+        }
         case SET_UI_DRAGGING_ID: {
             return { ...state, draggingId: action.value }
         }
@@ -313,6 +318,9 @@ export const sGetUiInputType = (state) => sGetUiInput(state).type
 
 export const sGetUiProgramId = (state) => sGetUiProgram(state).id
 export const sGetUiProgramStageId = (state) => sGetUiProgram(state).stageId
+
+export const sGetUiFileMenuNewCounter = (state) =>
+    sGetUi(state).fileMenuNewCounter
 
 export const sGetUiItemsByDimension = (state, dimension) =>
     sGetUiItems(state)[dimension] || DEFAULT_UI.itemsByDimension[dimension]

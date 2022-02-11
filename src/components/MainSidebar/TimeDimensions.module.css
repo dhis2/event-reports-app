@@ -3,6 +3,7 @@
     flex-direction: column;
     gap: 4px;
     padding: var(--spacers-dp8) var(--spacers-dp8) var(--spacers-dp4);
+    user-select: none;
 }
 
 .dimensionSection {
@@ -15,4 +16,8 @@
     color: var(--colors-grey700);
     font-size: 13px;
     margin-bottom: var(--spacers-dp8);
+}
+
+.draggableDimensionItem {
+    font-weight: 400;
 }

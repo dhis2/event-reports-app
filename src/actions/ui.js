@@ -17,6 +17,7 @@ import {
     SET_UI_CONDITIONS,
     SET_UI_REPETITION,
     SET_UI_INPUT,
+    SET_UI_FILE_MENU_OPEN_COUNTER,
     UPDATE_UI_PROGRAM_ID,
     UPDATE_UI_PROGRAM_STAGE_ID,
     CLEAR_UI_PROGRAM,
@@ -30,6 +31,10 @@ export const acSetUiDraggingId = (value) => ({
 export const acSetUiInput = (value) => ({
     type: SET_UI_INPUT,
     value,
+})
+
+export const acIncrementFileMenuNewCounter = () => ({
+    type: SET_UI_FILE_MENU_OPEN_COUNTER,
 })
 
 export const acClearUiProgram = () => ({
