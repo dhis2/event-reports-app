@@ -24,7 +24,6 @@ const Chip = ({
     activeIndex,
 }) => {
     const {
-        active,
         attributes,
         listeners,
         index,

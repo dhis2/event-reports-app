@@ -12,7 +12,7 @@ jest.mock('../SelectedDimensionsContext.js', () => ({
 
 const mockStore = configureMockStore()
 
-test('input type EVENT, WITHOUT_REGISTRATION no custom labels', () => {
+test.skip('input type EVENT, WITHOUT_REGISTRATION no custom labels', () => {
     const store = {
         metadata: {
             theProgramId: {
@@ -47,7 +47,7 @@ test('input type EVENT, WITHOUT_REGISTRATION no custom labels', () => {
     expect(container).toMatchSnapshot()
 })
 
-test('input type EVENT, WITHOUT_REGISTRATION with custom labels', () => {
+test.skip('input type EVENT, WITHOUT_REGISTRATION with custom labels', () => {
     const store = {
         metadata: {
             theProgramId: {
@@ -83,7 +83,7 @@ test('input type EVENT, WITHOUT_REGISTRATION with custom labels', () => {
     expect(container).toMatchSnapshot()
 })
 
-test('input type EVENT, WITH_REGISTRATION', () => {
+test.skip('input type EVENT, WITH_REGISTRATION', () => {
     const store = {
         metadata: {
             theProgramId: {
@@ -123,7 +123,7 @@ test('input type EVENT, WITH_REGISTRATION', () => {
     expect(container).toMatchSnapshot()
 })
 
-test('input type EVENT, WITH_REGISTRATION, custom labels', () => {
+test.skip('input type EVENT, WITH_REGISTRATION, custom labels', () => {
     const store = {
         metadata: {
             theProgramId: {
@@ -166,7 +166,7 @@ test('input type EVENT, WITH_REGISTRATION, custom labels', () => {
     expect(container).toMatchSnapshot()
 })
 
-test('input type EVENT, WITH_REGISTRATION, custom labels, hide due date', () => {
+test.skip('input type EVENT, WITH_REGISTRATION, custom labels, hide due date', () => {
     const store = {
         metadata: {
             theProgramId: {
@@ -210,7 +210,7 @@ test('input type EVENT, WITH_REGISTRATION, custom labels, hide due date', () => 
     expect(container).toMatchSnapshot()
 })
 
-test('input type EVENT, WITH_REGISTRATION, custom labels, hide incident date', () => {
+test.skip('input type EVENT, WITH_REGISTRATION, custom labels, hide incident date', () => {
     const store = {
         metadata: {
             theProgramId: {
@@ -253,7 +253,7 @@ test('input type EVENT, WITH_REGISTRATION, custom labels, hide incident date', (
     expect(container).toMatchSnapshot()
 })
 
-test('input type ENROLLMENT, WITH_REGISTRATION, custom labels, hide incident date', () => {
+test.skip('input type ENROLLMENT, WITH_REGISTRATION, custom labels, hide incident date', () => {
     const store = {
         metadata: {
             theProgramId: {
@@ -296,7 +296,7 @@ test('input type ENROLLMENT, WITH_REGISTRATION, custom labels, hide incident dat
     expect(container).toMatchSnapshot()
 })
 
-test('input type ENROLLMENT, WITH_REGISTRATION, custom labels', () => {
+test.skip('input type ENROLLMENT, WITH_REGISTRATION, custom labels', () => {
     const store = {
         metadata: {
             theProgramId: {
@@ -339,7 +339,7 @@ test('input type ENROLLMENT, WITH_REGISTRATION, custom labels', () => {
     expect(container).toMatchSnapshot()
 })
 
-test('input type ENROLLMENT, WITHOUT_REGISTRATION', () => {
+test.skip('input type ENROLLMENT, WITHOUT_REGISTRATION', () => {
     const store = {
         metadata: {
             theProgramId: {
@@ -377,7 +377,7 @@ test('input type ENROLLMENT, WITHOUT_REGISTRATION', () => {
     expect(container).toMatchSnapshot()
 })
 
-test('input type EVENT and program metadata missing', () => {
+test.skip('input type EVENT and program metadata missing', () => {
     const store = {
         metadata: {},
         ui: {
@@ -399,7 +399,7 @@ test('input type EVENT and program metadata missing', () => {
     expect(container).toMatchSnapshot()
 })
 
-test('stage missing', () => {
+test.skip('stage missing', () => {
     const store = {
         metadata: {
             theProgramId: {

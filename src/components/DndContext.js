@@ -2,7 +2,7 @@ import {
     DndContext,
     DragOverlay,
     rectIntersection,
-    closestCorners,
+    closestCenter,
     pointerWithin,
 } from '@dnd-kit/core'
 import PropTypes from 'prop-types'
@@ -26,91 +26,45 @@ import { DimensionItemOverlay } from './MainSidebar/DimensionItem/DimensionItemO
 
 const FIRST_POSITION = 0
 
-function isPointWithinRect(point, rect) {
-    const { top, left, bottom, right } = rect
-    return (
-        top <= point.y &&
-        point.y <= bottom &&
-        left <= point.x &&
-        point.x <= right
+function getIntersectionRatio(entry, target) {
+    const top = Math.max(target.top, entry.top)
+    const left = Math.max(target.left, entry.left)
+    const right = Math.min(target.left + target.width, entry.left + entry.width)
+    const bottom = Math.min(
+        target.top + target.height,
+        entry.top + entry.height
     )
+    const width = right - left
+    const height = bottom - top
+
+    if (left < right && top < bottom) {
+        const targetArea = target.width * target.height
+        const entryArea = entry.width * entry.height
+        const intersectionArea = width * height
+        const intersectionRatio =
+            intersectionArea / (targetArea + entryArea - intersectionArea)
+        return Number(intersectionRatio.toFixed(4))
+    } // Rectangles do not overlap, or overlap has an area of zero (edge/corner overlap)
+
+    return 0
 }
-function cornersOfRectangle({ left, top, height, width }) {
-    return [
-        {
-            x: left,
-            y: top,
-        },
-        {
-            x: left + width,
-            y: top,
-        },
-        {
-            x: left,
-            y: top + height,
-        },
-        {
-            x: left + width,
-            y: top + height,
-        },
-    ]
+function sortCollisionsDesc({ data: { value: a } }, { data: { value: b } }) {
+    return b - a
 }
 
-function distanceBetween(p1, p2) {
-    return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2))
-}
-function sortCollisionsAsc({ data: { value: a } }, { data: { value: b } }) {
-    return a - b
-}
-const pointerWithinCustom = ({ droppableContainers, pointerCoordinates }) => {
-    if (!pointerCoordinates) {
-        return []
+const rectIntersectionCustom = ({
+    pointerCoordinates,
+    droppableContainers,
+}) => {
+    // create a rect around the pointerCoords for calculating the intersection
+    const pointerRect = {
+        width: 80,
+        height: 40,
+        top: pointerCoordinates.y - 20,
+        bottom: pointerCoordinates.y + 20,
+        left: pointerCoordinates.x - 40,
+        right: pointerCoordinates.x + 40,
     }
-
-    const collisions = []
-
-    for (const droppableContainer of droppableContainers) {
-        const {
-            id,
-            rect: { current: rect },
-        } = droppableContainer
-
-        if (rect && isPointWithinRect(pointerCoordinates, rect)) {
-            /* There may be more than a single rectangle intersecting
-             * with the pointer coordinates. In order to sort the
-             * colliding rectangles, we measure the distance between
-             * the pointer and the corners of the intersecting rectangle
-             */
-            const corners = cornersOfRectangle(rect)
-            const distances = corners.reduce((accumulator, corner) => {
-                return accumulator + distanceBetween(pointerCoordinates, corner)
-            }, 0)
-            const effectiveDistance = Number((distances / 4).toFixed(4))
-            collisions.push({
-                id,
-                data: {
-                    droppableContainer,
-                    value: effectiveDistance,
-                },
-            })
-        }
-    }
-
-    return collisions.sort(sortCollisionsAsc)
-}
-function centerOfRectangle(rect, left = rect.left, top = rect.top) {
-    return {
-        x: left + rect.width * 0.5,
-        y: top + rect.height * 0.5,
-    }
-}
-
-const closestCenter = ({ collisionRect, droppableContainers }) => {
-    const centerRect = centerOfRectangle(
-        collisionRect,
-        collisionRect.left,
-        collisionRect.top
-    )
     const collisions = []
 
     for (const droppableContainer of droppableContainers) {
@@ -120,26 +74,26 @@ const closestCenter = ({ collisionRect, droppableContainers }) => {
         } = droppableContainer
 
         if (rect) {
-            const distBetween = distanceBetween(
-                centerOfRectangle(rect),
-                centerRect
-            )
-            collisions.push({
-                id,
-                data: {
-                    droppableContainer,
-                    value: distBetween,
-                },
-            })
+            const intersectionRatio = getIntersectionRatio(rect, pointerRect)
+
+            if (intersectionRatio > 0) {
+                collisions.push({
+                    id,
+                    data: {
+                        droppableContainer,
+                        value: intersectionRatio,
+                    },
+                })
+            }
         }
     }
 
-    return collisions.sort(sortCollisionsAsc)
+    return collisions.sort(sortCollisionsDesc)
 }
 
 const OuterDndContext = ({ children }) => {
     const [{ algorithm }, setCollisionDetectionAlgorithm] = useState({
-        algorithm: rectIntersection,
+        algorithm: rectIntersectionCustom,
     })
     const [sourceAxis, setSourceAxis] = useState(null)
 
@@ -156,9 +110,8 @@ const OuterDndContext = ({ children }) => {
         const strategyMap = {
             closestCenter: closestCenter,
             rectIntersection: rectIntersection,
-            closestCorners: closestCorners,
+            rectIntersectionCustom: rectIntersectionCustom,
             pointerWithin: pointerWithin,
-            pointerCustom: pointerWithinCustom,
         }
         setCollisionDetectionAlgorithm({
             algorithm: strategyMap[e.target.value],
@@ -318,13 +271,12 @@ const OuterDndContext = ({ children }) => {
                 className={styles.strategy}
                 onChange={onChange}
             >
-                <option value="pointerCustom">PointerWithin Custom</option>
-                <option value="rectIntersection" selected>
-                    RectIntersection
+                <option value="rectIntersectionCustom" selected>
+                    Pointer with 40x80px rect intersection
                 </option>
+                <option value="rectIntersection">RectIntersection</option>
                 <option value="pointerWithin">PointerWithin</option>
                 <option value="closestCenter">ClosestCenter</option>
-                <option value="closestCorners">ClosestCorners</option>
             </select>
         </DndContext>
     )
