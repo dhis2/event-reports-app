@@ -4,6 +4,9 @@ import {
     rectIntersection,
     closestCenter,
     pointerWithin,
+    useSensor,
+    useSensors,
+    MouseSensor,
 } from '@dnd-kit/core'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
@@ -100,10 +103,17 @@ const OuterDndContext = ({ children }) => {
     const draggingId = useSelector(sGetUiDraggingId)
     const layout = useSelector(sGetUiLayout)
     const metadata = useSelector(sGetMetadata)
-
     const chipItems = useSelector((state) =>
         sGetUiItemsByDimension(state, draggingId)
     )
+
+    const mouseSensor = useSensor(MouseSensor, {
+        activationConstraint: {
+            distance: 15,
+        },
+    })
+    const sensors = useSensors(mouseSensor)
+
     const dispatch = useDispatch()
 
     const onChange = (e) => {
@@ -255,6 +265,7 @@ const OuterDndContext = ({ children }) => {
             onDragStart={onDragStart}
             onDragEnd={onDragEnd}
             onDragCancel={onDragCancel}
+            sensors={sensors}
         >
             {children}
             <DragOverlay
