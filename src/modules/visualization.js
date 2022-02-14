@@ -76,16 +76,16 @@ export const transformVisualization = (visualization) => {
         visualization.outputType === OUTPUT_TYPE_EVENT
     ) {
         transformedFilters.push({
-            dimensionType: DIMENSION_TYPE_EVENT_STATUS,
             dimension: DIMENSION_TYPE_EVENT_STATUS,
             items: [{ id: STATUS_COMPLETED }],
         })
     }
 
-    delete visualization.completedOnly
+    const transformedVisualization = { ...visualization }
+    delete transformedVisualization.completedOnly
 
     return {
-        ...visualization,
+        ...transformedVisualization,
         [AXIS_ID_COLUMNS]: transformedColumns,
         [AXIS_ID_ROWS]: transformedRows,
         [AXIS_ID_FILTERS]: transformedFilters,
