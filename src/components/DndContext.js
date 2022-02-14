@@ -272,6 +272,7 @@ const OuterDndContext = ({ children }) => {
                 dropAnimation={{
                     duration: 200,
                     easing: 'ease-in',
+                    dragSourceOpacity: 0,
                 }}
             >
                 {getDragOverlay()}
