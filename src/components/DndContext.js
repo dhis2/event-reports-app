@@ -25,7 +25,7 @@ import {
 } from '../reducers/ui.js'
 import styles from './DndContext.module.css'
 import ChipOverlay from './Layout/ChipOverlay.js'
-import { DimensionItemOverlay } from './MainSidebar/DimensionItem/DimensionItemOverlay.js'
+import { DimensionItemBase } from './MainSidebar/DimensionItem/DimensionItemBase.js'
 
 const FIRST_POSITION = 0
 
@@ -136,28 +136,25 @@ const OuterDndContext = ({ children }) => {
         const name = metadata[draggingId].name
         const dimensionType = metadata[draggingId].dimensionType
 
-        if (sourceAxis === SOURCE_DIMENSIONS) {
-            return (
-                <div className={styles.overlay}>
-                    <DimensionItemOverlay
+        return (
+            <div className={styles.overlay}>
+                {sourceAxis === SOURCE_DIMENSIONS ? (
+                    <DimensionItemBase
                         name={name}
                         dimensionType={dimensionType}
                     />
-                </div>
-            )
-        } else {
-            return (
-                <div className={styles.overlay}>
+                ) : (
                     <ChipOverlay
                         dimensionType={dimensionType}
                         dimensionId={draggingId}
                         dimensionName={name}
                         items={chipItems}
                     />
-                </div>
-            )
-        }
+                )}
+            </div>
+        )
     }
+
     const rearrangeLayoutDimensions = ({
         sourceAxisId,
         destinationAxisId,

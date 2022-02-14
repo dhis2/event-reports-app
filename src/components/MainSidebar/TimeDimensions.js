@@ -57,7 +57,7 @@ const DraggableDimensionItem = (props) => {
         id: props.id,
     })
 
-    if (props.disabled) {
+    if (props.disabled || props.selected) {
         return <>{props.children}</>
     }
 
@@ -85,6 +85,7 @@ DraggableDimensionItem.propTypes = {
     children: PropTypes.node,
     disabled: PropTypes.bool,
     id: PropTypes.string,
+    selected: PropTypes.bool,
 }
 
 export const TimeDimensions = () => {

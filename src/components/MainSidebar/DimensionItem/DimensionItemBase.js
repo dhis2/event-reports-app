@@ -26,7 +26,7 @@ import {
     DIMENSION_TYPE_PROGRAM_STATUS,
     DIMENSION_TYPE_CREATED_BY,
 } from '../../../modules/dimensionTypes.js'
-import styles from './DimensionItem.module.css'
+import styles from './DimensionItemBase.module.css'
 
 const DIMENSION_TYPE_ICONS = {
     /**PROGRAM**/
@@ -49,20 +49,28 @@ const DIMENSION_TYPE_ICONS = {
     [DIMENSION_ID_PERIOD]: IconCalendar16,
 }
 
-const DimensionItemOverlay = ({ dimensionType, name, selected, stageName }) => {
+const DimensionItemBase = ({
+    name,
+    dimensionType,
+    selected,
+    disabled,
+    stageName,
+    onClick,
+}) => {
     const Icon = DIMENSION_TYPE_ICONS[dimensionType]
 
     return (
         <div
             className={cx(styles.dimensionItem, styles.dimensionItemOverlay, {
                 [styles.selected]: selected,
+                [styles.disabled]: disabled,
             })}
+            onClick={onClick}
         >
-            {Icon && (
-                <div className={styles.icon}>
-                    <Icon />
-                </div>
-            )}
+            <div className={styles.icon}>
+                <Icon />
+            </div>
+
             <div className={styles.label}>
                 <span className={styles.primary}>{name}</span>
                 {stageName && (
@@ -73,16 +81,19 @@ const DimensionItemOverlay = ({ dimensionType, name, selected, stageName }) => {
     )
 }
 
-DimensionItemOverlay.propTypes = {
+DimensionItemBase.propTypes = {
     dimensionType: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
+    disabled: PropTypes.bool,
     selected: PropTypes.bool,
     stageName: PropTypes.string,
+    onClick: PropTypes.func,
 }
 
-DimensionItemOverlay.defaultProps = {
+DimensionItemBase.defaultProps = {
     conditions: [],
     items: [],
+    onClick: Function.prototype,
 }
 
-export { DimensionItemOverlay }
+export { DimensionItemBase }
