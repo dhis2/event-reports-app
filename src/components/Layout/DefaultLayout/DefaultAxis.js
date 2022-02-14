@@ -60,6 +60,7 @@ const DefaultAxis = ({
                         ref={setNodeRef}
                         className={cx(styles.lastItemDroppableArea, {
                             [styles.isOver]: isOver,
+                            [styles.isEmpty]: !axis.length,
                         })}
                     >
                         <div className={styles.dropIndicator} />

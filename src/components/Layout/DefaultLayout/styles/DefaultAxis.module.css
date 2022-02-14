@@ -46,6 +46,17 @@
     position: absolute;
 }
 
+.isEmpty {
+    position: relative;
+    flex-grow: 2;
+    height: 100%;
+    margin: 0;
+}
+
+.isEmpty .dropIndicator {
+    margin-top: 4px;
+}
+
 .isOver .dropIndicator:before,
 .isOver .dropIndicator:after {
     content: '';
@@ -55,10 +66,14 @@
 /* the vertical line */
 .isOver .dropIndicator:before {
     top: 6px;
-    bottom: 0;
     width: 4px;
     left: -6px;
+    height: 18px;
     background-color: #4c9ffe;
+}
+
+.isOver.isEmpty .dropIndicator:before {
+    top: 10px;
 }
 
 /* the circle */
@@ -70,4 +85,7 @@
     border: 4px solid #4c9ffe;
     background: transparent;
     border-radius: 12px;
+}
+.isOver.isEmpty .dropIndicator:after {
+    top: 0;
 }
