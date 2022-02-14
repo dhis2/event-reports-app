@@ -8,6 +8,7 @@ import { useDataEngine } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import { useEffect, useState, useRef } from 'react'
 import {
+    DIMENSION_TYPE_PROGRAM_STATUS,
     DIMENSION_TYPE_EVENT_STATUS,
     DIMENSION_TYPE_EVENT_DATE,
     DIMENSION_TYPE_ENROLLMENT_DATE,
@@ -68,7 +69,8 @@ const getAdaptedVisualization = (visualization) => {
 
             if (
                 isTimeDimension(dimensionId) ||
-                dimensionId === DIMENSION_TYPE_EVENT_STATUS
+                dimensionId === DIMENSION_TYPE_EVENT_STATUS ||
+                dimensionId === DIMENSION_TYPE_PROGRAM_STATUS
             ) {
                 parameters[dimensionId] = dimensionObj.items?.map(
                     (item) => item.id
