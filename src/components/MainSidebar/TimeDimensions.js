@@ -1,11 +1,11 @@
 import { DIMENSION_ID_PERIOD } from '@dhis2/analytics'
+import i18n from '@dhis2/d2-i18n'
 import {
     useSortable,
     SortableContext,
     verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import cx from 'classnames'
 import PropTypes from 'prop-types'
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -30,9 +30,9 @@ import {
     sGetUiProgramStageId,
 } from '../../reducers/ui.js'
 import { DimensionItem } from './DimensionItem/index.js'
+import { MainSidebarSection } from './MainSidebarSection.js'
 import { PROGRAM_TYPE_WITH_REGISTRATION } from './ProgramDimensionsPanel/ProgramDimensionsPanel.js'
 import { useSelectedDimensions } from './SelectedDimensionsContext.js'
-import styles from './TimeDimensions.module.css'
 
 const getName = (dimension, program, stage) => {
     if (!dimension.nameParentProperty) {
@@ -49,10 +49,7 @@ const DraggableDimensionItem = (props) => {
     const {
         attributes,
         listeners,
-        // index,
-        isDragging,
         isSorting,
-        // over,
         setNodeRef,
         transform,
         transition,
@@ -78,15 +75,7 @@ const DraggableDimensionItem = (props) => {
           }
         : undefined
     return (
-        <div
-            {...attributes}
-            {...listeners}
-            ref={setNodeRef}
-            style={style}
-            className={cx(styles.draggableDimensionItem, {
-                [styles.active]: isDragging,
-            })}
-        >
+        <div {...attributes} {...listeners} ref={setNodeRef} style={style}>
             {props.children}
         </div>
     )
@@ -98,7 +87,7 @@ DraggableDimensionItem.propTypes = {
     id: PropTypes.string,
 }
 
-const TimeDimensions = () => {
+export const TimeDimensions = () => {
     const dispatch = useDispatch()
     const [dimensions, setDimensions] = useState([])
     const { getIsDimensionSelected } = useSelectedDimensions()
@@ -164,25 +153,18 @@ const TimeDimensions = () => {
     }, [selectedInputType, programId, stageId])
 
     return (
-        <div>
+        <MainSidebarSection header={i18n.t('Time dimensions')}>
             <SortableContext
                 id={SOURCE_DIMENSIONS}
                 items={dimensions}
                 strategy={verticalListSortingStrategy}
             >
-                <div className={styles.list}>
-                    {dimensions.map((dimension) => (
-                        <DraggableDimensionItem
-                            key={dimension.id}
-                            {...dimension}
-                        >
-                            <DimensionItem {...dimension} />
-                        </DraggableDimensionItem>
-                    ))}
-                </div>
+                {dimensions.map((dimension) => (
+                    <DraggableDimensionItem key={dimension.id} {...dimension}>
+                        <DimensionItem {...dimension} />
+                    </DraggableDimensionItem>
+                ))}
             </SortableContext>
-        </div>
+        </MainSidebarSection>
     )
 }
-
-export default TimeDimensions
