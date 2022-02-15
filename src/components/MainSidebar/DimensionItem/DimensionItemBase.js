@@ -28,6 +28,8 @@ import {
 } from '../../../modules/dimensionTypes.js'
 import styles from './DimensionItemBase.module.css'
 
+// Presentational component used by dnd - do not add redux or dnd functionality
+
 const DIMENSION_TYPE_ICONS = {
     /**PROGRAM**/
     [DIMENSION_TYPE_DATA_ELEMENT]: IconDimensionData16,

@@ -1,4 +1,3 @@
-import i18n from '@dhis2/d2-i18n'
 import { Tooltip } from '@dhis2/ui'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
@@ -6,8 +5,8 @@ import cx from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
-import DynamicDimensionIcon from '../../assets/DynamicDimensionIcon.js'
 import { sGetMetadataById } from '../../reducers/metadata.js'
+import { ChipBase } from './ChipBase.js'
 import styles from './styles/Chip.module.css'
 import { default as TooltipContent } from './TooltipContent.js'
 
@@ -66,37 +65,8 @@ const Chip = ({
 
     const dataTest = `layout-chip-${dimensionId}`
 
-    const renderChipLabelSuffix = () => {
-        let itemsLabel = ''
-        if (items.length) {
-            itemsLabel = i18n.t('{{count}} selected', {
-                count: items.length,
-            })
-        } else if (numberOfConditions) {
-            itemsLabel = i18n.t('{{count}} conditions', {
-                count: numberOfConditions,
-                defaultValue: '{{count}} condition',
-                defaultValue_plural: '{{count}} conditions',
-            })
-        }
-        return itemsLabel ? `: ${itemsLabel}` : ''
-    }
-
-    const renderChipIcon = () => {
-        // TODO: Add the chip icons once they've been spec'ed properly
-        return <DynamicDimensionIcon />
-    }
-
     const renderTooltipContent = () => (
         <TooltipContent dimensionId={dimensionId} itemIds={items} />
-    )
-
-    const renderChipContent = () => (
-        <>
-            <div className={styles.leftIconWrapper}>{renderChipIcon()}</div>
-            <span className={styles.label}>{dimensionName}</span>
-            <span>{renderChipLabelSuffix()}</span>
-        </>
     )
 
     return (
@@ -111,7 +81,6 @@ const Chip = ({
                 [styles.insertBefore]: insertPosition === BEFORE,
                 [styles.insertAfter]: insertPosition === AFTER,
             })}
-            data-dimensionid={dimensionId}
         >
             <div className={styles.content}>
                 {
@@ -129,7 +98,11 @@ const Chip = ({
                                 onMouseOver={onMouseOver}
                                 onMouseOut={onMouseOut}
                             >
-                                {renderChipContent()}
+                                <ChipBase
+                                    dimensionName={dimensionName}
+                                    numberOfConditions={numberOfConditions}
+                                    items={items}
+                                />
                             </div>
                         )}
                     </Tooltip>

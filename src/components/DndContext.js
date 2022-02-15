@@ -8,6 +8,7 @@ import {
     useSensors,
     MouseSensor,
 } from '@dnd-kit/core'
+import cx from 'classnames'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -16,15 +17,18 @@ import {
     acSetUiLayout,
     acSetUiDraggingId,
 } from '../actions/ui.js'
+import { parseConditionsStringToArray } from '../modules/conditions.js'
 import { SOURCE_DIMENSIONS } from '../modules/layout.js'
 import { sGetMetadata } from '../reducers/metadata.js'
 import {
     sGetUiLayout,
     sGetUiItemsByDimension,
     sGetUiDraggingId,
+    sGetUiConditionsByDimension,
 } from '../reducers/ui.js'
 import styles from './DndContext.module.css'
-import ChipOverlay from './Layout/ChipOverlay.js'
+import { ChipBase } from './Layout/ChipBase.js'
+import chipStyles from './Layout/styles/Chip.module.css'
 import { DimensionItemBase } from './MainSidebar/DimensionItem/DimensionItemBase.js'
 
 const FIRST_POSITION = 0
@@ -107,6 +111,11 @@ const OuterDndContext = ({ children }) => {
         sGetUiItemsByDimension(state, draggingId)
     )
 
+    const chipConditions =
+        useSelector((state) =>
+            sGetUiConditionsByDimension(state, draggingId)
+        ) || {}
+
     const mouseSensor = useSensor(MouseSensor, {
         activationConstraint: {
             distance: 15,
@@ -136,6 +145,12 @@ const OuterDndContext = ({ children }) => {
         const name = metadata[draggingId].name
         const dimensionType = metadata[draggingId].dimensionType
 
+        const numberOfConditions =
+            parseConditionsStringToArray(chipConditions.condition).length ||
+            chipConditions.legendSet
+                ? 1
+                : 0
+
         return (
             <div className={styles.overlay}>
                 {sourceAxis === SOURCE_DIMENSIONS ? (
@@ -144,12 +159,22 @@ const OuterDndContext = ({ children }) => {
                         dimensionType={dimensionType}
                     />
                 ) : (
-                    <ChipOverlay
-                        dimensionType={dimensionType}
-                        dimensionId={draggingId}
-                        dimensionName={name}
-                        items={chipItems}
-                    />
+                    <div
+                        className={cx(
+                            chipStyles.chipWrapper,
+                            chipStyles.chipWrapperOverlay,
+                            {
+                                [chipStyles.chipEmpty]:
+                                    !chipItems.length && !numberOfConditions,
+                            }
+                        )}
+                    >
+                        <ChipBase
+                            dimensionName={name}
+                            items={chipItems}
+                            numberOfConditions={numberOfConditions}
+                        />
+                    </div>
                 )}
             </div>
         )
