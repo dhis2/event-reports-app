@@ -26,7 +26,8 @@ const mostViewedQuery = {
 
 const visualizationsQuery = {
     visualizations: {
-        resource: 'eventVisualizations',
+        resource: 'dev null',
+        // resource: 'eventVisualizations',
         params: ({ ids }) => ({
             filter: `id:in:[${ids.join(',')}]`,
             fields: ['id', 'displayName~rename(name)', 'type'],
@@ -122,7 +123,7 @@ const StartScreen = ({ error, username }) => {
         </div>
     )
 
-    const getErrorContent = () => (
+    const getErrorContent = (error) => (
         <div
             className={styles.errorContainer}
             data-test="start-screen-error-container"
@@ -147,12 +148,12 @@ const StartScreen = ({ error, username }) => {
         </div>
     )
 
+    const loadError = error || data.error
+
     return (
         <div className={styles.outer}>
             <div className={styles.inner}>
-                {error || data.error
-                    ? getErrorContent(error || data.error)
-                    : getContent()}
+                {loadError ? getErrorContent(loadError) : getContent()}
             </div>
         </div>
     )
