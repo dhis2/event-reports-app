@@ -92,10 +92,6 @@ export const transformVisualization = (visualization) => {
     }
 }
 
-const dimensionTypeMap = {
-    PERIOD: DIMENSION_ID_PERIOD,
-}
-
 const transformDimensions = (dimensions, { outputType, type }) =>
     dimensions.map((dimensionObj) => {
         if (dimensionObj.dimensionType === 'PROGRAM_DATA_ELEMENT') {
@@ -110,9 +106,7 @@ const transformDimensions = (dimensions, { outputType, type }) =>
             return {
                 ...dimensionObj,
                 dimension: outputTypeTimeDimensionMap[outputType],
-                dimensionType:
-                    dimensionTypeMap[dimensionObj.dimensionType] ||
-                    dimensionObj.dimensionType,
+                dimensionType: DIMENSION_ID_PERIOD,
             }
         } else {
             return dimensionObj
