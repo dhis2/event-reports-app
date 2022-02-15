@@ -110,7 +110,9 @@ const transformDimensions = (dimensions, { outputType, type }) =>
             return {
                 ...dimensionObj,
                 dimension: outputTypeTimeDimensionMap[outputType],
-                dimensionType: dimensionTypeMap[dimensionObj.dimensionType],
+                dimensionType:
+                    dimensionTypeMap[dimensionObj.dimensionType] ||
+                    dimensionObj.dimensionType,
             }
         } else {
             return dimensionObj
