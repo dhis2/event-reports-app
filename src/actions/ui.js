@@ -1,3 +1,8 @@
+import {
+    getDefaulTimeDimensionsMetadata,
+    getDynamicTimeDimensionsMetadata,
+    getProgramAsMetadata,
+} from '../modules/metadata.js'
 import { sGetRootOrgUnits } from '../reducers/settings.js'
 import {
     ADD_UI_LAYOUT_DIMENSIONS,
@@ -28,9 +33,11 @@ export const acSetUiDraggingId = (value) => ({
     type: SET_UI_DRAGGING_ID,
     value,
 })
-export const acSetUiInput = (value) => ({
+
+export const acSetUiInput = (value, metadata) => ({
     type: SET_UI_INPUT,
     value,
+    metadata,
 })
 
 export const acIncrementFileMenuNewCounter = () => ({
@@ -39,6 +46,7 @@ export const acIncrementFileMenuNewCounter = () => ({
 
 export const acClearUiProgram = () => ({
     type: CLEAR_UI_PROGRAM,
+    metadata: getDefaulTimeDimensionsMetadata(),
 })
 
 export const acClearUiStageId = () => ({
@@ -59,16 +67,39 @@ export const acUpdateUiProgramStageId = (value, metadata) => ({
 
 export const tSetUiInput = (value) => (dispatch) => {
     dispatch(acClearUiProgram())
-    dispatch(acSetUiInput(value))
+    dispatch(acSetUiInput(value, getDefaulTimeDimensionsMetadata()))
 }
 
 export const tSetUiProgram =
-    ({ programId, stageId, metadata }) =>
+    ({ program, stage }) =>
     (dispatch) => {
         dispatch(acClearUiProgram())
-        programId && dispatch(acUpdateUiProgramId(programId, metadata))
-        stageId && dispatch(acUpdateUiProgramStageId(stageId))
+        program &&
+            dispatch(
+                acUpdateUiProgramId(program.id, {
+                    ...getProgramAsMetadata(program),
+                    ...getDefaulTimeDimensionsMetadata(),
+                })
+            )
+        stage &&
+            dispatch(
+                acUpdateUiProgramStageId(
+                    stage.id,
+                    getDynamicTimeDimensionsMetadata(stage, program)
+                )
+            )
     }
+
+export const tSetUiStage = (stage) => (dispatch, getState) => {
+    const state = getState()
+    const program = state.metadata[state.ui.program.id]
+    dispatch(
+        acUpdateUiProgramStageId(
+            stage.id,
+            getDynamicTimeDimensionsMetadata(stage, program)
+        )
+    )
+}
 
 export const acSetUiOptions = (value) => ({
     type: SET_UI_OPTIONS,
