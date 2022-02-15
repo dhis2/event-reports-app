@@ -1,4 +1,3 @@
-import { DIMENSION_ID_PERIOD } from '@dhis2/analytics'
 import {
     IconDimensionData16,
     IconDimensionProgramIndicator16,
@@ -27,6 +26,11 @@ import {
     DIMENSION_TYPE_PROGRAM_INDICATOR,
     DIMENSION_TYPE_PROGRAM_STATUS,
     DIMENSION_TYPE_CREATED_BY,
+    DIMENSION_TYPE_EVENT_DATE,
+    DIMENSION_TYPE_ENROLLMENT_DATE,
+    DIMENSION_TYPE_INCIDENT_DATE,
+    DIMENSION_TYPE_SCHEDULED_DATE,
+    DIMENSION_TYPE_LAST_UPDATED,
 } from '../../../modules/dimensionTypes.js'
 import styles from './DimensionItem.module.css'
 
@@ -48,7 +52,11 @@ const DIMENSION_TYPE_ICONS = {
     [DIMENSION_TYPE_CREATED_BY]: IconUser16,
     [DIMENSION_TYPE_LAST_UPDATED_BY]: IconUser16,
     /**TIME**/
-    [DIMENSION_ID_PERIOD]: IconCalendar16,
+    [DIMENSION_TYPE_EVENT_DATE]: IconCalendar16,
+    [DIMENSION_TYPE_ENROLLMENT_DATE]: IconCalendar16,
+    [DIMENSION_TYPE_INCIDENT_DATE]: IconCalendar16,
+    [DIMENSION_TYPE_SCHEDULED_DATE]: IconCalendar16,
+    [DIMENSION_TYPE_LAST_UPDATED]: IconCalendar16,
 }
 
 const DimensionItem = ({
