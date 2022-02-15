@@ -18,7 +18,7 @@ import {
     acSetUiDraggingId,
 } from '../actions/ui.js'
 import { parseConditionsStringToArray } from '../modules/conditions.js'
-import { SOURCE_DIMENSIONS } from '../modules/layout.js'
+import { MAIN_DIMENSIONS, TIME_DIMENSIONS } from '../modules/layout.js'
 import { sGetMetadata } from '../reducers/metadata.js'
 import {
     sGetUiLayout,
@@ -32,6 +32,7 @@ import chipStyles from './Layout/styles/Chip.module.css'
 import { DimensionItemBase } from './MainSidebar/DimensionItem/DimensionItemBase.js'
 
 const FIRST_POSITION = 0
+const SOURCE_DIMENSIONS = [MAIN_DIMENSIONS, TIME_DIMENSIONS]
 
 function getIntersectionRatio(entry, target) {
     const top = Math.max(target.top, entry.top)
@@ -107,9 +108,8 @@ const OuterDndContext = ({ children }) => {
     const draggingId = useSelector(sGetUiDraggingId)
     const layout = useSelector(sGetUiLayout)
     const metadata = useSelector(sGetMetadata)
-    const chipItems = useSelector((state) =>
-        sGetUiItemsByDimension(state, draggingId)
-    )
+    const chipItems =
+        useSelector((state) => sGetUiItemsByDimension(state, draggingId)) || []
 
     const chipConditions =
         useSelector((state) =>
@@ -153,7 +153,7 @@ const OuterDndContext = ({ children }) => {
 
         return (
             <div className={styles.overlay}>
-                {sourceAxis === SOURCE_DIMENSIONS ? (
+                {SOURCE_DIMENSIONS.includes[sourceAxis] ? (
                     <DimensionItemBase
                         name={name}
                         dimensionType={dimensionType}
@@ -233,7 +233,9 @@ const OuterDndContext = ({ children }) => {
 
         if (
             !over?.id ||
-            over?.data?.current?.sortable?.containerId === SOURCE_DIMENSIONS
+            SOURCE_DIMENSIONS.includes(
+                over?.data?.current?.sortable?.containerId
+            )
         ) {
             // dropped over non-droppable, or over dimension panel
             return
@@ -248,7 +250,7 @@ const OuterDndContext = ({ children }) => {
             return ['columns', 'filters'].includes(over.id)
         }
 
-        if (sourceAxisId === SOURCE_DIMENSIONS) {
+        if (SOURCE_DIMENSIONS.includes(sourceAxisId)) {
             if (isDroppingInFirstPosition()) {
                 destinationIndex = FIRST_POSITION
             } else {

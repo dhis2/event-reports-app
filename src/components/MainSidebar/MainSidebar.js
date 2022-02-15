@@ -74,8 +74,8 @@ const MainSidebar = () => {
                     selected={open && selectedTabId === TAB_YOUR}
                     count={counts.your}
                 />
-                <MainDimensions />
-                <TimeDimensions key={fileMenuCounter} />
+                <MainDimensions key={`maindimensions-${fileMenuCounter}`} />
+                <TimeDimensions key={`timedimensions-${fileMenuCounter}`} />
             </div>
             <div
                 className={cx(styles.accessory, {
