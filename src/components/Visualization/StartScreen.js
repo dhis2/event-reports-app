@@ -5,6 +5,7 @@ import { colors } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
+import { acSetLoadError } from '../../actions/loader.js'
 import { GenericError } from '../../assets/ErrorIcons.js'
 import { EVENT_TYPE } from '../../modules/dataStatistics.js'
 import { VisualizationError, genericErrorTitle } from '../../modules/error.js'
@@ -26,8 +27,7 @@ const mostViewedQuery = {
 
 const visualizationsQuery = {
     visualizations: {
-        resource: 'dev null',
-        // resource: 'eventVisualizations',
+        resource: 'eventVisualizations',
         params: ({ ids }) => ({
             filter: `id:in:[${ids.join(',')}]`,
             fields: ['id', 'displayName~rename(name)', 'type'],
@@ -59,69 +59,76 @@ const useMostViewedVisualizations = (username) => {
     }
 }
 
-const StartScreen = ({ error, username }) => {
-    const data = useMostViewedVisualizations(username)
+const StartScreen = ({ error, username, setLoadError }) => {
+    const getContent = () => {
+        const data = useMostViewedVisualizations(username)
 
-    /* TODO remove this when pivot tables are supported */
-    const mostViewed = data?.mostViewed?.filter(
-        (vis) => vis.type === VIS_TYPE_LINE_LIST
-    )
+        if (data.error) {
+            setLoadError(data.error)
+            return null
+        }
 
-    const getContent = () => (
-        <div data-test="start-screen">
-            <div className={styles.section}>
-                <h3
-                    className={styles.title}
-                    data-test="start-screen-primary-section-title"
-                >
-                    {i18n.t('Getting started')}
-                </h3>
-                <ul className={styles.guide}>
-                    <li className={styles.guideItem}>
-                        {i18n.t(
-                            'All dimensions that you can use to build visualizations are shown in the sections in the left sidebar.'
-                        )}
-                    </li>
-                    <li className={styles.guideItem}>
-                        {i18n.t('Add dimensions to the layout above.')}
-                    </li>
-                    <li className={styles.guideItem}>
-                        {i18n.t(
-                            'Click a dimension to add or remove conditions.'
-                        )}
-                    </li>
-                </ul>
-            </div>
-            {/* TODO add a spinner when loading?! */}
-            {mostViewed?.length > 0 && (
+        /* TODO remove this when pivot tables are supported */
+        const mostViewed = data?.mostViewed?.filter(
+            (vis) => vis.type === VIS_TYPE_LINE_LIST
+        )
+
+        return (
+            <div data-test="start-screen">
                 <div className={styles.section}>
                     <h3
                         className={styles.title}
-                        data-test="start-screen-secondary-section-title"
+                        data-test="start-screen-primary-section-title"
                     >
-                        {i18n.t('Your most viewed event reports')}
+                        {i18n.t('Getting started')}
                     </h3>
-                    {mostViewed.map((vis, index) => (
-                        <p
-                            key={index}
-                            className={styles.visualization}
-                            onClick={() => history.push(`/${vis.id}`)}
-                            data-test="start-screen-most-viewed-list-item"
-                        >
-                            <span className={styles.visIcon}>
-                                <VisTypeIcon
-                                    type={vis.type}
-                                    useSmall
-                                    color={colors.grey600}
-                                />
-                            </span>
-                            <span>{vis.name}</span>
-                        </p>
-                    ))}
+                    <ul className={styles.guide}>
+                        <li className={styles.guideItem}>
+                            {i18n.t(
+                                'All dimensions that you can use to build visualizations are shown in the sections in the left sidebar.'
+                            )}
+                        </li>
+                        <li className={styles.guideItem}>
+                            {i18n.t('Add dimensions to the layout above.')}
+                        </li>
+                        <li className={styles.guideItem}>
+                            {i18n.t(
+                                'Click a dimension to add or remove conditions.'
+                            )}
+                        </li>
+                    </ul>
                 </div>
-            )}
-        </div>
-    )
+                {/* TODO add a spinner when loading?! */}
+                {mostViewed?.length > 0 && (
+                    <div className={styles.section}>
+                        <h3
+                            className={styles.title}
+                            data-test="start-screen-secondary-section-title"
+                        >
+                            {i18n.t('Your most viewed event reports')}
+                        </h3>
+                        {mostViewed.map((vis, index) => (
+                            <p
+                                key={index}
+                                className={styles.visualization}
+                                onClick={() => history.push(`/${vis.id}`)}
+                                data-test="start-screen-most-viewed-list-item"
+                            >
+                                <span className={styles.visIcon}>
+                                    <VisTypeIcon
+                                        type={vis.type}
+                                        useSmall
+                                        color={colors.grey600}
+                                    />
+                                </span>
+                                <span>{vis.name}</span>
+                            </p>
+                        ))}
+                    </div>
+                )}
+            </div>
+        )
+    }
 
     const getErrorContent = (error) => (
         <div
@@ -148,12 +155,10 @@ const StartScreen = ({ error, username }) => {
         </div>
     )
 
-    const loadError = error || data.error
-
     return (
         <div className={styles.outer}>
             <div className={styles.inner}>
-                {loadError ? getErrorContent(loadError) : getContent()}
+                {error ? getErrorContent(error) : getContent()}
             </div>
         </div>
     )
@@ -161,6 +166,7 @@ const StartScreen = ({ error, username }) => {
 
 StartScreen.propTypes = {
     error: PropTypes.object,
+    setLoadError: PropTypes.func,
     username: PropTypes.string,
 }
 
@@ -169,4 +175,8 @@ const mapStateToProps = (state) => ({
     username: sGetUsername(state),
 })
 
-export default connect(mapStateToProps)(StartScreen)
+const mapDispatchToProps = (dispatch) => ({
+    setLoadError: (error) => dispatch(acSetLoadError(error)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(StartScreen)
