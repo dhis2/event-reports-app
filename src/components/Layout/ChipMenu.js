@@ -1,27 +1,29 @@
 import { Layer, Popper, IconMore16 } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React, { useState, useRef } from 'react'
-import { connect } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import {
     acAddUiLayoutDimensions,
-    acRemoveUiLayoutDimensions,
+    tRemoveUiLayoutDimensions,
 } from '../../actions/ui.js'
 import DimensionMenu from '../DimensionMenu/DimensionMenu.js'
 import IconButton from '../IconButton/IconButton.js'
 
-const ChipMenu = ({
-    axisItemHandler,
-    currentAxisId,
-    dimensionId,
-    removeItemHandler,
-    visType,
-}) => {
+const ChipMenu = ({ currentAxisId, dimensionId, visType }) => {
+    const dispatch = useDispatch()
+
     const buttonRef = useRef()
     const [menuIsOpen, setMenuIsOpen] = useState(false)
 
     const toggleMenu = () => setMenuIsOpen(!menuIsOpen)
 
     const getMenuId = () => `menu-for-${dimensionId}`
+
+    const axisItemHandler = ({ dimensionId, axisId }) => {
+        dispatch(acAddUiLayoutDimensions({ [dimensionId]: { axisId } }))
+    }
+
+    const removeItemHandler = (id) => dispatch(tRemoveUiLayoutDimensions(id))
 
     return (
         <>
@@ -62,13 +64,4 @@ ChipMenu.propTypes = {
     visType: PropTypes.string,
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    axisItemHandler: ({ dimensionId, axisId }) => {
-        dispatch(acAddUiLayoutDimensions({ [dimensionId]: { axisId } }))
-    },
-    removeItemHandler: (dimensionId) => {
-        dispatch(acRemoveUiLayoutDimensions(dimensionId))
-    },
-})
-
-export default connect(null, mapDispatchToProps)(ChipMenu)
+export default ChipMenu

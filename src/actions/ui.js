@@ -101,6 +101,11 @@ export const tSetUiStage = (stage) => (dispatch, getState) => {
     )
 }
 
+export const tRemoveUiLayoutDimensions = (dimensionId) => (dispatch) => {
+    dispatch(acRemoveUiLayoutDimensions(dimensionId))
+    dispatch(acIncrementFileMenuNewCounter())
+}
+
 export const acSetUiOptions = (value) => ({
     type: SET_UI_OPTIONS,
     value,
