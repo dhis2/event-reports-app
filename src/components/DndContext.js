@@ -1,9 +1,7 @@
+import { AXIS_ID_COLUMNS, AXIS_ID_FILTERS } from '@dhis2/analytics'
 import {
     DndContext,
     DragOverlay,
-    rectIntersection,
-    closestCenter,
-    pointerWithin,
     useSensor,
     useSensors,
     MouseSensor,
@@ -100,9 +98,6 @@ const rectIntersectionCustom = ({
 }
 
 const OuterDndContext = ({ children }) => {
-    const [{ algorithm }, setCollisionDetectionAlgorithm] = useState({
-        algorithm: rectIntersectionCustom,
-    })
     const [sourceAxis, setSourceAxis] = useState(null)
 
     const draggingId = useSelector(sGetUiDraggingId)
@@ -116,6 +111,7 @@ const OuterDndContext = ({ children }) => {
             sGetUiConditionsByDimension(state, draggingId)
         ) || {}
 
+    // Wait 15px movement before starting drag, so that click event isn't overridden
     const mouseSensor = useSensor(MouseSensor, {
         activationConstraint: {
             distance: 15,
@@ -124,18 +120,6 @@ const OuterDndContext = ({ children }) => {
     const sensors = useSensors(mouseSensor)
 
     const dispatch = useDispatch()
-
-    const onChange = (e) => {
-        const strategyMap = {
-            closestCenter: closestCenter,
-            rectIntersection: rectIntersection,
-            rectIntersectionCustom: rectIntersectionCustom,
-            pointerWithin: pointerWithin,
-        }
-        setCollisionDetectionAlgorithm({
-            algorithm: strategyMap[e.target.value],
-        })
-    }
 
     const getDragOverlay = () => {
         if (!draggingId) {
@@ -237,7 +221,7 @@ const OuterDndContext = ({ children }) => {
                 over?.data?.current?.sortable?.containerId
             )
         ) {
-            // dropped over non-droppable, or over dimension panel
+            // dropped over non-droppable or over dimension panel
             return
         }
         const sourceAxisId = active.data.current.sortable.containerId
@@ -247,7 +231,7 @@ const OuterDndContext = ({ children }) => {
             over.data.current?.sortable?.index || FIRST_POSITION
 
         const isDroppingInFirstPosition = () => {
-            return ['columns', 'filters'].includes(over.id)
+            return [AXIS_ID_COLUMNS, AXIS_ID_FILTERS].includes(over.id)
         }
 
         if (SOURCE_DIMENSIONS.includes(sourceAxisId)) {
@@ -285,7 +269,7 @@ const OuterDndContext = ({ children }) => {
 
     return (
         <DndContext
-            collisionDetection={algorithm}
+            collisionDetection={rectIntersectionCustom}
             onDragStart={onDragStart}
             onDragEnd={onDragEnd}
             onDragCancel={onDragCancel}
@@ -301,19 +285,6 @@ const OuterDndContext = ({ children }) => {
             >
                 {getDragOverlay()}
             </DragOverlay>
-            <select
-                name="collisionStrategy"
-                id="collision-strategy"
-                className={styles.strategy}
-                onChange={onChange}
-            >
-                <option value="rectIntersectionCustom" selected>
-                    Pointer with 40x80px rect intersection
-                </option>
-                <option value="rectIntersection">RectIntersection</option>
-                <option value="pointerWithin">PointerWithin</option>
-                <option value="closestCenter">ClosestCenter</option>
-            </select>
         </DndContext>
     )
 }
