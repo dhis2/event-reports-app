@@ -4,7 +4,7 @@ import { CSS } from '@dnd-kit/utilities'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { sGetMetadataById } from '../../reducers/metadata.js'
 import { ChipBase } from './ChipBase.js'
 import styles from './styles/Chip.module.css'
@@ -16,7 +16,6 @@ const AFTER = 'AFTER'
 const Chip = ({
     numberOfConditions,
     dimensionId,
-    dimensionName,
     items,
     onClick,
     contextMenu,
@@ -35,6 +34,15 @@ const Chip = ({
     } = useSortable({
         id: dimensionId,
     })
+
+    // TODO - using the rawDimensionId instead of dimensionId
+    // is a temporary workaround
+    // until the backend is updated to return programStageId.dimensionId
+    // in analytics response.metadata.items
+    const [rawDimensionId] = dimensionId.split('.').reverse()
+    const dimensionName = useSelector(
+        (state) => sGetMetadataById(state, rawDimensionId) || {}
+    ).name
 
     let insertPosition = undefined
     if (over?.id === dimensionId) {
@@ -119,7 +127,6 @@ const Chip = ({
 
 Chip.propTypes = {
     dimensionId: PropTypes.string.isRequired,
-    dimensionName: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
     activeIndex: PropTypes.number,
     contextMenu: PropTypes.object,
@@ -132,8 +139,4 @@ Chip.defaultProps = {
     items: [],
 }
 
-const mapStateToProps = (state, ownProps) => ({
-    dimensionName: (sGetMetadataById(state, ownProps.dimensionId) || {}).name,
-})
-
-export default connect(mapStateToProps)(Chip)
+export default Chip
