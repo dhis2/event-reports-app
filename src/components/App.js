@@ -175,7 +175,6 @@ const App = ({
 
     const onResponseReceived = (response) => {
         setVisualizationLoading(false)
-
         const itemsMetadata = Object.entries(response.metaData.items).reduce(
             (obj, [id, item]) => {
                 obj[id] = {
