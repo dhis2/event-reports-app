@@ -281,15 +281,7 @@ const OuterDndContext = ({ children }) => {
             sensors={sensors}
         >
             {children}
-            <DragOverlay
-                dropAnimation={{
-                    duration: 200,
-                    easing: 'ease-in',
-                    dragSourceOpacity: 0,
-                }}
-            >
-                {getDragOverlay()}
-            </DragOverlay>
+            <DragOverlay dropAnimation={null}>{getDragOverlay()}</DragOverlay>
         </DndContext>
     )
 }
