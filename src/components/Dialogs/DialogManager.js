@@ -22,9 +22,9 @@ const isDynamicDimension = (type) =>
 
 const DialogManager = () => {
     const dispatch = useDispatch()
-    const dimension = useSelector((state) => {
-        return sGetMetadata(state)[sGetUiActiveModalDialog(state)]
-    })
+    const dimension = useSelector(
+        (state) => sGetMetadata(state)[sGetUiActiveModalDialog(state)]
+    )
 
     const onClose = () => dispatch(acSetUiOpenDimensionModal(null))
 
