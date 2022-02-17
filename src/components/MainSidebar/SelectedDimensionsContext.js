@@ -29,15 +29,16 @@ export const SelectedDimensionsProvider = ({ children }) => {
             //   ...layout.rows,
         ]
 
+        /*
+         * Access metadata this way to prevent this component
+         * and its hook consumers to re-render every time
+         * something changes in the metadata store
+         */
+        const { metadata } = store.getState()
+
         const allSelectedIdsSet = new Set(allSelectedIds)
         const counts = allSelectedIds.reduce(
             (acc, id) => {
-                /*
-                 * Access metadata this way to prevent this component
-                 * and its hook consumers to re-render every time
-                 * something changes in the metadata store
-                 */
-                const { metadata } = store.getState()
                 const { dimensionType } = metadata[id]
 
                 if (DIMENSION_TYPES_PROGRAM.has(dimensionType)) {
