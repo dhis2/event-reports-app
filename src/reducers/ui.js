@@ -44,7 +44,6 @@ export const SET_UI_ITEMS = 'SET_UI_ITEMS'
 export const ADD_UI_PARENT_GRAPH_MAP = 'ADD_UI_PARENT_GRAPH_MAP'
 export const SET_UI_CONDITIONS = 'SET_UI_CONDITIONS'
 export const SET_UI_REPETITION = 'SET_UI_REPETITION'
-export const SET_UI_FILE_MENU_OPEN_COUNTER = 'SET_UI_FILE_MENU_OPEN_COUNTER'
 
 const EMPTY_UI = {
     draggingId: null,
@@ -117,9 +116,6 @@ const getPreselectedUi = (options) => {
 
 export default (state = EMPTY_UI, action) => {
     switch (action.type) {
-        case SET_UI_FILE_MENU_OPEN_COUNTER: {
-            return { ...state, fileMenuNewCounter: ++state.fileMenuNewCounter }
-        }
         case SET_UI_DRAGGING_ID: {
             return { ...state, draggingId: action.value }
         }

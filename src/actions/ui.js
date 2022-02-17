@@ -22,7 +22,6 @@ import {
     SET_UI_CONDITIONS,
     SET_UI_REPETITION,
     SET_UI_INPUT,
-    SET_UI_FILE_MENU_OPEN_COUNTER,
     UPDATE_UI_PROGRAM_ID,
     UPDATE_UI_PROGRAM_STAGE_ID,
     CLEAR_UI_PROGRAM,
@@ -38,10 +37,6 @@ export const acSetUiInput = (value, metadata) => ({
     type: SET_UI_INPUT,
     value,
     metadata,
-})
-
-export const acIncrementFileMenuNewCounter = () => ({
-    type: SET_UI_FILE_MENU_OPEN_COUNTER,
 })
 
 export const acClearUiProgram = () => ({
@@ -99,11 +94,6 @@ export const tSetUiStage = (stage) => (dispatch, getState) => {
             getDynamicTimeDimensionsMetadata(stage, program)
         )
     )
-}
-
-export const tRemoveUiLayoutDimensions = (dimensionId) => (dispatch) => {
-    dispatch(acRemoveUiLayoutDimensions(dimensionId))
-    dispatch(acIncrementFileMenuNewCounter())
 }
 
 export const acSetUiOptions = (value) => ({

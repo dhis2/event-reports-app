@@ -10,10 +10,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { connect, useDispatch } from 'react-redux'
 import { acSetCurrent, tSetCurrentFromUi } from '../../../actions/current.js'
-import {
-    acSetShowExpandedLayoutPanel,
-    acIncrementFileMenuNewCounter,
-} from '../../../actions/ui.js'
+import { acSetShowExpandedLayoutPanel } from '../../../actions/ui.js'
 import { acSetVisualization } from '../../../actions/visualization.js'
 import { getAlertTypeByStatusCode } from '../../../modules/error.js'
 import history from '../../../modules/history.js'
@@ -69,7 +66,6 @@ const MenuBar = ({
         } else {
             history.push(path)
         }
-        dispatch(acIncrementFileMenuNewCounter())
     }
 
     const onNew = () => {
@@ -78,7 +74,6 @@ const MenuBar = ({
         } else {
             history.push('/')
         }
-        dispatch(acIncrementFileMenuNewCounter())
     }
 
     const onDelete = () => {

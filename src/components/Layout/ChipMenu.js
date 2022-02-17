@@ -4,7 +4,7 @@ import React, { useState, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import {
     acAddUiLayoutDimensions,
-    tRemoveUiLayoutDimensions,
+    acRemoveUiLayoutDimensions,
 } from '../../actions/ui.js'
 import DimensionMenu from '../DimensionMenu/DimensionMenu.js'
 import IconButton from '../IconButton/IconButton.js'
@@ -23,7 +23,7 @@ const ChipMenu = ({ currentAxisId, dimensionId, visType }) => {
         dispatch(acAddUiLayoutDimensions({ [dimensionId]: { axisId } }))
     }
 
-    const removeItemHandler = (id) => dispatch(tRemoveUiLayoutDimensions(id))
+    const removeItemHandler = (id) => dispatch(acRemoveUiLayoutDimensions(id))
 
     return (
         <>

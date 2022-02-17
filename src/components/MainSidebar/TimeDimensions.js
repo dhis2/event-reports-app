@@ -15,14 +15,19 @@ export const TimeDimensions = () => {
         return null
     }
 
+    const draggableDimensions = timeDimensions.map((dimension) => ({
+        draggableId: `time-${dimension.id}`,
+        ...dimension,
+    }))
+
     return (
         <MainSidebarSection header={i18n.t('Time dimensions')}>
             <SortableContext
                 id={TIME_DIMENSIONS}
-                items={timeDimensions}
+                items={draggableDimensions.map((dim) => dim.draggableId)}
                 strategy={verticalListSortingStrategy}
             >
-                {timeDimensions.map((dimension) => (
+                {draggableDimensions.map((dimension) => (
                     <DraggableDimensionItem
                         key={dimension.id}
                         {...dimension}

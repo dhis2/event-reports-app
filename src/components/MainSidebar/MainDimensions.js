@@ -11,21 +11,23 @@ export const MainDimensions = () => {
     const mainDimensions = useMainDimensions()
     const { getIsDimensionSelected } = useSelectedDimensions()
 
+    const draggableDimensions = mainDimensions.map((dimension) => ({
+        draggableId: `main-${dimension.id}`,
+        ...dimension,
+    }))
+
     return (
         <MainSidebarSection header={i18n.t('Main dimensions')}>
             <SortableContext
                 id={MAIN_DIMENSIONS}
-                items={mainDimensions}
+                items={draggableDimensions.map((dim) => dim.draggableId)}
                 strategy={verticalListSortingStrategy}
             >
-                {mainDimensions.map(({ id, name, dimensionType, disabled }) => (
+                {draggableDimensions.map((dimension) => (
                     <DraggableDimensionItem
-                        key={id}
-                        dimensionType={dimensionType}
-                        name={name}
-                        id={id}
-                        selected={getIsDimensionSelected(id)}
-                        disabled={disabled}
+                        key={dimension.id}
+                        {...dimension}
+                        selected={getIsDimensionSelected(dimension.id)}
                     />
                 ))}
             </SortableContext>

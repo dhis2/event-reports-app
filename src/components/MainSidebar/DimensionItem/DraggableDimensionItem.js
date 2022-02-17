@@ -8,6 +8,7 @@ import { DimensionItemBase } from './DimensionItemBase.js'
 
 export const DraggableDimensionItem = ({
     id,
+    draggableId,
     name,
     dimensionType,
     valueType,
@@ -31,6 +32,7 @@ export const DraggableDimensionItem = ({
                       },
                   })
               )
+
     const {
         attributes,
         listeners,
@@ -39,21 +41,9 @@ export const DraggableDimensionItem = ({
         transform,
         transition,
     } = useSortable({
-        id,
+        id: draggableId || id,
+        disabled: disabled || selected,
     })
-
-    if (disabled || selected) {
-        return (
-            <DimensionItemBase
-                name={name}
-                dimensionType={dimensionType}
-                disabled={disabled}
-                selected={selected}
-                stageName={stageName}
-                onClick={onClick}
-            />
-        )
-    }
 
     const style = transform
         ? {

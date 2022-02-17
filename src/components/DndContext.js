@@ -97,19 +97,24 @@ const rectIntersectionCustom = ({
     return collisions.sort(sortCollisionsDesc)
 }
 
+const getIdFromDraggingId = (draggingId) => {
+    const [id] = draggingId.split('-').reverse()
+    return id
+}
+
 const OuterDndContext = ({ children }) => {
     const [sourceAxis, setSourceAxis] = useState(null)
 
     const draggingId = useSelector(sGetUiDraggingId)
+    const id = draggingId ? getIdFromDraggingId(draggingId) : null
+
     const layout = useSelector(sGetUiLayout)
     const metadata = useSelector(sGetMetadata)
     const chipItems =
-        useSelector((state) => sGetUiItemsByDimension(state, draggingId)) || []
+        useSelector((state) => sGetUiItemsByDimension(state, id)) || []
 
     const chipConditions =
-        useSelector((state) =>
-            sGetUiConditionsByDimension(state, draggingId)
-        ) || {}
+        useSelector((state) => sGetUiConditionsByDimension(state, id)) || {}
 
     // Wait 15px movement before starting drag, so that click event isn't overridden
     const mouseSensor = useSensor(MouseSensor, {
@@ -122,12 +127,12 @@ const OuterDndContext = ({ children }) => {
     const dispatch = useDispatch()
 
     const getDragOverlay = () => {
-        if (!draggingId) {
+        if (!id) {
             return null
         }
 
-        const name = metadata[draggingId].name
-        const dimensionType = metadata[draggingId].dimensionType
+        const name = metadata[id].name
+        const dimensionType = metadata[id].dimensionType
 
         const numberOfConditions =
             parseConditionsStringToArray(chipConditions.condition).length ||
@@ -244,7 +249,7 @@ const OuterDndContext = ({ children }) => {
             addDimensionToLayout({
                 axisId: destinationAxisId,
                 index: destinationIndex,
-                dimensionId: active.id,
+                dimensionId: getIdFromDraggingId(active.id),
             })
         } else {
             const sourceIndex = active.data.current.sortable.index
