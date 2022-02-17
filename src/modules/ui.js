@@ -1,9 +1,6 @@
 import {
     DIMENSION_ID_ORGUNIT,
-    // layoutGetAxisIdDimensionIdsObject,
-    DIMENSION_PROP_ID,
-    AXIS,
-    DEFAULT_AXIS_IDS,
+    layoutGetAxisIdDimensionIdsObject,
     layoutGetDimensionIdItemIdsObject,
     VIS_TYPE_LINE_LIST,
     VIS_TYPE_PIVOT_TABLE,
@@ -30,41 +27,19 @@ export const getAdaptedUiByType = (ui) => {
     }
 }
 
-const dimensionGetId = (dimension) => {
-    return dimension.programStage?.id
-        ? `${dimension.programStage.id}.${dimension[DIMENSION_PROP_ID.name]}`
-        : dimension[DIMENSION_PROP_ID.name]
-}
-
-const axisGetDimensionIds = (axis) =>
-    axis.map((dimension) => dimensionGetId(dimension))
-
-const layoutGetAxisIdDimensionIdsObject = (vis) => {
-    return DEFAULT_AXIS_IDS.reduce((obj, axisId) => {
-        if (AXIS.isValid(vis[axisId])) {
-            obj[axisId] = axisGetDimensionIds(vis[axisId])
-        }
-
-        return obj
-    }, {})
-}
-
-export const getUiFromVisualization = (vis, currentState = {}) => {
-    const layout = layoutGetAxisIdDimensionIdsObject(vis)
-    return {
-        ...currentState,
-        input: getInputTypeFromVisualization(vis),
-        program: getProgramFromVisualisation(vis),
-        options: getOptionsFromVisualization(vis),
-        layout: layout,
-        itemsByDimension: layoutGetDimensionIdItemIdsObject(vis),
-        conditions: getConditionsFromVisualization(vis),
-        parentGraphMap:
-            vis.parentGraphMap ||
-            getParentGraphMapFromVisualization(vis) ||
-            currentState.parentGraphMap,
-    }
-}
+export const getUiFromVisualization = (vis, currentState = {}) => ({
+    ...currentState,
+    input: getInputTypeFromVisualization(vis),
+    program: getProgramFromVisualisation(vis),
+    options: getOptionsFromVisualization(vis),
+    layout: layoutGetAxisIdDimensionIdsObject(vis),
+    itemsByDimension: layoutGetDimensionIdItemIdsObject(vis),
+    conditions: getConditionsFromVisualization(vis),
+    parentGraphMap:
+        vis.parentGraphMap ||
+        getParentGraphMapFromVisualization(vis) ||
+        currentState.parentGraphMap,
+})
 
 export const getParentGraphMapFromVisualization = (vis) => {
     const dimensionIdsByAxis = layoutGetAxisIdDimensionIdsObject(vis)
