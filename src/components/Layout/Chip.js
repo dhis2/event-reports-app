@@ -18,6 +18,10 @@ const Chip = ({
     onClick,
     contextMenu,
 }) => {
+    // TODO - using the rawDimensionId instead of dimensionId
+    // is a temporary workaround
+    // until the backend is updated to return programStageId.dimensionId
+    // in analytics response.metadata.items
     const [rawDimensionId] = dimensionId.split('.').reverse()
     const id = Math.random().toString(36)
     const dimensionName = useSelector(
