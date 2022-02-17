@@ -43,7 +43,7 @@ VisualizationTypeListItem.propTypes = {
     onClick: PropTypes.func,
 }
 
-VisualizationTypeListItem.defaultValues = {
+VisualizationTypeListItem.defaultProps = {
     onClick: Function.prototype,
 }
 
