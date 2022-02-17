@@ -35,9 +35,10 @@ const visualizationsQuery = {
     },
 }
 
-const useMostViewedVisualizations = (username) => {
+const useMostViewedVisualizations = (username, setLoadError) => {
     const visualizations = useDataQuery(visualizationsQuery, {
         lazy: true,
+        onError: (error) => setLoadError(error),
     })
 
     const mostViewed = useDataQuery(mostViewedQuery, {
@@ -47,6 +48,7 @@ const useMostViewedVisualizations = (username) => {
                 ids: data.mostViewed.map((obj) => obj.id),
             })
         },
+        onError: (error) => setLoadError(error),
     })
 
     return {
@@ -61,12 +63,7 @@ const useMostViewedVisualizations = (username) => {
 
 const StartScreen = ({ error, username, setLoadError }) => {
     const getContent = () => {
-        const data = useMostViewedVisualizations(username)
-
-        if (data.error) {
-            setLoadError(data.error)
-            return null
-        }
+        const data = useMostViewedVisualizations(username, setLoadError)
 
         /* TODO remove this when pivot tables are supported */
         const mostViewed = data?.mostViewed?.filter(
@@ -98,7 +95,7 @@ const StartScreen = ({ error, username, setLoadError }) => {
                         </li>
                     </ul>
                 </div>
-                {/* TODO add a spinner when loading?! */}
+                {/* TODO add a spinner when loading? */}
                 {mostViewed?.length > 0 && (
                     <div className={styles.section}>
                         <h3
