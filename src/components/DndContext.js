@@ -262,6 +262,7 @@ const OuterDndContext = ({ children }) => {
             )
         ) {
             // dropped over non-droppable or over dimension panel
+            onDragCancel()
             return
         }
         const sourceAxisId = active.data.current.sortable.containerId

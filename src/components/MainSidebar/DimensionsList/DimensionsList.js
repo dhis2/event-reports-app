@@ -1,6 +1,6 @@
 import i18n from '@dhis2/d2-i18n'
 import { CircularLoader, NoticeBox } from '@dhis2/ui'
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { SortableContext } from '@dnd-kit/sortable'
 import PropTypes from 'prop-types'
 import React, { useRef, useEffect } from 'react'
 import { DimensionItem } from '../DimensionItem/index.js'
@@ -84,7 +84,6 @@ const DimensionsList = ({
                 <SortableContext
                     id={listId}
                     items={dimensions.map((dim) => dim.draggableId)}
-                    strategy={verticalListSortingStrategy}
                 >
                     {dimensions.map((dimension) => (
                         <DimensionItem

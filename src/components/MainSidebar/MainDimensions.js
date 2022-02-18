@@ -1,5 +1,5 @@
 import i18n from '@dhis2/d2-i18n'
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { SortableContext } from '@dnd-kit/sortable'
 import React from 'react'
 import { useMainDimensions } from '../../reducers/ui.js'
 import { MAIN_DIMENSIONS } from '../DndContext.js'
@@ -21,7 +21,6 @@ export const MainDimensions = () => {
             <SortableContext
                 id={MAIN_DIMENSIONS}
                 items={draggableDimensions.map((dim) => dim.draggableId)}
-                strategy={verticalListSortingStrategy}
             >
                 {draggableDimensions.map((dimension) => (
                     <DimensionItem
