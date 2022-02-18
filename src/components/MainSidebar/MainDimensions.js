@@ -1,8 +1,8 @@
 import i18n from '@dhis2/d2-i18n'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import React from 'react'
-import { MAIN_DIMENSIONS } from '../../modules/layout.js'
 import { useMainDimensions } from '../../reducers/ui.js'
+import { MAIN_DIMENSIONS } from '../DndContext.js'
 import { DraggableDimensionItem } from './DimensionItem/index.js'
 import { MainSidebarSection } from './MainSidebarSection.js'
 import { useSelectedDimensions } from './SelectedDimensionsContext.js'
@@ -12,7 +12,7 @@ export const MainDimensions = () => {
     const { getIsDimensionSelected } = useSelectedDimensions()
 
     const draggableDimensions = mainDimensions.map((dimension) => ({
-        draggableId: `main-${dimension.id}`,
+        draggableId: `${MAIN_DIMENSIONS}-${dimension.id}`,
         ...dimension,
     }))
 

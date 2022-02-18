@@ -6,11 +6,6 @@ import {
     VIS_TYPE_PIVOT_TABLE,
 } from '@dhis2/analytics'
 
-// Names for dnd sources
-export const SOURCE_DIMENSIONS = 'dimensions'
-export const TIME_DIMENSIONS = 'timeDimensions'
-export const MAIN_DIMENSIONS = 'mainDimensions'
-
 // Exclude one or many dimensions from layout
 export const getFilteredLayout = (layout, excludedIds) => {
     const ids = Array.isArray(excludedIds) ? excludedIds : [excludedIds]

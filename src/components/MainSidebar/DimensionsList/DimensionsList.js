@@ -1,5 +1,6 @@
 import i18n from '@dhis2/d2-i18n'
 import { CircularLoader, NoticeBox } from '@dhis2/ui'
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import PropTypes from 'prop-types'
 import React, { useRef, useEffect } from 'react'
 import { DimensionItem } from '../DimensionItem/DimensionItem.js'
@@ -28,6 +29,7 @@ const DimensionsList = ({
     fetching,
     error,
     dimensions,
+    listId,
     programName,
     searchTerm,
     setIsListEndVisible,
@@ -79,6 +81,11 @@ const DimensionsList = ({
             ref={scrollBoxRef}
         >
             <div className={styles.list}>
+                <SortableContext
+                    id={listId}
+                    items={dimensions.map((dim) => dim.draggableId)}
+                    strategy={verticalListSortingStrategy}
+                ></SortableContext>
                 {dimensions.map((dimension) => (
                     <DimensionItem
                         key={dimension.id}
@@ -106,6 +113,7 @@ DimensionsList.propTypes = {
     dimensions: PropTypes.array,
     error: PropTypes.object,
     fetching: PropTypes.bool,
+    listId: PropTypes.string,
     loading: PropTypes.bool,
     programName: PropTypes.string,
     searchTerm: PropTypes.string,

@@ -16,7 +16,6 @@ import {
     acSetUiDraggingId,
 } from '../actions/ui.js'
 import { parseConditionsStringToArray } from '../modules/conditions.js'
-import { MAIN_DIMENSIONS, TIME_DIMENSIONS } from '../modules/layout.js'
 import { sGetMetadata } from '../reducers/metadata.js'
 import {
     sGetUiLayout,
@@ -29,8 +28,19 @@ import { ChipBase } from './Layout/ChipBase.js'
 import chipStyles from './Layout/styles/Chip.module.css'
 import { DimensionItemBase } from './MainSidebar/DimensionItem/DimensionItemBase.js'
 
+// Names for dnd sources
+export const TIME_DIMENSIONS = 'time'
+export const MAIN_DIMENSIONS = 'main'
+export const YOUR_DIMENSIONS = 'your'
+export const PROGRAM_DIMENSIONS = 'program'
+
 const FIRST_POSITION = 0
-const SOURCE_DIMENSIONS = [MAIN_DIMENSIONS, TIME_DIMENSIONS]
+const SOURCE_DIMENSIONS = [
+    MAIN_DIMENSIONS,
+    TIME_DIMENSIONS,
+    YOUR_DIMENSIONS,
+    PROGRAM_DIMENSIONS,
+]
 
 function getIntersectionRatio(entry, target) {
     const top = Math.max(target.top, entry.top)

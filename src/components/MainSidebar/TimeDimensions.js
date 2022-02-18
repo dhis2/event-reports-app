@@ -1,8 +1,8 @@
 import i18n from '@dhis2/d2-i18n'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import React from 'react'
-import { TIME_DIMENSIONS } from '../../modules/layout.js'
 import { useTimeDimensions } from '../../reducers/ui.js'
+import { TIME_DIMENSIONS } from '../DndContext.js'
 import { DraggableDimensionItem } from './DimensionItem/index.js'
 import { MainSidebarSection } from './MainSidebarSection.js'
 import { useSelectedDimensions } from './SelectedDimensionsContext.js'
@@ -16,7 +16,7 @@ export const TimeDimensions = () => {
     }
 
     const draggableDimensions = timeDimensions.map((dimension) => ({
-        draggableId: `time-${dimension.id}`,
+        draggableId: `${TIME_DIMENSIONS}-${dimension.id}`,
         ...dimension,
     }))
 

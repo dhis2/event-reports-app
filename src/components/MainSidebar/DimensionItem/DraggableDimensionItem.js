@@ -74,6 +74,7 @@ export const DraggableDimensionItem = ({
 
 DraggableDimensionItem.propTypes = {
     dimensionType: PropTypes.string.isRequired,
+    draggableId: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     disabled: PropTypes.bool,
