@@ -12,6 +12,7 @@ import {
 import cx from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
+import DynamicDimensionIcon from '../../../assets/DynamicDimensionIcon.js'
 import {
     DIMENSION_TYPE_PERIOD,
     DIMENSION_TYPE_CATEGORY_OPTION_GROUP_SET,
@@ -59,7 +60,9 @@ const DimensionItemBase = ({
     stageName,
     onClick,
 }) => {
-    const Icon = DIMENSION_TYPE_ICONS[dimensionType]
+    const Icon = dimensionType
+        ? DIMENSION_TYPE_ICONS[dimensionType]
+        : DynamicDimensionIcon
 
     return (
         <div

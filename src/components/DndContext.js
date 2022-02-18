@@ -148,9 +148,9 @@ const OuterDndContext = ({ children }) => {
         // in analytics response.metadata.items
         let name
         let dimensionType
-        if (metadata[id]?.name) {
-            name = metadata[id].name
-            dimensionType = metadata[id].dimensionType
+        if (metadata[id]) {
+            name = metadata[id].name || ''
+            dimensionType = metadata[id].dimensionType || null
         } else {
             const [rawDimensionId] = id.split('.').reverse()
             name = metadata[rawDimensionId]?.name || ''
@@ -165,7 +165,7 @@ const OuterDndContext = ({ children }) => {
 
         return (
             <div className={styles.overlay}>
-                {SOURCE_DIMENSIONS.includes[sourceAxis] ? (
+                {SOURCE_DIMENSIONS.includes(sourceAxis) ? (
                     <DimensionItemBase
                         name={name}
                         dimensionType={dimensionType}
