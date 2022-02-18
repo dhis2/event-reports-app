@@ -4,8 +4,6 @@ import { CSS } from '@dnd-kit/utilities'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { sGetMetadataById } from '../../reducers/metadata.js'
 import { ChipBase } from './ChipBase.js'
 import styles from './styles/Chip.module.css'
 import { default as TooltipContent } from './TooltipContent.js'
@@ -16,6 +14,7 @@ const AFTER = 'AFTER'
 const Chip = ({
     numberOfConditions,
     dimensionId,
+    dimensionName,
     items,
     onClick,
     contextMenu,
@@ -34,15 +33,6 @@ const Chip = ({
     } = useSortable({
         id: dimensionId,
     })
-
-    // TODO - using the rawDimensionId instead of dimensionId
-    // is a temporary workaround
-    // until the backend is updated to return programStageId.dimensionId
-    // in analytics response.metadata.items
-    const [rawDimensionId] = dimensionId.split('.').reverse()
-    const dimensionName = useSelector(
-        (state) => sGetMetadataById(state, rawDimensionId) || {}
-    ).name
 
     let insertPosition = undefined
     if (over?.id === dimensionId) {
@@ -130,6 +120,7 @@ Chip.propTypes = {
     onClick: PropTypes.func.isRequired,
     activeIndex: PropTypes.number,
     contextMenu: PropTypes.object,
+    dimensionName: PropTypes.string,
     items: PropTypes.array,
     numberOfConditions: PropTypes.number,
 }

@@ -30,9 +30,26 @@ const DefaultAxis = ({
     visType,
 }) => {
     const draggingId = useSelector(sGetUiDraggingId)
+    const metadata = useSelector(sGetMetadata)
     const { isOver, setNodeRef } = useDroppable({
         id: axisId,
     })
+
+    // TODO - using the rawDimensionId instead of dimensionId
+    // is a temporary workaround
+    // until the backend is updated to return programStageId.dimensionId
+    // in analytics response.metadata.items
+    const getDimensionName = (id) => {
+        let name
+        if (metadata[id]?.name) {
+            name = metadata[id].name
+        } else {
+            const [rawDimensionId] = id.split('.').reverse()
+            name = metadata[rawDimensionId]?.name || ''
+        }
+
+        return name
+    }
 
     const activeIndex = draggingId ? axis.indexOf(draggingId) : -1
 
@@ -72,6 +89,9 @@ const DefaultAxis = ({
                                     key={`${axisId}-${dimensionId}`}
                                     onClick={getOpenHandler(dimensionId)}
                                     dimensionId={dimensionId}
+                                    dimensionName={getDimensionName(
+                                        dimensionId
+                                    )}
                                     items={getItemsByDimension(dimensionId)}
                                     numberOfConditions={getNumberOfConditions(
                                         dimensionId

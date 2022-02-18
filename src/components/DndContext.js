@@ -145,9 +145,13 @@ const OuterDndContext = ({ children }) => {
         // is a temporary workaround
         // until the backend is updated to return programStageId.dimensionId
         // in analytics response.metadata.items
-        const [rawDimensionId] = id.split('.').reverse()
-        const name = metadata[rawDimensionId].name
-        // const name = metadata[id].name
+        let name
+        if (metadata[id]?.name) {
+            name = metadata[id]?.name
+        } else {
+            const [rawDimensionId] = id.split('.').reverse()
+            name = metadata[rawDimensionId].name
+        }
         const dimensionType = metadata[id].dimensionType
 
         const numberOfConditions =
