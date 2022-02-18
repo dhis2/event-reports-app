@@ -328,9 +328,6 @@ export const sGetUiInputType = (state) => sGetUiInput(state).type
 export const sGetUiProgramId = (state) => sGetUiProgram(state).id
 export const sGetUiProgramStageId = (state) => sGetUiProgram(state).stageId
 
-export const sGetUiFileMenuNewCounter = (state) =>
-    sGetUi(state).fileMenuNewCounter
-
 export const sGetUiItemsByDimension = (state, dimension) =>
     sGetUiItems(state)[dimension] || DEFAULT_UI.itemsByDimension[dimension]
 
