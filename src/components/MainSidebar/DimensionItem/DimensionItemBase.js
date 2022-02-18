@@ -87,8 +87,8 @@ const DimensionItemBase = ({
 }
 
 DimensionItemBase.propTypes = {
-    dimensionType: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
+    dimensionType: PropTypes.string,
     disabled: PropTypes.bool,
     selected: PropTypes.bool,
     stageName: PropTypes.string,

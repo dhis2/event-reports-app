@@ -183,6 +183,7 @@ const OuterDndContext = ({ children }) => {
                     >
                         <ChipBase
                             dimensionName={name}
+                            dimensionType={dimensionType}
                             items={chipItems}
                             numberOfConditions={numberOfConditions}
                         />

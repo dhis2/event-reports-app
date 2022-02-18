@@ -41,14 +41,26 @@ const DefaultAxis = ({
     // in analytics response.metadata.items
     const getDimensionName = (id) => {
         let name
-        if (metadata[id]?.name) {
-            name = metadata[id].name
+        if (metadata[id]) {
+            name = metadata[id].name || ''
         } else {
             const [rawDimensionId] = id.split('.').reverse()
             name = metadata[rawDimensionId]?.name || ''
         }
 
         return name
+    }
+
+    const getDimensionType = (id) => {
+        let dimensionType
+        if (metadata[id]) {
+            dimensionType = metadata[id].dimensionType || null
+        } else {
+            const [rawDimensionId] = id.split('.').reverse()
+            dimensionType = metadata[rawDimensionId]?.dimensionType || null
+        }
+
+        return dimensionType
     }
 
     const activeIndex = draggingId ? axis.indexOf(draggingId) : -1
@@ -83,22 +95,21 @@ const DefaultAxis = ({
                         <div className={styles.dropIndicator} />
                     </div>
                     {renderChips &&
-                        axis.map((dimensionId) => {
+                        axis.map((id) => {
                             return (
                                 <Chip
-                                    key={`${axisId}-${dimensionId}`}
-                                    onClick={getOpenHandler(dimensionId)}
-                                    dimensionId={dimensionId}
-                                    dimensionName={getDimensionName(
-                                        dimensionId
-                                    )}
-                                    items={getItemsByDimension(dimensionId)}
+                                    key={`${axisId}-${id}`}
+                                    onClick={getOpenHandler(id)}
+                                    dimensionId={id}
+                                    dimensionName={getDimensionName(id)}
+                                    dimensionType={getDimensionType(id)}
+                                    items={getItemsByDimension(id)}
                                     numberOfConditions={getNumberOfConditions(
-                                        dimensionId
+                                        id
                                     )}
                                     contextMenu={
                                         <ChipMenu
-                                            dimensionId={dimensionId}
+                                            dimensionId={id}
                                             currentAxisId={axisId}
                                             visType={visType}
                                         />

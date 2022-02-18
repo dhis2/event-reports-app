@@ -15,6 +15,7 @@ const Chip = ({
     numberOfConditions,
     dimensionId,
     dimensionName,
+    dimensionType,
     items,
     onClick,
     contextMenu,
@@ -32,6 +33,10 @@ const Chip = ({
         transition,
     } = useSortable({
         id: dimensionId,
+        data: {
+            name: dimensionName,
+            dimensionType,
+        },
     })
 
     let insertPosition = undefined
@@ -98,6 +103,7 @@ const Chip = ({
                             >
                                 <ChipBase
                                     dimensionName={dimensionName}
+                                    dimensionType={dimensionType}
                                     numberOfConditions={numberOfConditions}
                                     items={items}
                                 />
@@ -121,6 +127,7 @@ Chip.propTypes = {
     activeIndex: PropTypes.number,
     contextMenu: PropTypes.object,
     dimensionName: PropTypes.string,
+    dimensionType: PropTypes.string,
     items: PropTypes.array,
     numberOfConditions: PropTypes.number,
 }
