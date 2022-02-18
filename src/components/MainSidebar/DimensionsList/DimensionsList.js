@@ -3,7 +3,7 @@ import { CircularLoader, NoticeBox } from '@dhis2/ui'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import PropTypes from 'prop-types'
 import React, { useRef, useEffect } from 'react'
-import { DimensionItem } from '../DimensionItem/DimensionItem.js'
+import { DraggableDimensionItem } from '../DimensionItem/index.js'
 import { useSelectedDimensions } from '../SelectedDimensionsContext.js'
 import styles from './DimensionsList.module.css'
 
@@ -85,19 +85,15 @@ const DimensionsList = ({
                     id={listId}
                     items={dimensions.map((dim) => dim.draggableId)}
                     strategy={verticalListSortingStrategy}
-                ></SortableContext>
-                {dimensions.map((dimension) => (
-                    <DimensionItem
-                        key={dimension.id}
-                        dimensionType={dimension.dimensionType}
-                        name={dimension.name}
-                        stageName={dimension.stageName}
-                        id={dimension.id}
-                        optionSet={dimension.optionSet}
-                        valueType={dimension.valueType}
-                        selected={getIsDimensionSelected(dimension.id)}
-                    />
-                ))}
+                >
+                    {dimensions.map((dimension) => (
+                        <DraggableDimensionItem
+                            key={dimension.id}
+                            {...dimension}
+                            selected={getIsDimensionSelected(dimension.id)}
+                        />
+                    ))}
+                </SortableContext>
                 {fetching && (
                     <div className={styles.loadMoreWrap}>
                         <CircularLoader small />
