@@ -19,6 +19,8 @@ import {
 } from '../../modules/dimensionTypes.js'
 import history from '../../modules/history.js'
 import {
+    DIMENSION_ID_CREATED_BY,
+    DIMENSION_ID_LAST_UPDATED_BY,
     OUTPUT_TYPE_ENROLLMENT,
     OUTPUT_TYPE_EVENT,
     headersMap,
@@ -37,6 +39,11 @@ const analyticsApiEndpointMap = {
     [OUTPUT_TYPE_ENROLLMENT]: 'enrollments',
     [OUTPUT_TYPE_EVENT]: 'events',
 }
+
+const excludedDimensions = [
+    DIMENSION_ID_CREATED_BY,
+    DIMENSION_ID_LAST_UPDATED_BY,
+]
 
 const findOptionSetItem = (code, metaDataItems) =>
     Object.values(metaDataItems).find((item) => item.code === code)
@@ -78,7 +85,7 @@ const getAdaptedVisualization = (visualization) => {
                 parameters[dimensionId] = dimensionObj.items?.map(
                     (item) => item.id
                 )
-            } else {
+            } else if (!excludedDimensions.includes(dimensionId)) {
                 adaptedDimensions.push(dimensionObj)
             }
         })
