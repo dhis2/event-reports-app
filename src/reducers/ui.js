@@ -87,7 +87,6 @@ export const DEFAULT_UI = {
     activeModalDialog: null,
     parentGraphMap: {},
     repetitionByDimension: {},
-    fileMenuNewCounter: 0,
 }
 
 const getPreselectedUi = (options) => {

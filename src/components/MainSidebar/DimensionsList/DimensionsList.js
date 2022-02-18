@@ -3,7 +3,7 @@ import { CircularLoader, NoticeBox } from '@dhis2/ui'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import PropTypes from 'prop-types'
 import React, { useRef, useEffect } from 'react'
-import { DraggableDimensionItem } from '../DimensionItem/index.js'
+import { DimensionItem } from '../DimensionItem/index.js'
 import { useSelectedDimensions } from '../SelectedDimensionsContext.js'
 import styles from './DimensionsList.module.css'
 
@@ -87,7 +87,7 @@ const DimensionsList = ({
                     strategy={verticalListSortingStrategy}
                 >
                     {dimensions.map((dimension) => (
-                        <DraggableDimensionItem
+                        <DimensionItem
                             key={dimension.id}
                             {...dimension}
                             selected={getIsDimensionSelected(dimension.id)}

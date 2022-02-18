@@ -3,7 +3,7 @@ import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import React from 'react'
 import { useTimeDimensions } from '../../reducers/ui.js'
 import { TIME_DIMENSIONS } from '../DndContext.js'
-import { DraggableDimensionItem } from './DimensionItem/index.js'
+import { DimensionItem } from './DimensionItem/index.js'
 import { MainSidebarSection } from './MainSidebarSection.js'
 import { useSelectedDimensions } from './SelectedDimensionsContext.js'
 
@@ -28,7 +28,7 @@ export const TimeDimensions = () => {
                 strategy={verticalListSortingStrategy}
             >
                 {draggableDimensions.map((dimension) => (
-                    <DraggableDimensionItem
+                    <DimensionItem
                         key={dimension.id}
                         {...dimension}
                         selected={getIsDimensionSelected(dimension.id)}
