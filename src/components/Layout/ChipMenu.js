@@ -57,10 +57,8 @@ const ChipMenu = ({ currentAxisId, dimensionId, visType }) => {
 }
 
 ChipMenu.propTypes = {
-    axisItemHandler: PropTypes.func,
     currentAxisId: PropTypes.string,
     dimensionId: PropTypes.string,
-    removeItemHandler: PropTypes.func,
     visType: PropTypes.string,
 }
 
