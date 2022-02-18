@@ -7,11 +7,7 @@ import {
     acSetUiAccessoryPanelOpen,
     acSetUiDetailsPanelOpen,
 } from '../../actions/ui.js'
-import {
-    sGetUiInputType,
-    sGetUiShowAccessoryPanel,
-    sGetUiFileMenuNewCounter,
-} from '../../reducers/ui.js'
+import { sGetUiInputType, sGetUiShowAccessoryPanel } from '../../reducers/ui.js'
 import { InputPanel, getLabelForInputType } from './InputPanel/index.js'
 import { MainDimensions } from './MainDimensions.js'
 import styles from './MainSidebar.module.css'
@@ -31,7 +27,6 @@ const TAB_YOUR = 'YOUR'
 const MainSidebar = () => {
     const dispatch = useDispatch()
     const open = useSelector(sGetUiShowAccessoryPanel)
-    const fileMenuCounter = useSelector(sGetUiFileMenuNewCounter)
     const selectedInputType = useSelector(sGetUiInputType)
     const [selectedTabId, setSelectedTabId] = useState(null)
     const setOpen = (newOpen) => dispatch(acSetUiAccessoryPanelOpen(newOpen))
@@ -74,8 +69,8 @@ const MainSidebar = () => {
                     selected={open && selectedTabId === TAB_YOUR}
                     count={counts.your}
                 />
-                <MainDimensions key={`maindimensions-${fileMenuCounter}`} />
-                <TimeDimensions key={`timedimensions-${fileMenuCounter}`} />
+                <MainDimensions />
+                <TimeDimensions />
             </div>
             <div
                 className={cx(styles.accessory, {

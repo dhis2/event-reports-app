@@ -195,8 +195,8 @@ const OuterDndContext = ({ children }) => {
 
     const rearrangeLayoutDimensions = ({
         sourceAxisId,
-        destinationAxisId,
         sourceIndex,
+        destinationAxisId,
         destinationIndex,
     }) => {
         const sourceList = Array.from(layout[sourceAxisId])
@@ -299,8 +299,8 @@ const OuterDndContext = ({ children }) => {
 
             rearrangeLayoutDimensions({
                 sourceAxisId,
-                destinationAxisId,
                 sourceIndex,
+                destinationAxisId,
                 destinationIndex,
             })
         }
