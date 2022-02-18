@@ -1,7 +1,5 @@
 import { useDataQuery } from '@dhis2/app-runtime'
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { acAddMetadata } from '../../../actions/metadata.js'
 import { DIMENSION_LIST_FIELDS } from '../DimensionsList/index.js'
 
 const query = {
@@ -26,7 +24,6 @@ const query = {
 }
 
 const useYourDimensions = ({ visible, searchTerm }) => {
-    const dispatch = useDispatch()
     const [isListEndVisible, setIsListEndVisible] = useState(false)
     const [dimensions, setDimensions] = useState([])
     const { data, error, loading, fetching, called, refetch } = useDataQuery(
@@ -74,22 +71,6 @@ const useYourDimensions = ({ visible, searchTerm }) => {
                 ...currDimensions,
                 ...data.dimensions.dimensions,
             ])
-
-            dispatch(
-                acAddMetadata(
-                    data.dimensions.dimensions.reduce(
-                        (meta, { id, name, dimensionType }) => ({
-                            ...meta,
-                            [id]: {
-                                id,
-                                name,
-                                dimensionType,
-                            },
-                        }),
-                        {}
-                    )
-                )
-            )
         }
     }, [data])
 

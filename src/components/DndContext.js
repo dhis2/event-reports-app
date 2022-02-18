@@ -10,6 +10,7 @@ import cx from 'classnames'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { acAddMetadata } from '../actions/metadata.js'
 import {
     acAddUiLayoutDimensions,
     acSetUiLayout,
@@ -146,13 +147,15 @@ const OuterDndContext = ({ children }) => {
         // until the backend is updated to return programStageId.dimensionId
         // in analytics response.metadata.items
         let name
+        let dimensionType
         if (metadata[id]?.name) {
-            name = metadata[id]?.name
+            name = metadata[id].name
+            dimensionType = metadata[id].dimensionType
         } else {
             const [rawDimensionId] = id.split('.').reverse()
-            name = metadata[rawDimensionId].name
+            name = metadata[rawDimensionId]?.name || ''
+            dimensionType = metadata[rawDimensionId]?.dimensionType || null
         }
-        const dimensionType = metadata[id].dimensionType
 
         const numberOfConditions =
             parseConditionsStringToArray(chipConditions.condition).length ||
@@ -229,8 +232,19 @@ const OuterDndContext = ({ children }) => {
     }
 
     const onDragStart = ({ active }) => {
+        const id = getIdFromDraggingId(active.id)
+
         setSourceAxis(active.data.current.sortable.containerId)
         dispatch(acSetUiDraggingId(active.id))
+        dispatch(
+            acAddMetadata({
+                [id]: {
+                    id,
+                    name: active.data.current.name,
+                    dimensionType: active.data.current.dimensionType,
+                },
+            })
+        )
     }
 
     const onDragCancel = () => {

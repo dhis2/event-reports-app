@@ -1,7 +1,5 @@
 import { useDataEngine } from '@dhis2/app-runtime'
 import { useEffect, useReducer, useCallback, useRef, useMemo } from 'react'
-import { useDispatch } from 'react-redux'
-import { acAddMetadata } from '../../../actions/metadata.js'
 import {
     DIMENSION_TYPE_ALL,
     DIMENSION_TYPE_DATA_ELEMENT,
@@ -190,7 +188,6 @@ const useProgramDimensions = ({
     searchTerm,
     dimensionType,
 }) => {
-    const centralDispatch = useDispatch()
     const deDimensionsMapRef = useRef(new Map())
     const engine = useDataEngine()
     const [
@@ -253,22 +250,6 @@ const useProgramDimensions = ({
                         inputType,
                     }),
                 })
-
-                centralDispatch(
-                    acAddMetadata(
-                        data.dimensions.dimensions.reduce(
-                            (meta, { id, name, dimensionType }) => ({
-                                ...meta,
-                                [id]: {
-                                    id,
-                                    name,
-                                    dimensionType,
-                                },
-                            }),
-                            {}
-                        )
-                    )
-                )
             } catch (error) {
                 dispatch({ type: ACTIONS_ERROR, payload: error })
             }
