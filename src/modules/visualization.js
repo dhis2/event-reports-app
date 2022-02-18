@@ -4,6 +4,7 @@ import {
     AXIS_ID_FILTERS,
     VIS_TYPE_LINE_LIST,
     VIS_TYPE_PIVOT_TABLE,
+    DIMENSION_ID_ORGUNIT,
     DIMENSION_ID_PERIOD,
 } from '@dhis2/analytics'
 import i18n from '@dhis2/d2-i18n'
@@ -33,6 +34,9 @@ export const STATUS_SKIPPED = 'SKIPPED'
 export const OUTPUT_TYPE_EVENT = 'EVENT'
 export const OUTPUT_TYPE_ENROLLMENT = 'ENROLLMENT'
 
+export const DIMENSION_ID_CREATED_BY = 'createdBy'
+export const DIMENSION_ID_LAST_UPDATED_BY = 'lastUpdatedBy'
+
 export const statusNames = {
     [STATUS_ACTIVE]: i18n.t('Active'),
     [STATUS_CANCELLED]: i18n.t('Cancelled'),
@@ -43,11 +47,11 @@ export const statusNames = {
 }
 
 export const headersMap = {
-    ou: 'ouname',
+    [DIMENSION_ID_ORGUNIT]: 'ouname',
     [DIMENSION_TYPE_PROGRAM_STATUS]: 'programstatus',
     [DIMENSION_TYPE_EVENT_STATUS]: 'eventstatus',
-    createdBy: 'createdby',
-    [DIMENSION_TYPE_LAST_UPDATED_BY]: 'lastupdatedby',
+    [DIMENSION_ID_CREATED_BY]: 'createdbydisplayname',
+    [DIMENSION_ID_LAST_UPDATED_BY]: 'lastupdatedbydisplayname',
     [DIMENSION_TYPE_EVENT_DATE]: 'eventdate',
     [DIMENSION_TYPE_ENROLLMENT_DATE]: 'enrollmentdate',
     [DIMENSION_TYPE_INCIDENT_DATE]: 'incidentdate',
