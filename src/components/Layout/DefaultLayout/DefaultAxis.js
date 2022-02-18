@@ -41,7 +41,7 @@ const DefaultAxis = ({
     // in analytics response.metadata.items
     const getDimensionName = (id) => {
         let name
-        if (metadata[id]) {
+        if (metadata[id]?.name) {
             name = metadata[id].name || ''
         } else {
             const [rawDimensionId] = id.split('.').reverse()
@@ -53,7 +53,7 @@ const DefaultAxis = ({
 
     const getDimensionType = (id) => {
         let dimensionType
-        if (metadata[id]) {
+        if (metadata[id]?.dimensionType) {
             dimensionType = metadata[id].dimensionType || null
         } else {
             const [rawDimensionId] = id.split('.').reverse()
