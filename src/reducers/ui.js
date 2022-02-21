@@ -371,6 +371,9 @@ export const useMainDimensions = () => {
 
 export const useTimeDimensions = () => {
     const store = useStore()
+    const inputType = useSelector(sGetUiInputType)
+    const programId = useSelector(sGetUiProgramId)
+    const programStageId = useSelector(sGetUiProgramStageId)
     const eventDateDim = useSelector((state) =>
         sGetMetadataById(state, DIMENSION_TYPE_EVENT_DATE)
     )
@@ -388,6 +391,9 @@ export const useTimeDimensions = () => {
     )
 
     return useMemo(() => {
+        const { metadata } = store.getState()
+        const program = metadata[programId]
+        const stage = metadata[programStageId]
         const timeDimensions = [
             eventDateDim,
             enrollmentDateDim,
@@ -397,10 +403,6 @@ export const useTimeDimensions = () => {
         ]
 
         if (timeDimensions.every((dimension) => !!dimension)) {
-            const { ui, metadata } = store.getState()
-            const inputType = ui.input.type
-            const program = metadata[ui.program.id]
-            const stage = metadata[ui.program.stageId]
             const enabledDimensionIds = getEnabledTimeDimensionIds(
                 inputType,
                 program,
@@ -414,6 +416,9 @@ export const useTimeDimensions = () => {
             return null
         }
     }, [
+        inputType,
+        programId,
+        programStageId,
         eventDateDim,
         enrollmentDateDim,
         incidentDateDim,
