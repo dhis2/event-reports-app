@@ -16,11 +16,11 @@ import {
     DIMENSION_TYPE_INCIDENT_DATE,
     DIMENSION_TYPE_SCHEDULED_DATE,
     DIMENSION_TYPE_LAST_UPDATED,
+    DIMENSION_TYPE_CREATED_BY,
+    DIMENSION_TYPE_LAST_UPDATED_BY,
 } from '../../modules/dimensionTypes.js'
 import history from '../../modules/history.js'
 import {
-    DIMENSION_ID_CREATED_BY,
-    DIMENSION_ID_LAST_UPDATED_BY,
     OUTPUT_TYPE_ENROLLMENT,
     OUTPUT_TYPE_EVENT,
     headersMap,
@@ -41,8 +41,8 @@ const analyticsApiEndpointMap = {
 }
 
 const excludedDimensions = [
-    DIMENSION_ID_CREATED_BY,
-    DIMENSION_ID_LAST_UPDATED_BY,
+    DIMENSION_TYPE_CREATED_BY,
+    DIMENSION_TYPE_LAST_UPDATED_BY,
 ]
 
 const findOptionSetItem = (code, metaDataItems) =>

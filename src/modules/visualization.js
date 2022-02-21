@@ -12,6 +12,7 @@ import { DEFAULT_CURRENT } from '../reducers/current.js'
 import { DEFAULT_VISUALIZATION } from '../reducers/visualization.js'
 import {
     DIMENSION_TYPE_PERIOD,
+    DIMENSION_TYPE_CREATED_BY,
     DIMENSION_TYPE_DATA_ELEMENT,
     DIMENSION_TYPE_EVENT_STATUS,
     DIMENSION_TYPE_EVENT_DATE,
@@ -19,8 +20,8 @@ import {
     DIMENSION_TYPE_INCIDENT_DATE,
     DIMENSION_TYPE_SCHEDULED_DATE,
     DIMENSION_TYPE_LAST_UPDATED,
-    DIMENSION_TYPE_PROGRAM_STATUS,
     DIMENSION_TYPE_LAST_UPDATED_BY,
+    DIMENSION_TYPE_PROGRAM_STATUS,
 } from './dimensionTypes.js'
 import { default as options } from './options.js'
 
@@ -33,9 +34,6 @@ export const STATUS_SKIPPED = 'SKIPPED'
 
 export const OUTPUT_TYPE_EVENT = 'EVENT'
 export const OUTPUT_TYPE_ENROLLMENT = 'ENROLLMENT'
-
-export const DIMENSION_ID_CREATED_BY = 'createdBy'
-export const DIMENSION_ID_LAST_UPDATED_BY = 'lastUpdatedBy'
 
 export const statusNames = {
     [STATUS_ACTIVE]: i18n.t('Active'),
@@ -50,8 +48,8 @@ export const headersMap = {
     [DIMENSION_ID_ORGUNIT]: 'ouname',
     [DIMENSION_TYPE_PROGRAM_STATUS]: 'programstatus',
     [DIMENSION_TYPE_EVENT_STATUS]: 'eventstatus',
-    [DIMENSION_ID_CREATED_BY]: 'createdbydisplayname',
-    [DIMENSION_ID_LAST_UPDATED_BY]: 'lastupdatedbydisplayname',
+    [DIMENSION_TYPE_CREATED_BY]: 'createdbydisplayname',
+    [DIMENSION_TYPE_LAST_UPDATED_BY]: 'lastupdatedbydisplayname',
     [DIMENSION_TYPE_EVENT_DATE]: 'eventdate',
     [DIMENSION_TYPE_ENROLLMENT_DATE]: 'enrollmentdate',
     [DIMENSION_TYPE_INCIDENT_DATE]: 'incidentdate',
