@@ -54,34 +54,27 @@ const FixedDimension = ({
             itemIds: items.map((item) => item.id),
         })
 
-        switch (dimensionId) {
-            case DIMENSION_ID_ORGUNIT: {
-                const forMetadata = {}
-                const forParentGraphMap = {}
+        const forMetadata = {}
+        const forParentGraphMap = {}
 
-                items.forEach((ou) => {
-                    const id = ouIdHelper.removePrefix(ou.id)
-                    forMetadata[id] = {
-                        id,
-                        name: ou.name || ou.displayName,
-                        displayName: ou.displayName,
-                    }
-
-                    if (ou.path) {
-                        const path = removeLastPathSegment(ou.path)
-
-                        forParentGraphMap[ou.id] =
-                            path === `/${ou.id}` ? '' : path.replace(/^\//, '')
-                    }
-                })
-
-                addMetadata(forMetadata)
-                addParentGraphMap(forParentGraphMap)
-
-                break
+        items.forEach((ou) => {
+            const id = ouIdHelper.removePrefix(ou.id)
+            forMetadata[id] = {
+                id,
+                name: ou.name || ou.displayName,
+                displayName: ou.displayName,
             }
-            // TODO: case DIMENSION_ID_PERIOD:
-        }
+
+            if (ou.path) {
+                const path = removeLastPathSegment(ou.path)
+
+                forParentGraphMap[ou.id] =
+                    path === `/${ou.id}` ? '' : path.replace(/^\//, '')
+            }
+        })
+
+        addMetadata(forMetadata)
+        addParentGraphMap(forParentGraphMap)
     }
 
     const closeModal = () => onClose()
