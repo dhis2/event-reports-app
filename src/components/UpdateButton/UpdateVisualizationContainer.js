@@ -21,7 +21,6 @@ const UpdateVisualizationContainer = ({
 }) => {
     const onClick = () => {
         try {
-            console.log('update', getCurrentFromUi())
             validateLayout(getCurrentFromUi())
             clearLoadError()
         } catch (error) {
