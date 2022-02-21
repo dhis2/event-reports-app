@@ -27,6 +27,8 @@ const validateDimension = (dimension, error, requireItems) => {
         if (error) {
             throw error
         }
+
+        return false
     }
 
     return true
