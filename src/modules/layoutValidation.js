@@ -24,14 +24,8 @@ const isAxisValid = (axis) =>
 
 const validateDimension = (dimension, error, requireItems) => {
     if (!(dimension && dimensionIsValid(dimension, { requireItems }))) {
-        if (error) {
-            throw error
-        }
-
-        return false
+        throw error
     }
-
-    return true
 }
 
 const validateAxis = (axis, error) => {
@@ -49,11 +43,14 @@ const validateLineListLayout = (layout) => {
     )
 
     let layoutHasTimeDimension = false
-    DIMENSION_TYPES_TIME.forEach((dimensionId) => {
+
+    Array.from(DIMENSION_TYPES_TIME).every((dimensionId) => {
         const dimension = layoutGetDimension(layout, dimensionId)
-        dimension &&
-            validateDimension(dimension, null, true) &&
-            (layoutHasTimeDimension = true)
+
+        if (dimension && dimensionIsValid(dimension, { requireItems: true })) {
+            layoutHasTimeDimension = true
+            return false
+        }
     })
 
     if (!layoutHasTimeDimension) {
