@@ -4,7 +4,6 @@ import {
     layoutGetDimension,
     VIS_TYPE_LINE_LIST,
     DIMENSION_ID_ORGUNIT,
-    layoutHasDimension,
 } from '@dhis2/analytics'
 import { DIMENSION_TYPES_TIME } from './dimensionTypes.js'
 import {
@@ -25,8 +24,12 @@ const isAxisValid = (axis) =>
 
 const validateDimension = (dimension, error, requireItems) => {
     if (!(dimension && dimensionIsValid(dimension, { requireItems }))) {
-        throw error
+        if (error) {
+            throw error
+        }
     }
+
+    return true
 }
 
 const validateAxis = (axis, error) => {
@@ -42,18 +45,17 @@ const validateLineListLayout = (layout) => {
         noOrgUnitError(),
         true
     )
+
     let layoutHasTimeDimension = false
-    DIMENSION_TYPES_TIME.forEach((dimension) => {
-        if (layoutHasDimension(layout, dimension)) {
-            validateDimension(dimension, noPeriodError(), true)
-            layoutHasTimeDimension = true
-        }
+    DIMENSION_TYPES_TIME.forEach((dimensionId) => {
+        const dimension = layoutGetDimension(layout, dimensionId)
+        dimension &&
+            validateDimension(dimension, null, true) &&
+            (layoutHasTimeDimension = true)
     })
 
     if (!layoutHasTimeDimension) {
-        // TODO: Uncomment when time dimensions are implemented properly
-        console.error('noPeriodError')
-        //throw noPeriodError()
+        throw noPeriodError()
     }
 
     if (!layout?.program?.id) {
