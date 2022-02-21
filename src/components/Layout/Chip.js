@@ -124,7 +124,6 @@ const Chip = ({
 
 Chip.propTypes = {
     dimensionId: PropTypes.string.isRequired,
-    showBlank: PropTypes.bool.isRequired,
     onClick: PropTypes.func.isRequired,
     activeIndex: PropTypes.number,
     contextMenu: PropTypes.object,
