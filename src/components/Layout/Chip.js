@@ -83,6 +83,7 @@ const Chip = ({
                 [styles.active]: isDragging,
                 [styles.insertBefore]: insertPosition === BEFORE,
                 [styles.insertAfter]: insertPosition === AFTER,
+                [styles.showBlank]: !dimensionName,
             })}
         >
             <div className={styles.content}>
@@ -123,6 +124,7 @@ const Chip = ({
 
 Chip.propTypes = {
     dimensionId: PropTypes.string.isRequired,
+    showBlank: PropTypes.bool.isRequired,
     onClick: PropTypes.func.isRequired,
     activeIndex: PropTypes.number,
     contextMenu: PropTypes.object,
