@@ -11,6 +11,8 @@ import {
     DIMENSION_TYPE_INCIDENT_DATE,
     DIMENSION_TYPE_SCHEDULED_DATE,
     DIMENSION_TYPE_LAST_UPDATED,
+    DIMENSION_TYPE_EVENT_STATUS,
+    DIMENSION_TYPE_PROGRAM_STATUS,
 } from '../modules/dimensionTypes.js'
 import { getFilteredLayout } from '../modules/layout.js'
 import {
@@ -79,6 +81,8 @@ export const DEFAULT_UI = {
     },
     itemsByDimension: {
         [DIMENSION_ID_ORGUNIT]: [],
+        [DIMENSION_TYPE_EVENT_STATUS]: [],
+        [DIMENSION_TYPE_PROGRAM_STATUS]: [],
     },
     options: getOptionsForUi(),
     showAccessoryPanel: false,
@@ -87,6 +91,7 @@ export const DEFAULT_UI = {
     activeModalDialog: null,
     parentGraphMap: {},
     repetitionByDimension: {},
+    conditions: {},
 }
 
 const getPreselectedUi = (options) => {

@@ -3,7 +3,6 @@ import { Button, IconInfo16, Tooltip } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { tSetCurrentFromUi } from '../../../actions/current.js'
 import { acSetUiConditions } from '../../../actions/ui.js'
 import {
     OPERATOR_IN,
@@ -99,7 +98,6 @@ const EMPTY_CONDITION = ''
 const ConditionsManager = ({
     conditions,
     isInLayout,
-    onUpdate,
     dimension,
     onClose,
     setConditionsByDimension,
@@ -169,12 +167,6 @@ const ConditionsManager = ({
             dimension: dimension.id,
             legendSet: selectedLegendSet,
         })
-
-    const primaryOnClick = () => {
-        storeConditions()
-        onUpdate()
-        onClose()
-    }
 
     const closeModal = () => {
         storeConditions()
@@ -360,13 +352,19 @@ const ConditionsManager = ({
             dataTest={'dialog-manager-modal'}
             isInLayout={isInLayout}
             onClose={closeModal}
-            onUpdate={primaryOnClick}
-            title={
-                dimension.name +
-                ` | valueType: ${valueType}, dimensionType: ${dimension.dimensionType}` // FIXME: For testing only
-            }
+            title={dimension.name}
         >
             <div>
+                <small>
+                    <p>
+                        valueType: <b>{valueType}</b>, dimensionType:
+                        <b> {dimension.dimensionType}</b>, id:
+                        <b> {dimension.id}</b>
+                    </p>
+                    {
+                        // FIXME: For testing only
+                    }
+                </small>
                 {isSupported ? (
                     <p className={commonClasses.paragraph}>
                         {i18n.t(
@@ -453,7 +451,6 @@ ConditionsManager.propTypes = {
     legendSet: PropTypes.string,
     setConditionsByDimension: PropTypes.func,
     onClose: PropTypes.func,
-    onUpdate: PropTypes.func,
 }
 
 const mapStateToProps = (state, ownProps) => ({
@@ -467,7 +464,6 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = {
-    onUpdate: tSetCurrentFromUi,
     setConditionsByDimension: acSetUiConditions,
 }
 
