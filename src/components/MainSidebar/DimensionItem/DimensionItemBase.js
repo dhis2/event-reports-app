@@ -11,7 +11,7 @@ import {
 } from '@dhis2/ui'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useState } from 'react'
 import DynamicDimensionIcon from '../../../assets/DynamicDimensionIcon.js'
 import {
     DIMENSION_TYPE_PERIOD,
@@ -28,8 +28,6 @@ import {
     DIMENSION_TYPE_CREATED_BY,
 } from '../../../modules/dimensionTypes.js'
 import styles from './DimensionItemBase.module.css'
-
-// Presentational component used by dnd - do not add redux or dnd functionality
 
 const DIMENSION_TYPE_ICONS = {
     /**PROGRAM**/
@@ -58,8 +56,13 @@ const DimensionItemBase = ({
     selected,
     disabled,
     stageName,
+    contextMenu,
     onClick,
 }) => {
+    const [mouseIsOver, setMouseIsOver] = useState(false)
+    const onMouseOver = () => setMouseIsOver(true)
+    const onMouseExit = () => setMouseIsOver(false)
+
     const Icon = dimensionType
         ? DIMENSION_TYPE_ICONS[dimensionType]
         : DynamicDimensionIcon
@@ -70,24 +73,30 @@ const DimensionItemBase = ({
                 [styles.selected]: selected,
                 [styles.disabled]: disabled,
             })}
-            onClick={onClick}
+            onMouseOver={onMouseOver}
+            onMouseLeave={onMouseExit}
         >
-            <div className={styles.icon}>
-                <Icon />
+            <div onClick={onClick} style={{ display: 'flex' }}>
+                <div className={styles.icon}>
+                    <Icon />
+                </div>
+
+                <div className={styles.label}>
+                    <span className={styles.primary}>{name}</span>
+                    {stageName && (
+                        <span className={styles.secondary}>{stageName}</span>
+                    )}
+                </div>
             </div>
 
-            <div className={styles.label}>
-                <span className={styles.primary}>{name}</span>
-                {stageName && (
-                    <span className={styles.secondary}>{stageName}</span>
-                )}
-            </div>
+            {contextMenu && mouseIsOver && !disabled ? contextMenu : null}
         </div>
     )
 }
 
 DimensionItemBase.propTypes = {
     name: PropTypes.string.isRequired,
+    contextMenu: PropTypes.node,
     dimensionType: PropTypes.string,
     disabled: PropTypes.bool,
     selected: PropTypes.bool,

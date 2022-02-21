@@ -27,7 +27,6 @@ const DefaultAxis = ({
     getOpenHandler,
     className,
     renderChips,
-    visType,
 }) => {
     const draggingId = useSelector(sGetUiDraggingId)
     const metadata = useSelector(sGetMetadata)
@@ -111,7 +110,6 @@ const DefaultAxis = ({
                                         <ChipMenu
                                             dimensionId={id}
                                             currentAxisId={axisId}
-                                            visType={visType}
                                         />
                                     }
                                     activeIndex={activeIndex}
@@ -132,7 +130,6 @@ DefaultAxis.propTypes = {
     getItemsByDimension: PropTypes.func,
     getOpenHandler: PropTypes.func,
     renderChips: PropTypes.bool,
-    visType: PropTypes.string,
 }
 
 export const renderChipsSelector = createSelector(

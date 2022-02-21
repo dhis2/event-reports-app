@@ -1,16 +1,29 @@
 import { Layer, Popper, IconMore16 } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React, { useState, useRef } from 'react'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import {
     acAddUiLayoutDimensions,
     acRemoveUiLayoutDimensions,
 } from '../../actions/ui.js'
+import { sGetUiType, sGetUiLayout } from '../../reducers/ui.js'
 import DimensionMenu from '../DimensionMenu/DimensionMenu.js'
 import IconButton from '../IconButton/IconButton.js'
 
-const ChipMenu = ({ currentAxisId, dimensionId, visType }) => {
+const getAxisIdForDimension = (dimensionId, layout) => {
+    const axisLayout = Object.entries(layout).find(([, dimensionIds]) =>
+        dimensionIds.includes(dimensionId)
+    )
+
+    return axisLayout ? axisLayout[0] : undefined
+}
+
+const ChipMenu = ({ currentAxisId, dimensionId }) => {
     const dispatch = useDispatch()
+    const visType = useSelector(sGetUiType)
+    const layout = useSelector(sGetUiLayout)
+
+    const axisId = currentAxisId || getAxisIdForDimension(dimensionId, layout)
 
     const buttonRef = useRef()
     const [menuIsOpen, setMenuIsOpen] = useState(false)
@@ -42,7 +55,7 @@ const ChipMenu = ({ currentAxisId, dimensionId, visType }) => {
                     <Popper reference={buttonRef} placement="bottom-start">
                         <DimensionMenu
                             dimensionId={dimensionId}
-                            currentAxisId={currentAxisId}
+                            currentAxisId={axisId}
                             visType={visType}
                             axisItemHandler={axisItemHandler}
                             removeItemHandler={removeItemHandler}
@@ -59,7 +72,6 @@ const ChipMenu = ({ currentAxisId, dimensionId, visType }) => {
 ChipMenu.propTypes = {
     currentAxisId: PropTypes.string,
     dimensionId: PropTypes.string,
-    visType: PropTypes.string,
 }
 
 export default ChipMenu
