@@ -4,10 +4,8 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { acSetUiOpenDimensionModal } from '../../../actions/ui.js'
-import ChipMenu from '../../Layout/ChipMenu.js'
+import DimensionMenu from '../../DimensionMenu/DimensionMenu.js'
 import { DimensionItemBase } from './DimensionItemBase.js'
-
-// Presentational component used by dnd - do not add redux or dnd functionality
 
 export const DimensionItem = ({
     id,
@@ -74,7 +72,7 @@ export const DimensionItem = ({
                 selected={selected}
                 stageName={stageName}
                 onClick={onClick}
-                contextMenu={<ChipMenu dimensionId={id} />}
+                contextMenu={<DimensionMenu dimensionId={id} />}
             />
         </div>
     )

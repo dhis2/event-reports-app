@@ -50,6 +50,8 @@ const DIMENSION_TYPE_ICONS = {
     [DIMENSION_TYPE_PERIOD]: IconCalendar16,
 }
 
+// Presentational component used by dnd - do not add redux or dnd functionality
+
 const DimensionItemBase = ({
     name,
     dimensionType,

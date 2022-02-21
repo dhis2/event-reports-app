@@ -15,8 +15,8 @@ import {
     sGetUiLayout,
     sGetUiConditionsByDimension,
 } from '../../../reducers/ui.js'
+import DimensionMenu from '../../DimensionMenu/DimensionMenu.js'
 import Chip from '../Chip.js'
-import ChipMenu from '../ChipMenu.js'
 import styles from './styles/DefaultAxis.module.css'
 
 const DefaultAxis = ({
@@ -107,7 +107,7 @@ const DefaultAxis = ({
                                         id
                                     )}
                                     contextMenu={
-                                        <ChipMenu
+                                        <DimensionMenu
                                             dimensionId={id}
                                             currentAxisId={axisId}
                                         />
