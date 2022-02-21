@@ -71,14 +71,14 @@ const DimensionItemBase = ({
 
     return (
         <div
-            className={cx(styles.dimensionItem, styles.dimensionItemOverlay, {
+            className={cx(styles.dimensionItem, {
                 [styles.selected]: selected,
                 [styles.disabled]: disabled,
             })}
             onMouseOver={onMouseOver}
             onMouseLeave={onMouseExit}
         >
-            <div onClick={onClick} style={{ display: 'flex' }}>
+            <div className={styles.iconAndLabelWrapper} onClick={onClick}>
                 <div className={styles.icon}>
                     <Icon />
                 </div>
