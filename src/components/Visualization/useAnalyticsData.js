@@ -303,9 +303,9 @@ const useAnalyticsData = ({
          * i.e. from File > Open > Etc
          */
         const unlisten = history.listen(({ location }) => {
-            const isReloadingCurrent = location.state?.isOpening
+            const shouldReloadCurrent = location.state?.shouldReloadCurrent
 
-            if (isReloadingCurrent) {
+            if (shouldReloadCurrent) {
                 setLoading(true)
                 setFetching(true)
                 doFetch()
