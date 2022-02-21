@@ -44,12 +44,11 @@ const validateLineListLayout = (layout) => {
 
     let layoutHasTimeDimension = false
 
-    Array.from(DIMENSION_TYPES_TIME).every((dimensionId) => {
+    DIMENSION_TYPES_TIME.forEach((dimensionId) => {
         const dimension = layoutGetDimension(layout, dimensionId)
 
         if (dimension && dimensionIsValid(dimension, { requireItems: true })) {
             layoutHasTimeDimension = true
-            return false
         }
     })
 
