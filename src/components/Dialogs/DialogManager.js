@@ -7,6 +7,8 @@ import {
     DIMENSION_TYPE_CATEGORY,
     DIMENSION_TYPE_CATEGORY_OPTION_GROUP_SET,
     DIMENSION_TYPE_ORGANISATION_UNIT_GROUP_SET,
+    DIMENSION_TYPE_PROGRAM_STATUS,
+    DIMENSION_TYPE_EVENT_STATUS,
 } from '../../modules/dimensionTypes.js'
 import { sGetMetadata } from '../../reducers/metadata.js'
 import { sGetUiActiveModalDialog } from '../../reducers/ui.js'
@@ -30,18 +32,16 @@ const DialogManager = () => {
     switch (dimension.dimensionType) {
         case DIMENSION_TYPE_CATEGORY:
         case DIMENSION_TYPE_CATEGORY_OPTION_GROUP_SET:
-        case DIMENSION_TYPE_ORGANISATION_UNIT_GROUP_SET: {
+        case DIMENSION_TYPE_ORGANISATION_UNIT_GROUP_SET:
             return <DynamicDimension dimension={dimension} onClose={onClose} />
-        }
-        case DIMENSION_TYPE_PERIOD: {
+        case DIMENSION_TYPE_PERIOD:
             return <PeriodDimension dimension={dimension} onClose={onClose} />
-        }
-        case DIMENSION_ID_ORGUNIT: {
+        case DIMENSION_ID_ORGUNIT:
+        case DIMENSION_TYPE_PROGRAM_STATUS:
+        case DIMENSION_TYPE_EVENT_STATUS:
             return <FixedDimension dimension={dimension} onClose={onClose} />
-        }
-        default: {
+        default:
             return <ConditionsManager dimension={dimension} onClose={onClose} />
-        }
     }
 }
 
