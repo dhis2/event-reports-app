@@ -50,23 +50,23 @@ export const getTimeDimensions = () => ({
 })
 
 export const getTimeDimensionName = (dimension, program, stage) => {
-    if (!dimension.nameParentProperty || !program || !stage) {
+    if (!dimension.nameParentProperty || !program) {
         return dimension.name
     }
     const name =
         dimension.nameParentProperty === NAME_PARENT_PROPERTY_PROGRAM
             ? program[dimension.nameProperty]
-            : stage[dimension.nameProperty]
+            : stage?.[dimension.nameProperty]
 
     return name || dimension.name
 }
 
 export const getEnabledTimeDimensionIds = (inputType, program, stage) => {
     const enabledDimensionIds = new Set()
-    if (inputType && program?.programType && stage?.id) {
+    if (inputType) {
         const isEvent = inputType === OUTPUT_TYPE_EVENT
         const withRegistration =
-            program.programType === PROGRAM_TYPE_WITH_REGISTRATION
+            program?.programType === PROGRAM_TYPE_WITH_REGISTRATION
 
         if (isEvent) {
             enabledDimensionIds.add(DIMENSION_TYPE_EVENT_DATE)
@@ -75,9 +75,9 @@ export const getEnabledTimeDimensionIds = (inputType, program, stage) => {
         if (withRegistration) {
             enabledDimensionIds.add(DIMENSION_TYPE_ENROLLMENT_DATE)
 
-            isEvent &&
-                !stage.hideDueDate &&
+            if (isEvent && stage && !stage.hideDueDate) {
                 enabledDimensionIds.add(DIMENSION_TYPE_SCHEDULED_DATE)
+            }
 
             program.displayIncidentDate &&
                 enabledDimensionIds.add(DIMENSION_TYPE_INCIDENT_DATE)
