@@ -1,7 +1,7 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { acSetUiOpenDimensionModal } from '../../../actions/ui.js'
 import DimensionMenu from '../../DimensionMenu/DimensionMenu.js'
@@ -19,6 +19,7 @@ export const DimensionItem = ({
     selected,
 }) => {
     const dispatch = useDispatch()
+    const [mouseIsOver, setMouseIsOver] = useState(false)
     const onClick = disabled
         ? undefined
         : () =>
@@ -33,6 +34,9 @@ export const DimensionItem = ({
                       },
                   })
               )
+
+    const onMouseOver = () => setMouseIsOver(true)
+    const onMouseExit = () => setMouseIsOver(false)
 
     const {
         attributes,
@@ -63,8 +67,16 @@ export const DimensionItem = ({
               transition,
           }
         : undefined
+
     return (
-        <div {...attributes} {...listeners} ref={setNodeRef} style={style}>
+        <div
+            {...attributes}
+            {...listeners}
+            ref={setNodeRef}
+            style={style}
+            onMouseOver={onMouseOver}
+            onMouseLeave={onMouseExit}
+        >
             <DimensionItemBase
                 name={name}
                 dimensionType={dimensionType}
@@ -72,7 +84,11 @@ export const DimensionItem = ({
                 selected={selected}
                 stageName={stageName}
                 onClick={onClick}
-                contextMenu={<DimensionMenu dimensionId={id} />}
+                contextMenu={
+                    mouseIsOver && !disabled ? (
+                        <DimensionMenu dimensionId={id} />
+                    ) : null
+                }
             />
         </div>
     )

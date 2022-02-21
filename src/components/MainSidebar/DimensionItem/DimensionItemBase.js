@@ -11,7 +11,7 @@ import {
 } from '@dhis2/ui'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
-import React, { useState } from 'react'
+import React from 'react'
 import DynamicDimensionIcon from '../../../assets/DynamicDimensionIcon.js'
 import {
     DIMENSION_TYPE_PERIOD,
@@ -61,10 +61,6 @@ const DimensionItemBase = ({
     contextMenu,
     onClick,
 }) => {
-    const [mouseIsOver, setMouseIsOver] = useState(false)
-    const onMouseOver = () => setMouseIsOver(true)
-    const onMouseExit = () => setMouseIsOver(false)
-
     const Icon = dimensionType
         ? DIMENSION_TYPE_ICONS[dimensionType]
         : DynamicDimensionIcon
@@ -75,8 +71,6 @@ const DimensionItemBase = ({
                 [styles.selected]: selected,
                 [styles.disabled]: disabled,
             })}
-            onMouseOver={onMouseOver}
-            onMouseLeave={onMouseExit}
         >
             <div className={styles.iconAndLabelWrapper} onClick={onClick}>
                 <div className={styles.icon}>
@@ -91,7 +85,7 @@ const DimensionItemBase = ({
                 </div>
             </div>
 
-            {contextMenu && mouseIsOver && !disabled ? contextMenu : null}
+            {contextMenu && contextMenu}
         </div>
     )
 }
