@@ -9,11 +9,15 @@
     width: 32px;
     height: 24px;
     margin: var(--spacers-dp4);
-
     position: absolute;
 }
 
-.isOver.first {
+.last {
+    flex-grow: 1;
+    background-color: blue;
+}
+
+.first.isOver {
     z-index: 100;
 }
 

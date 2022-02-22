@@ -203,11 +203,14 @@ const OuterDndContext = ({ children }) => {
         destinationAxisId,
         destinationIndex,
     }) => {
+        const destItems = Array.from(layout[destinationAxisId])
+        const newIndex =
+            destinationIndex !== -1 ? destinationIndex : destItems.length
         const sourceList = Array.from(layout[sourceAxisId])
         const [moved] = sourceList.splice(sourceIndex, 1)
 
         if (sourceAxisId === destinationAxisId) {
-            sourceList.splice(destinationIndex, 0, moved)
+            sourceList.splice(newIndex, 0, moved)
 
             dispatch(
                 acSetUiLayout({
@@ -220,7 +223,7 @@ const OuterDndContext = ({ children }) => {
                 acAddUiLayoutDimensions({
                     [moved]: {
                         axisId: destinationAxisId,
-                        index: destinationIndex,
+                        index: newIndex,
                     },
                 })
             )
@@ -259,6 +262,9 @@ const OuterDndContext = ({ children }) => {
     const onDragEnd = (result) => {
         const { active, over } = result
 
+        console.log('onDragEnd', result)
+        // onDragCancel()
+        // return
         if (
             !over?.id ||
             SOURCE_DIMENSIONS.includes(
@@ -283,9 +289,18 @@ const OuterDndContext = ({ children }) => {
             `${AXIS_ID_FILTERS}-${FIRST}`,
         ].includes(over.id)
 
+        const isDroppingInLastPosition = [
+            'columns-last',
+            'columns-under',
+            'filters-last',
+            'filters-under',
+        ].includes(over.id)
+
         if (SOURCE_DIMENSIONS.includes(sourceAxisId)) {
             if (isDroppingInFirstPosition) {
                 destinationIndex = FIRST_POSITION
+            } else if (isDroppingInLastPosition) {
+                destinationIndex = -1
             } else {
                 ++destinationIndex
             }
@@ -304,6 +319,8 @@ const OuterDndContext = ({ children }) => {
 
             if (isDroppingInFirstPosition) {
                 destinationIndex = FIRST_POSITION
+            } else if (isDroppingInLastPosition) {
+                destinationIndex = -1
             }
 
             rearrangeLayoutDimensions({

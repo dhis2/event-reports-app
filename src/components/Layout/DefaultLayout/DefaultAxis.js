@@ -1,3 +1,4 @@
+import { useDroppable } from '@dnd-kit/core'
 import { SortableContext } from '@dnd-kit/sortable'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
@@ -15,7 +16,7 @@ import {
     sGetUiConditionsByDimension,
 } from '../../../reducers/ui.js'
 import DimensionMenu from '../../DimensionMenu/DimensionMenu.js'
-import { FIRST } from '../../DndContext.js'
+import { FIRST, LAST } from '../../DndContext.js'
 import Chip from '../Chip.js'
 import { DropZone } from './DropZone.js'
 import styles from './styles/DefaultAxis.module.css'
@@ -29,6 +30,9 @@ const DefaultAxis = ({
     className,
     renderChips,
 }) => {
+    const { isOver, setNodeRef } = useDroppable({
+        id: `${axisId}-under`,
+    })
     const draggingId = useSelector(sGetUiDraggingId)
     const metadata = useSelector(sGetMetadata)
 
@@ -74,44 +78,47 @@ const DefaultAxis = ({
     }
 
     return (
-        <div
-            id={axisId}
-            data-test={`${axisId}-axis`}
-            className={cx(styles.axisContainer, className)}
-        >
-            <div className={styles.label}>{getAxisName(axisId)}</div>
-            <SortableContext id={axisId} items={axis}>
-                <div className={styles.content}>
-                    <DropZone
-                        position={FIRST}
-                        axisId={axisId}
-                        firstElementId={axis[0]}
-                    />
-                    {renderChips &&
-                        axis.map((id) => {
-                            return (
-                                <Chip
-                                    key={`${axisId}-${id}`}
-                                    onClick={getOpenHandler(id)}
-                                    dimensionId={id}
-                                    dimensionName={getDimensionName(id)}
-                                    dimensionType={getDimensionType(id)}
-                                    items={getItemsByDimension(id)}
-                                    numberOfConditions={getNumberOfConditions(
-                                        id
-                                    )}
-                                    contextMenu={
-                                        <DimensionMenu
-                                            dimensionId={id}
-                                            currentAxisId={axisId}
-                                        />
-                                    }
-                                    activeIndex={activeIndex}
-                                />
-                            )
-                        })}
-                </div>
-            </SortableContext>
+        <div ref={setNodeRef} className={styles.under}>
+            <div
+                id={axisId}
+                data-test={`${axisId}-axis`}
+                className={cx(styles.axisContainer, className)}
+            >
+                <div className={styles.label}>{getAxisName(axisId)}</div>
+                <SortableContext id={axisId} items={axis}>
+                    <div className={styles.content}>
+                        <DropZone
+                            position={FIRST}
+                            axisId={axisId}
+                            firstElementId={axis[0]}
+                        />
+                        {renderChips &&
+                            axis.map((id) => {
+                                return (
+                                    <Chip
+                                        key={`${axisId}-${id}`}
+                                        onClick={getOpenHandler(id)}
+                                        dimensionId={id}
+                                        dimensionName={getDimensionName(id)}
+                                        dimensionType={getDimensionType(id)}
+                                        items={getItemsByDimension(id)}
+                                        numberOfConditions={getNumberOfConditions(
+                                            id
+                                        )}
+                                        contextMenu={
+                                            <DimensionMenu
+                                                dimensionId={id}
+                                                currentAxisId={axisId}
+                                            />
+                                        }
+                                        activeIndex={activeIndex}
+                                    />
+                                )
+                            })}
+                        <DropZone position={LAST} axisId={axisId} />
+                    </div>
+                </SortableContext>
+            </div>
         </div>
     )
 }

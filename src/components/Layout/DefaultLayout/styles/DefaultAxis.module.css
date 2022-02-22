@@ -12,6 +12,11 @@
     cursor: pointer;
 }
 
+.under {
+    background-color: red;
+    height: 100%;
+}
+
 .axisContainer {
     display: flex;
     background-color: var(--colors-white);

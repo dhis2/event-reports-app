@@ -2,7 +2,7 @@ import { useDroppable } from '@dnd-kit/core'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { getDropzoneId } from '../../DndContext.js'
+import { getDropzoneId, FIRST, LAST } from '../../DndContext.js'
 import styles from './styles/DropZone.module.css'
 
 const DropZone = ({ position, axisId, firstElementId }) => {
@@ -18,8 +18,8 @@ const DropZone = ({ position, axisId, firstElementId }) => {
             className={cx(styles.dropZone, {
                 [styles.isOver]: draggingOverFirstPosDropZone,
                 [styles.isEmpty]: !firstElementId,
-                [styles.first]: position === 'first',
-                [styles.last]: position === 'last',
+                [styles.first]: position === FIRST,
+                [styles.last]: position === LAST,
             })}
         >
             <div className={styles.dropIndicator}></div>
