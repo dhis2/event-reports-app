@@ -60,10 +60,7 @@ const MenuBar = ({
     const onOpen = (id) => {
         const path = `/${id}`
         if (history.location.pathname === path) {
-            history.replace(
-                { pathname: path },
-                { isOpening: true, shouldReloadCurrent: true }
-            )
+            history.replace({ pathname: path }, { isOpening: true })
         } else {
             history.push(path)
         }
@@ -165,7 +162,6 @@ const MenuBar = ({
 
             const locationState = {
                 isSaving: true,
-                shouldReloadCurrent: !copy,
             }
 
             // Save As
