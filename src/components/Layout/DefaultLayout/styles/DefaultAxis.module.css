@@ -35,15 +35,19 @@
     letter-spacing: 0.2px;
 }
 
-.lastItemDroppableArea {
+.firstItemDroppableArea {
     top: 0;
     left: 0;
-    z-index: 100;
+    z-index: -1;
     width: 32px;
     height: 24px;
     margin: var(--spacers-dp4);
     background-color: transparent;
     position: absolute;
+}
+
+.isOver.firstItemDroppableArea {
+    z-index: 100;
 }
 
 .isEmpty {
@@ -57,14 +61,14 @@
     margin-top: 4px;
 }
 
-.isOver .dropIndicator:before,
-.isOver .dropIndicator:after {
+.isOver .dropIndicator::before,
+.isOver .dropIndicator::after {
     content: '';
     position: absolute;
 }
 
 /* the vertical line */
-.isOver .dropIndicator:before {
+.isOver .dropIndicator::before {
     top: 6px;
     width: 4px;
     left: -6px;
@@ -72,12 +76,12 @@
     background-color: #4c9ffe;
 }
 
-.isOver.isEmpty .dropIndicator:before {
+.isOver.isEmpty .dropIndicator::before {
     top: 10px;
 }
 
 /* the circle */
-.isOver .dropIndicator:after {
+.isOver .dropIndicator::after {
     top: -4px;
     left: -10px;
     width: 12px;
@@ -86,6 +90,6 @@
     background: transparent;
     border-radius: 12px;
 }
-.isOver.isEmpty .dropIndicator:after {
+.isOver.isEmpty .dropIndicator::after {
     top: 0;
 }

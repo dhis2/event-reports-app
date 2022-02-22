@@ -31,7 +31,7 @@ const DefaultAxis = ({
 }) => {
     const draggingId = useSelector(sGetUiDraggingId)
     const metadata = useSelector(sGetMetadata)
-    const { isOver, setNodeRef } = useDroppable({
+    const { isOver, setNodeRef, active } = useDroppable({
         id: axisId,
     })
 
@@ -76,6 +76,8 @@ const DefaultAxis = ({
         return numberOfConditions
     }
 
+    const draggingOverFirstPosDropZone = axis[0] === active?.id ? false : isOver
+
     return (
         <div
             id={axisId}
@@ -87,13 +89,14 @@ const DefaultAxis = ({
                 <div className={styles.content}>
                     <div
                         ref={setNodeRef}
-                        className={cx(styles.lastItemDroppableArea, {
-                            [styles.isOver]: isOver,
+                        className={cx(styles.firstItemDroppableArea, {
+                            [styles.isOver]: draggingOverFirstPosDropZone,
                             [styles.isEmpty]: !axis.length,
                         })}
                     >
-                        <div className={styles.dropIndicator} />
+                        <div className={styles.dropIndicator}></div>
                     </div>
+
                     {renderChips &&
                         axis.map((id) => {
                             return (
