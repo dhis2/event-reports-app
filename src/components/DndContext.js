@@ -43,6 +43,10 @@ const SOURCE_DIMENSIONS = [
     PROGRAM_DIMENSIONS,
 ]
 
+export const getDropzoneId = (axisId, position) => `${axisId}-${position}`
+export const FIRST = 'first'
+export const LAST = 'last'
+
 function getIntersectionRatio(entry, target) {
     const top = Math.max(target.top, entry.top)
     const left = Math.max(target.left, entry.left)
@@ -111,11 +115,6 @@ const rectIntersectionCustom = ({
 const getIdFromDraggingId = (draggingId) => {
     const [id] = draggingId.split('-').reverse()
     return id
-}
-
-const getAxisIdFromDropZoneId = (dropzoneId) => {
-    const [axisId] = dropzoneId.split('-')
-    return axisId
 }
 
 const OuterDndContext = ({ children }) => {
@@ -270,19 +269,22 @@ const OuterDndContext = ({ children }) => {
             onDragCancel()
             return
         }
+
         const sourceAxisId = active.data.current.sortable.containerId
-        const destinationAxisId = getAxisIdFromDropZoneId(
+        const destinationAxisId = (
             over.data.current?.sortable?.containerId || over.id
-        )
+        ).split('-')[0]
+
         let destinationIndex =
             over.data.current?.sortable?.index || FIRST_POSITION
 
-        const isDroppingInFirstPosition = () => {
-            return ['columns-first', 'filters-first'].includes(over.id)
-        }
+        const isDroppingInFirstPosition = [
+            `${AXIS_ID_COLUMNS}-${FIRST}`,
+            `${AXIS_ID_FILTERS}-${FIRST}`,
+        ].includes(over.id)
 
         if (SOURCE_DIMENSIONS.includes(sourceAxisId)) {
-            if (isDroppingInFirstPosition()) {
+            if (isDroppingInFirstPosition) {
                 destinationIndex = FIRST_POSITION
             } else {
                 ++destinationIndex
@@ -300,7 +302,7 @@ const OuterDndContext = ({ children }) => {
                 ++destinationIndex
             }
 
-            if (isDroppingInFirstPosition()) {
+            if (isDroppingInFirstPosition) {
                 destinationIndex = FIRST_POSITION
             }
 

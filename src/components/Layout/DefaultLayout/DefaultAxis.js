@@ -14,6 +14,7 @@ import {
     sGetUiLayout,
     sGetUiConditionsByDimension,
 } from '../../../reducers/ui.js'
+import { FIRST } from '../../DndContext.js'
 import Chip from '../Chip.js'
 import ChipMenu from '../ChipMenu.js'
 import { DropZone } from './DropZone.js'
@@ -83,7 +84,7 @@ const DefaultAxis = ({
             <SortableContext id={axisId} items={axis}>
                 <div className={styles.content}>
                     <DropZone
-                        position="first"
+                        position={FIRST}
                         axisId={axisId}
                         firstElementId={axis[0]}
                     />
@@ -111,7 +112,6 @@ const DefaultAxis = ({
                                 />
                             )
                         })}
-                    {/* <DropZone position="last" id={`${axisId}-last`} /> */}
                 </div>
             </SortableContext>
         </div>

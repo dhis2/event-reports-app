@@ -2,21 +2,16 @@ import { useDroppable } from '@dnd-kit/core'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
+import { getDropzoneId } from '../../DndContext.js'
 import styles from './styles/DropZone.module.css'
 
 const DropZone = ({ position, axisId, firstElementId }) => {
     const { isOver, setNodeRef, active } = useDroppable({
-        id: `${axisId}-${position}`,
+        id: getDropzoneId(axisId, position),
     })
     const draggingOverFirstPosDropZone =
         firstElementId === active?.id ? false : isOver
 
-    // console.log(
-    //     'axisId, firstElementId',
-    //     axisId,
-    //     firstElementId,
-    //     !firstElementId
-    // )
     return (
         <div
             ref={setNodeRef}
