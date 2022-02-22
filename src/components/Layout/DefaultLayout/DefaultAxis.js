@@ -1,4 +1,3 @@
-import { useDroppable } from '@dnd-kit/core'
 import { SortableContext } from '@dnd-kit/sortable'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
@@ -17,6 +16,7 @@ import {
 } from '../../../reducers/ui.js'
 import Chip from '../Chip.js'
 import ChipMenu from '../ChipMenu.js'
+import { DropZone } from './DropZone.js'
 import styles from './styles/DefaultAxis.module.css'
 
 const DefaultAxis = ({
@@ -31,9 +31,6 @@ const DefaultAxis = ({
 }) => {
     const draggingId = useSelector(sGetUiDraggingId)
     const metadata = useSelector(sGetMetadata)
-    const { isOver, setNodeRef, active } = useDroppable({
-        id: axisId,
-    })
 
     // TODO - using the rawDimensionId instead of dimensionId
     // is a temporary workaround
@@ -76,8 +73,6 @@ const DefaultAxis = ({
         return numberOfConditions
     }
 
-    const draggingOverFirstPosDropZone = axis[0] === active?.id ? false : isOver
-
     return (
         <div
             id={axisId}
@@ -87,16 +82,11 @@ const DefaultAxis = ({
             <div className={styles.label}>{getAxisName(axisId)}</div>
             <SortableContext id={axisId} items={axis}>
                 <div className={styles.content}>
-                    <div
-                        ref={setNodeRef}
-                        className={cx(styles.firstItemDroppableArea, {
-                            [styles.isOver]: draggingOverFirstPosDropZone,
-                            [styles.isEmpty]: !axis.length,
-                        })}
-                    >
-                        <div className={styles.dropIndicator}></div>
-                    </div>
-
+                    <DropZone
+                        position="first"
+                        axisId={axisId}
+                        firstElementId={axis[0]}
+                    />
                     {renderChips &&
                         axis.map((id) => {
                             return (
@@ -121,6 +111,7 @@ const DefaultAxis = ({
                                 />
                             )
                         })}
+                    {/* <DropZone position="last" id={`${axisId}-last`} /> */}
                 </div>
             </SortableContext>
         </div>

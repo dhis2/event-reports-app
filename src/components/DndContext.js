@@ -113,6 +113,11 @@ const getIdFromDraggingId = (draggingId) => {
     return id
 }
 
+const getAxisIdFromDropZoneId = (dropzoneId) => {
+    const [axisId] = dropzoneId.split('-')
+    return axisId
+}
+
 const OuterDndContext = ({ children }) => {
     const [sourceAxis, setSourceAxis] = useState(null)
 
@@ -266,13 +271,14 @@ const OuterDndContext = ({ children }) => {
             return
         }
         const sourceAxisId = active.data.current.sortable.containerId
-        const destinationAxisId =
+        const destinationAxisId = getAxisIdFromDropZoneId(
             over.data.current?.sortable?.containerId || over.id
+        )
         let destinationIndex =
             over.data.current?.sortable?.index || FIRST_POSITION
 
         const isDroppingInFirstPosition = () => {
-            return [AXIS_ID_COLUMNS, AXIS_ID_FILTERS].includes(over.id)
+            return ['columns-first', 'filters-first'].includes(over.id)
         }
 
         if (SOURCE_DIMENSIONS.includes(sourceAxisId)) {
