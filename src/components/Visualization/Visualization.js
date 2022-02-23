@@ -135,7 +135,7 @@ export const Visualization = ({
             } else if (header.stageOffset === 1) {
                 postfix = i18n.t('oldest')
             } else if (header.stageOffset > 1) {
-                postfix = `${i18n.t('oldest')} ${header.stageOffset - 1}`
+                postfix = `${i18n.t('oldest')} +${header.stageOffset - 1}`
             } else if (header.stageOffset < 0) {
                 postfix = `${i18n.t('most recent')} ${header.stageOffset}`
             }
