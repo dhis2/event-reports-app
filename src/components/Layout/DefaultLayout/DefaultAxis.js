@@ -16,7 +16,7 @@ import {
     sGetUiConditionsByDimension,
 } from '../../../reducers/ui.js'
 import DimensionMenu from '../../DimensionMenu/DimensionMenu.js'
-import { FIRST, LAST } from '../../DndContext.js'
+import { FIRST, LAST, UNDER } from '../../DndContext.js'
 import Chip from '../Chip.js'
 import { DropZone } from './DropZone.js'
 import styles from './styles/DefaultAxis.module.css'
@@ -30,8 +30,8 @@ const DefaultAxis = ({
     className,
     renderChips,
 }) => {
-    const { isOver, setNodeRef } = useDroppable({
-        id: `${axisId}-under`,
+    const { setNodeRef } = useDroppable({
+        id: `${axisId}-${UNDER}`,
     })
     const draggingId = useSelector(sGetUiDraggingId)
     const metadata = useSelector(sGetMetadata)
@@ -78,7 +78,7 @@ const DefaultAxis = ({
     }
 
     return (
-        <div ref={setNodeRef} className={styles.under}>
+        <div ref={setNodeRef} className={styles.dropzoneUnder}>
             <div
                 id={axisId}
                 data-test={`${axisId}-axis`}

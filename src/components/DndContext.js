@@ -36,6 +36,7 @@ export const YOUR_DIMENSIONS = 'your'
 export const PROGRAM_DIMENSIONS = 'program'
 
 const FIRST_POSITION = 0
+const LAST_POSITION = -1
 const SOURCE_DIMENSIONS = [
     MAIN_DIMENSIONS,
     TIME_DIMENSIONS,
@@ -46,6 +47,7 @@ const SOURCE_DIMENSIONS = [
 export const getDropzoneId = (axisId, position) => `${axisId}-${position}`
 export const FIRST = 'first'
 export const LAST = 'last'
+export const UNDER = 'under'
 
 function getIntersectionRatio(entry, target) {
     const top = Math.max(target.top, entry.top)
@@ -205,7 +207,9 @@ const OuterDndContext = ({ children }) => {
     }) => {
         const destItems = Array.from(layout[destinationAxisId])
         const newIndex =
-            destinationIndex !== -1 ? destinationIndex : destItems.length
+            destinationIndex !== LAST_POSITION
+                ? destinationIndex
+                : destItems.length
         const sourceList = Array.from(layout[sourceAxisId])
         const [moved] = sourceList.splice(sourceIndex, 1)
 
@@ -232,7 +236,7 @@ const OuterDndContext = ({ children }) => {
 
     const addDimensionToLayout = ({ axisId, index, dimensionId }) => {
         const sourceList = Array.from(layout[axisId])
-        const idx = index !== -1 ? index : sourceList.length
+        const idx = index !== LAST_POSITION ? index : sourceList.length
         dispatch(
             acAddUiLayoutDimensions({ [dimensionId]: { axisId, index: idx } })
         )
@@ -262,9 +266,6 @@ const OuterDndContext = ({ children }) => {
     const onDragEnd = (result) => {
         const { active, over } = result
 
-        console.log('onDragEnd', result)
-        // onDragCancel()
-        // return
         if (
             !over?.id ||
             SOURCE_DIMENSIONS.includes(
@@ -290,17 +291,18 @@ const OuterDndContext = ({ children }) => {
         ].includes(over.id)
 
         const isDroppingInLastPosition = [
-            'columns-last',
-            'columns-under',
-            'filters-last',
-            'filters-under',
+            `${AXIS_ID_COLUMNS}-${LAST}`,
+            `${AXIS_ID_FILTERS}-${LAST}`,
+            `${AXIS_ID_COLUMNS}-${UNDER}`,
+            `${AXIS_ID_FILTERS}-${UNDER}`,
         ].includes(over.id)
 
+        console.log('onDragEnd', over.id)
         if (SOURCE_DIMENSIONS.includes(sourceAxisId)) {
             if (isDroppingInFirstPosition) {
                 destinationIndex = FIRST_POSITION
             } else if (isDroppingInLastPosition) {
-                destinationIndex = -1
+                destinationIndex = LAST_POSITION
             } else {
                 ++destinationIndex
             }
@@ -320,7 +322,7 @@ const OuterDndContext = ({ children }) => {
             if (isDroppingInFirstPosition) {
                 destinationIndex = FIRST_POSITION
             } else if (isDroppingInLastPosition) {
-                destinationIndex = -1
+                destinationIndex = LAST_POSITION
             }
 
             rearrangeLayoutDimensions({
