@@ -18,6 +18,7 @@ const Chip = ({
     dimensionType,
     items,
     isLast,
+    overLastDropZone,
     onClick,
     contextMenu,
     activeIndex,
@@ -49,6 +50,10 @@ const Chip = ({
         } else {
             insertPosition = index > activeIndex ? AFTER : BEFORE
         }
+    }
+
+    if (isLast && overLastDropZone) {
+        insertPosition = AFTER
     }
 
     const style = transform
@@ -137,6 +142,7 @@ Chip.propTypes = {
     isLast: PropTypes.bool,
     items: PropTypes.array,
     numberOfConditions: PropTypes.number,
+    overLastDropZone: PropTypes.bool,
 }
 
 Chip.defaultProps = {

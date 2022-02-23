@@ -30,7 +30,7 @@ const DefaultAxis = ({
     className,
     renderChips,
 }) => {
-    const { setNodeRef } = useDroppable({
+    const { over, setNodeRef } = useDroppable({
         id: getDropzoneId(axisId, LAST),
     })
     const draggingId = useSelector(sGetUiDraggingId)
@@ -77,6 +77,8 @@ const DefaultAxis = ({
         return numberOfConditions
     }
 
+    const overLastDropZone = over?.id === `${axisId}-${LAST}`
+
     return (
         <div ref={setNodeRef} className={styles.dropzoneLast}>
             <div
@@ -87,7 +89,11 @@ const DefaultAxis = ({
                 <div className={styles.label}>{getAxisName(axisId)}</div>
                 <SortableContext id={axisId} items={axis}>
                     <div className={styles.content}>
-                        <DropZone axisId={axisId} firstElementId={axis[0]} />
+                        <DropZone
+                            axisId={axisId}
+                            firstElementId={axis[0]}
+                            overLastDropZone={overLastDropZone}
+                        />
                         {renderChips &&
                             axis.map((id, i) => (
                                 <Chip
@@ -101,6 +107,7 @@ const DefaultAxis = ({
                                         id
                                     )}
                                     isLast={i === axis.length - 1}
+                                    overLastDropZone={overLastDropZone}
                                     contextMenu={
                                         <DimensionMenu
                                             dimensionId={id}

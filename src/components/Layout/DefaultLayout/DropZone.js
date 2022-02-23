@@ -5,12 +5,17 @@ import React from 'react'
 import { getDropzoneId, FIRST } from '../../DndContext.js'
 import styles from './styles/DropZone.module.css'
 
-const DropZone = ({ axisId, firstElementId }) => {
+const DropZone = ({ axisId, firstElementId, overLastDropZone }) => {
     const { isOver, setNodeRef, active } = useDroppable({
         id: getDropzoneId(axisId, FIRST),
     })
 
-    const draggingOver = firstElementId === active?.id ? false : isOver
+    let draggingOver = false
+    if (overLastDropZone && !firstElementId) {
+        draggingOver = true
+    } else {
+        draggingOver = firstElementId === active?.id ? false : isOver
+    }
 
     return (
         <div
@@ -26,6 +31,7 @@ const DropZone = ({ axisId, firstElementId }) => {
 DropZone.propTypes = {
     axisId: PropTypes.string,
     firstElementId: PropTypes.string,
+    overLastDropZone: PropTypes.bool,
 }
 
 export { DropZone }

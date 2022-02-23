@@ -16,7 +16,6 @@
 .isEmpty {
     position: relative;
     flex-grow: 1;
-    background-color: transparent;
     z-index: 100;
 }
 
