@@ -19,9 +19,6 @@ import {
     STATUS_ACTIVE,
     STATUS_CANCELLED,
     STATUS_COMPLETED,
-    STATUS_OVERDUE,
-    STATUS_SCHEDULED,
-    STATUS_SKIPPED,
     statusNames,
 } from '../../modules/visualization.js'
 import { sGetMetadata } from '../../reducers/metadata.js'
