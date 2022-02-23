@@ -1,6 +1,7 @@
 .ct {
     display: flex;
     flex: 1;
+    background-color: var(--colors-white);
 }
 .axisGroup {
     display: flex;
