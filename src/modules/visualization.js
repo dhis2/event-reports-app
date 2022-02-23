@@ -28,9 +28,6 @@ import { default as options } from './options.js'
 export const STATUS_ACTIVE = 'ACTIVE'
 export const STATUS_CANCELLED = 'CANCELLED'
 export const STATUS_COMPLETED = 'COMPLETED'
-export const STATUS_OVERDUE = 'OVERDUE'
-export const STATUS_SCHEDULED = 'SCHEDULED'
-export const STATUS_SKIPPED = 'SKIPPED'
 
 export const OUTPUT_TYPE_EVENT = 'EVENT'
 export const OUTPUT_TYPE_ENROLLMENT = 'ENROLLMENT'
@@ -39,9 +36,6 @@ export const statusNames = {
     [STATUS_ACTIVE]: i18n.t('Active'),
     [STATUS_CANCELLED]: i18n.t('Cancelled'),
     [STATUS_COMPLETED]: i18n.t('Completed'),
-    [STATUS_OVERDUE]: i18n.t('Overdue'),
-    [STATUS_SCHEDULED]: i18n.t('Scheduled'),
-    [STATUS_SKIPPED]: i18n.t('Skipped'),
 }
 
 export const headersMap = {
@@ -138,9 +132,10 @@ export const visTypes = [
 ]
 
 export const visTypeDescriptions = {
-    // TODO review descriptions @scott @joe
-    [VIS_TYPE_LINE_LIST]: i18n.t('TEXT description for Line List'),
-    [VIS_TYPE_PIVOT_TABLE]: i18n.t('TEXT description for Pivot Table'),
+    [VIS_TYPE_LINE_LIST]: i18n.t('List data from tracked entities and events.'),
+    [VIS_TYPE_PIVOT_TABLE]: i18n.t(
+        'Explore data with manipulatable columns, rows, and aggregations.'
+    ),
 }
 
 export const getVisualizationFromCurrent = (current) => {
