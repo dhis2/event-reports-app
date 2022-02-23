@@ -14,7 +14,6 @@
 
 .last {
     flex-grow: 1;
-    background-color: blue;
     height: 26px;
     margin: 4px 0 0 0;
 }

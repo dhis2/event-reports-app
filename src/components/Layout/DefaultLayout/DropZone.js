@@ -17,19 +17,12 @@ const DropZone = ({ position, axisId, firstElementId }) => {
         draggingOver = isOver
     }
 
-    let isEmpty
-    if (position === LAST) {
-        isEmpty = false
-    } else {
-        isEmpty = !firstElementId
-    }
-
     return (
         <div
             ref={setNodeRef}
             className={cx(styles.dropZone, {
                 [styles.isOver]: draggingOver,
-                [styles.isEmpty]: isEmpty,
+                [styles.isEmpty]: position === LAST ? false : !firstElementId,
                 [styles.first]: position === FIRST,
                 [styles.last]: position === LAST,
             })}

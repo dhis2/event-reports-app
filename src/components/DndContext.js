@@ -297,7 +297,7 @@ const OuterDndContext = ({ children }) => {
             `${AXIS_ID_FILTERS}-${UNDER}`,
         ].includes(over.id)
 
-        console.log('onDragEnd', over.id)
+        console.log(over.id)
         if (SOURCE_DIMENSIONS.includes(sourceAxisId)) {
             if (isDroppingInFirstPosition) {
                 destinationIndex = FIRST_POSITION

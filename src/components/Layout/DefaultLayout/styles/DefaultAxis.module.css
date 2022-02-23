@@ -12,9 +12,9 @@
     cursor: pointer;
 }
 
-.droponeUnder {
-    background-color: red;
+.dropzoneUnder {
     height: 100%;
+    background-color: transparent;
 }
 
 .axisContainer {
