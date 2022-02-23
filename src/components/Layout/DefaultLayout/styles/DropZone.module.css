@@ -16,36 +16,32 @@
 .isEmpty {
     position: relative;
     flex-grow: 1;
-    background-color: green;
+    background-color: transparent;
     z-index: 100;
 }
 
-.dropZone::before,
-.dropZone::after {
+.isOver::before,
+.isOver::after {
     content: '';
     position: absolute;
 }
 
 /* the vertical line */
-.dropZone::before {
-    top: 12px;
+.isOver::before {
+    top: 8px;
     width: 4px;
-    left: -2px;
+    left: -6px;
     height: 18px;
-    background-color: purple;
-}
-
-.dropZone.isEmpty::before {
-    top: 10px;
+    background-color: #4c9ffe;
 }
 
 /* the circle */
-.dropZone::after {
-    top: 0;
-    left: -6px;
+.isOver::after {
+    top: -4px;
+    left: -10px;
     width: 12px;
     height: 12px;
-    border: 4px solid purple;
+    border: 4px solid #4c9ffe;
     background: transparent;
     border-radius: 12px;
 }
