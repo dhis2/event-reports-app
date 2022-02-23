@@ -30,8 +30,9 @@ const DefaultAxis = ({
     className,
     renderChips,
 }) => {
+    const lastDropZoneId = getDropzoneId(axisId, LAST)
     const { over, setNodeRef } = useDroppable({
-        id: getDropzoneId(axisId, LAST),
+        id: lastDropZoneId,
     })
     const draggingId = useSelector(sGetUiDraggingId)
     const metadata = useSelector(sGetMetadata)
@@ -77,10 +78,10 @@ const DefaultAxis = ({
         return numberOfConditions
     }
 
-    const overLastDropZone = over?.id === `${axisId}-${LAST}`
+    const overLastDropZone = over?.id === lastDropZoneId
 
     return (
-        <div ref={setNodeRef} className={styles.dropzoneLast}>
+        <div ref={setNodeRef} className={styles.lastDropzone}>
             <div
                 id={axisId}
                 data-test={`${axisId}-axis`}
