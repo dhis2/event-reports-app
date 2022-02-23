@@ -47,7 +47,6 @@ const SOURCE_DIMENSIONS = [
 export const getDropzoneId = (axisId, position) => `${axisId}-${position}`
 export const FIRST = 'first'
 export const LAST = 'last'
-export const UNDER = 'under'
 
 function getIntersectionRatio(entry, target) {
     const top = Math.max(target.top, entry.top)
@@ -169,32 +168,35 @@ const OuterDndContext = ({ children }) => {
                 ? 1
                 : 0
 
-        return (
-            <div className={styles.overlay}>
-                {SOURCE_DIMENSIONS.includes(sourceAxis) ? (
+        if (SOURCE_DIMENSIONS.includes(sourceAxis)) {
+            return (
+                <div className={styles.overlay}>
                     <DimensionItemBase
                         name={name}
                         dimensionType={dimensionType}
                     />
-                ) : (
-                    <div
-                        className={cx(
-                            chipStyles.chipWrapper,
-                            chipStyles.chipWrapperOverlay,
-                            {
-                                [chipStyles.chipEmpty]:
-                                    !chipItems.length && !numberOfConditions,
-                            }
-                        )}
-                    >
-                        <ChipBase
-                            dimensionName={name}
-                            dimensionType={dimensionType}
-                            items={chipItems}
-                            numberOfConditions={numberOfConditions}
-                        />
-                    </div>
+                </div>
+            )
+        }
+
+        return (
+            <div
+                className={cx(
+                    chipStyles.chipWrapper,
+                    chipStyles.chipWrapperOverlay,
+                    styles.overlay,
+                    {
+                        [chipStyles.chipEmpty]:
+                            !chipItems.length && !numberOfConditions,
+                    }
                 )}
+            >
+                <ChipBase
+                    dimensionName={name}
+                    dimensionType={dimensionType}
+                    items={chipItems}
+                    numberOfConditions={numberOfConditions}
+                />
             </div>
         )
     }
@@ -293,11 +295,8 @@ const OuterDndContext = ({ children }) => {
         const isDroppingInLastPosition = [
             `${AXIS_ID_COLUMNS}-${LAST}`,
             `${AXIS_ID_FILTERS}-${LAST}`,
-            `${AXIS_ID_COLUMNS}-${UNDER}`,
-            `${AXIS_ID_FILTERS}-${UNDER}`,
         ].includes(over.id)
 
-        console.log(over.id)
         if (SOURCE_DIMENSIONS.includes(sourceAxisId)) {
             if (isDroppingInFirstPosition) {
                 destinationIndex = FIRST_POSITION

@@ -1,67 +1,51 @@
 .dropZone {
-    background-color: transparent;
-}
-
-.first {
+    position: absolute;
     top: 0;
     left: 0;
     z-index: -1;
     width: 32px;
-    height: 24px;
-    margin: var(--spacers-dp4);
-    position: absolute;
-}
-
-.last {
-    flex-grow: 1;
     height: 26px;
-    margin: 4px 0 0 0;
+    margin: var(--spacers-dp4);
+    background-color: transparent;
 }
 
-.first.isOver {
+.isOver {
     z-index: 100;
 }
 
-.first.isEmpty {
+.isEmpty {
     position: relative;
-    flex-grow: 2;
-    height: 100%;
-    margin: 0;
+    flex-grow: 1;
+    background-color: green;
+    z-index: 100;
 }
 
-.first.isEmpty .dropIndicator {
-    margin-top: 4px;
-}
-
-.isOver .dropIndicator::before,
-.isOver .dropIndicator::after {
+.dropZone::before,
+.dropZone::after {
     content: '';
     position: absolute;
 }
 
 /* the vertical line */
-.isOver .dropIndicator::before {
-    top: 6px;
+.dropZone::before {
+    top: 12px;
     width: 4px;
-    left: -6px;
+    left: -2px;
     height: 18px;
-    background-color: #4c9ffe;
+    background-color: purple;
 }
 
-.isOver.isEmpty .dropIndicator::before {
+.dropZone.isEmpty::before {
     top: 10px;
 }
 
 /* the circle */
-.isOver .dropIndicator::after {
-    top: -4px;
-    left: -10px;
+.dropZone::after {
+    top: 0;
+    left: -6px;
     width: 12px;
     height: 12px;
-    border: 4px solid #4c9ffe;
+    border: 4px solid purple;
     background: transparent;
     border-radius: 12px;
-}
-.isOver.isEmpty .dropIndicator::after {
-    top: 0;
 }

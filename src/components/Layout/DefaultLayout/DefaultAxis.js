@@ -16,7 +16,7 @@ import {
     sGetUiConditionsByDimension,
 } from '../../../reducers/ui.js'
 import DimensionMenu from '../../DimensionMenu/DimensionMenu.js'
-import { FIRST, LAST, UNDER } from '../../DndContext.js'
+import { LAST, getDropzoneId } from '../../DndContext.js'
 import Chip from '../Chip.js'
 import { DropZone } from './DropZone.js'
 import styles from './styles/DefaultAxis.module.css'
@@ -31,7 +31,7 @@ const DefaultAxis = ({
     renderChips,
 }) => {
     const { setNodeRef } = useDroppable({
-        id: `${axisId}-${UNDER}`,
+        id: getDropzoneId(axisId, LAST),
     })
     const draggingId = useSelector(sGetUiDraggingId)
     const metadata = useSelector(sGetMetadata)
@@ -78,7 +78,7 @@ const DefaultAxis = ({
     }
 
     return (
-        <div ref={setNodeRef} className={styles.dropzoneUnder}>
+        <div ref={setNodeRef} className={styles.dropzoneLast}>
             <div
                 id={axisId}
                 data-test={`${axisId}-axis`}
@@ -87,35 +87,29 @@ const DefaultAxis = ({
                 <div className={styles.label}>{getAxisName(axisId)}</div>
                 <SortableContext id={axisId} items={axis}>
                     <div className={styles.content}>
-                        <DropZone
-                            position={FIRST}
-                            axisId={axisId}
-                            firstElementId={axis[0]}
-                        />
+                        <DropZone axisId={axisId} firstElementId={axis[0]} />
                         {renderChips &&
-                            axis.map((id) => {
-                                return (
-                                    <Chip
-                                        key={`${axisId}-${id}`}
-                                        onClick={getOpenHandler(id)}
-                                        dimensionId={id}
-                                        dimensionName={getDimensionName(id)}
-                                        dimensionType={getDimensionType(id)}
-                                        items={getItemsByDimension(id)}
-                                        numberOfConditions={getNumberOfConditions(
-                                            id
-                                        )}
-                                        contextMenu={
-                                            <DimensionMenu
-                                                dimensionId={id}
-                                                currentAxisId={axisId}
-                                            />
-                                        }
-                                        activeIndex={activeIndex}
-                                    />
-                                )
-                            })}
-                        <DropZone position={LAST} axisId={axisId} />
+                            axis.map((id, i) => (
+                                <Chip
+                                    key={`${axisId}-${id}`}
+                                    onClick={getOpenHandler(id)}
+                                    dimensionId={id}
+                                    dimensionName={getDimensionName(id)}
+                                    dimensionType={getDimensionType(id)}
+                                    items={getItemsByDimension(id)}
+                                    numberOfConditions={getNumberOfConditions(
+                                        id
+                                    )}
+                                    isLast={i === axis.length - 1}
+                                    contextMenu={
+                                        <DimensionMenu
+                                            dimensionId={id}
+                                            currentAxisId={axisId}
+                                        />
+                                    }
+                                    activeIndex={activeIndex}
+                                />
+                            ))}
                     </div>
                 </SortableContext>
             </div>
