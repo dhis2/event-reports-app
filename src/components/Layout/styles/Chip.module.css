@@ -4,8 +4,6 @@
     margin: var(--spacers-dp4);
     background-color: var(--colors-teal200);
     border-radius: 3px;
-    align-items: center;
-    max-width: 400px;
     width: fit-content;
 }
 
@@ -24,9 +22,8 @@
     font-weight: 400;
     color: var(--colors-grey900);
     display: flex;
-    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
+    max-width: 360px;
 }
 
 .label {
@@ -97,7 +94,7 @@
 }
 
 .leftIcon {
-    padding-right: 6px;
+    margin-right: 6px;
     display: flex;
     align-items: center;
 }
