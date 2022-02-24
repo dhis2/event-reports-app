@@ -18,7 +18,7 @@ import {
     useSelectedDimensions,
 } from './SelectedDimensionsContext.js'
 import { TimeDimensions } from './TimeDimensions.js'
-import { YourDimensions } from './YourDimensions.js'
+import { YourDimensionsMenuItem } from './YourDimensionsMenuItem.js'
 import { YourDimensionsPanel } from './YourDimensionsPanel/index.js'
 
 const TAB_INPUT = 'INPUT'
@@ -63,7 +63,7 @@ const MainSidebar = () => {
                     selected={open && selectedTabId === TAB_PROGRAM}
                     count={counts.program}
                 />
-                <YourDimensions
+                <YourDimensionsMenuItem
                     selected={open && selectedTabId === TAB_YOUR}
                     count={counts.your}
                     onClick={() => onClick(TAB_YOUR)}

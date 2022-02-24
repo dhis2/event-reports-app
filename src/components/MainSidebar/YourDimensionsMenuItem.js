@@ -21,7 +21,7 @@ const query = {
     },
 }
 
-export const YourDimensions = ({ selected, count, onClick }) => {
+export const YourDimensionsMenuItem = ({ selected, count, onClick }) => {
     const { data } = useDataQuery(query)
 
     return data?.dimensions.dimensions?.length ? (
@@ -35,7 +35,7 @@ export const YourDimensions = ({ selected, count, onClick }) => {
     ) : null
 }
 
-YourDimensions.propTypes = {
+YourDimensionsMenuItem.propTypes = {
     count: PropTypes.number.isRequired,
     selected: PropTypes.bool.isRequired,
     onClick: PropTypes.func.isRequired,
