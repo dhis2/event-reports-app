@@ -8,6 +8,7 @@ import {
 } from '../../actions/ui.js'
 import { sGetUiType, sGetUiLayout } from '../../reducers/ui.js'
 import IconButton from '../IconButton/IconButton.js'
+import styles from './DimensionMenu.module.css'
 import MenuItems from './MenuItems.js'
 
 const getAxisIdForDimension = (dimensionId, layout) => {
@@ -40,7 +41,7 @@ const DimensionMenu = ({ currentAxisId, dimensionId }) => {
 
     return (
         <>
-            <div ref={buttonRef}>
+            <div ref={buttonRef} className={styles.button}>
                 <IconButton
                     ariaOwns={menuIsOpen ? getMenuId() : null}
                     ariaHaspopup={true}

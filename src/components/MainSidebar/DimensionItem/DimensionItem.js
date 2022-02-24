@@ -85,11 +85,7 @@ export const DimensionItem = ({
                 selected={selected}
                 stageName={stageName}
                 onClick={onClick}
-                contextMenu={
-                    mouseIsOver && !disabled ? (
-                        <DimensionMenu dimensionId={id} />
-                    ) : null
-                }
+                contextMenu={!disabled && <DimensionMenu dimensionId={id} />}
             />
         </div>
     )

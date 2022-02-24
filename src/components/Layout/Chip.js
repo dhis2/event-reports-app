@@ -120,7 +120,7 @@ const Chip = ({
                             )}
                         </Tooltip>
                     }
-                    {contextMenu && contextMenu}
+                    {contextMenu}
                 </div>
             </div>
         </div>
