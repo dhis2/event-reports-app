@@ -2,15 +2,15 @@ import { useDataQuery } from '@dhis2/app-runtime'
 import { useEffect, useState } from 'react'
 import { DIMENSION_LIST_FIELDS } from '../DimensionsList/index.js'
 
-const yourDimensionsResource = 'dimensions'
+const YOUR_DIMENSIONS_RESOURCE = 'dimensions'
 // Fixed filter on org units for 2.38 ?
-const yourDimensionsFilter = 'dimensionType:eq:ORGANISATION_UNIT_GROUP_SET'
+const YOUR_DIMENSIONS_FILTER = 'dimensionType:eq:ORGANISATION_UNIT_GROUP_SET'
 
 const query = {
     dimensions: {
-        resource: yourDimensionsResource,
+        resource: YOUR_DIMENSIONS_RESOURCE,
         params: ({ page, searchTerm }) => {
-            const filters = [yourDimensionsFilter]
+            const filters = [YOUR_DIMENSIONS_FILTER]
 
             if (searchTerm) {
                 filters.push(`name:ilike:${searchTerm}`)
@@ -86,4 +86,4 @@ const useYourDimensions = ({ visible, searchTerm }) => {
     }
 }
 
-export { useYourDimensions, yourDimensionsFilter, yourDimensionsResource }
+export { useYourDimensions, YOUR_DIMENSIONS_FILTER, YOUR_DIMENSIONS_RESOURCE }

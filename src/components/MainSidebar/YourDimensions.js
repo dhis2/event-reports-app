@@ -5,18 +5,18 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { MenuItem } from './MenuItem/index.js'
 import {
-    yourDimensionsResource,
-    yourDimensionsFilter,
+    YOUR_DIMENSIONS_RESOURCE,
+    YOUR_DIMENSIONS_FILTER,
 } from './YourDimensionsPanel/useYourDimensions.js'
 
 const query = {
     dimensions: {
-        resource: yourDimensionsResource,
+        resource: YOUR_DIMENSIONS_RESOURCE,
         params: {
             page: 1,
             pageSize: 1,
             fields: 'id',
-            filter: yourDimensionsFilter,
+            filter: YOUR_DIMENSIONS_FILTER,
         },
     },
 }
