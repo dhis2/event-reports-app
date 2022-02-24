@@ -1,0 +1,42 @@
+import { useDataQuery } from '@dhis2/app-runtime'
+import i18n from '@dhis2/d2-i18n'
+import { IconFolder16 } from '@dhis2/ui'
+import PropTypes from 'prop-types'
+import React from 'react'
+import { MenuItem } from './MenuItem/index.js'
+import {
+    yourDimensionsResource,
+    yourDimensionsFilter,
+} from './YourDimensionsPanel/useYourDimensions.js'
+
+const query = {
+    dimensions: {
+        resource: yourDimensionsResource,
+        params: {
+            page: 1,
+            pageSize: 1,
+            fields: 'id',
+            filter: yourDimensionsFilter,
+        },
+    },
+}
+
+export const YourDimensions = ({ selected, count, onClick }) => {
+    const { data } = useDataQuery(query)
+
+    return data?.dimensions.dimensions?.length ? (
+        <MenuItem
+            icon={<IconFolder16 />}
+            label={i18n.t('Your dimensions')}
+            onClick={onClick}
+            selected={selected}
+            count={count}
+        />
+    ) : null
+}
+
+YourDimensions.propTypes = {
+    count: PropTypes.number.isRequired,
+    selected: PropTypes.bool.isRequired,
+    onClick: PropTypes.func.isRequired,
+}
