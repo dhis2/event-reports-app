@@ -1,3 +1,4 @@
+import { DIMENSION_ID_ORGUNIT } from '@dhis2/analytics'
 import i18n from '@dhis2/d2-i18n'
 import {
     DIMENSION_TYPE_OU,
@@ -11,7 +12,7 @@ import { OUTPUT_TYPE_ENROLLMENT } from './visualization.js'
 
 export const getMainDimensions = () => ({
     [DIMENSION_TYPE_OU]: {
-        id: DIMENSION_TYPE_OU,
+        id: DIMENSION_ID_ORGUNIT,
         dimensionType: DIMENSION_TYPE_OU,
         name: i18n.t('Organisation unit'),
     },

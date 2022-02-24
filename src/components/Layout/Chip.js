@@ -87,7 +87,7 @@ const Chip = ({
             style={style}
         >
             <div
-                className={cx(styles.chipWrapper, {
+                className={cx(styles.chip, {
                     [styles.chipEmpty]: !items.length && !numberOfConditions,
                     [styles.active]: isDragging,
                     [styles.insertBefore]: insertPosition === BEFORE,
@@ -105,7 +105,6 @@ const Chip = ({
                                 <div
                                     data-test={dataTest}
                                     id={id}
-                                    className={cx(styles.chip, styles.chipLeft)}
                                     onClick={onClick}
                                     ref={ref}
                                     onMouseOver={onMouseOver}
@@ -121,11 +120,7 @@ const Chip = ({
                             )}
                         </Tooltip>
                     }
-                    {contextMenu && (
-                        <div className={cx(styles.chip, styles.chipRight)}>
-                            {contextMenu}
-                        </div>
-                    )}
+                    {contextMenu && contextMenu}
                 </div>
             </div>
         </div>

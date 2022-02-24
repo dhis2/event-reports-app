@@ -182,8 +182,8 @@ const OuterDndContext = ({ children }) => {
         return (
             <div
                 className={cx(
-                    chipStyles.chipWrapper,
-                    chipStyles.chipWrapperOverlay,
+                    chipStyles.chip,
+                    chipStyles.draggingChipBase,
                     styles.overlay,
                     {
                         [chipStyles.chipEmpty]:
