@@ -32,7 +32,7 @@
     text-overflow: ellipsis;
 }
 
-.draggingChipBase {
+.dragging {
     margin: 0;
     padding: 1px 24px 1px 6px;
     align-items: center;

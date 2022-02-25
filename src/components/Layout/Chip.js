@@ -1,3 +1,4 @@
+import { AXIS_ID_COLUMNS, AXIS_ID_FILTERS } from '@dhis2/analytics'
 import { Tooltip } from '@dhis2/ui'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
@@ -13,6 +14,7 @@ const AFTER = 'AFTER'
 
 const Chip = ({
     numberOfConditions,
+    axisId,
     dimensionId,
     dimensionName,
     dimensionType,
@@ -88,7 +90,10 @@ const Chip = ({
         >
             <div
                 className={cx(styles.chip, {
-                    [styles.chipEmpty]: !items.length && !numberOfConditions,
+                    [styles.chipEmpty]:
+                        axisId === AXIS_ID_FILTERS &&
+                        !items.length &&
+                        !numberOfConditions,
                     [styles.active]: isDragging,
                     [styles.insertBefore]: insertPosition === BEFORE,
                     [styles.insertAfter]: insertPosition === AFTER,

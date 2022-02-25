@@ -34,7 +34,9 @@ export const ChipBase = ({
             <DimensionIcon dimensionType={dimensionType} />
         </div>
         <span className={styles.label}>{dimensionName}</span>
-        <span>{renderChipLabelSuffix(items, numberOfConditions)}</span>
+        <span className={styles.label}>
+            {renderChipLabelSuffix(items, numberOfConditions)}
+        </span>
     </div>
 )
 

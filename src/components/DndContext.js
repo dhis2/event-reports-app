@@ -183,11 +183,13 @@ const OuterDndContext = ({ children }) => {
             <div
                 className={cx(
                     chipStyles.chip,
-                    chipStyles.draggingChipBase,
+                    chipStyles.dragging,
                     styles.overlay,
                     {
                         [chipStyles.chipEmpty]:
-                            !chipItems.length && !numberOfConditions,
+                            sourceAxis === AXIS_ID_FILTERS &&
+                            !chipItems.length &&
+                            !numberOfConditions,
                     }
                 )}
             >
