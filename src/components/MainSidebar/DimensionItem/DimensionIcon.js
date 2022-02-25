@@ -51,9 +51,10 @@ const DIMENSION_TYPE_ICONS = {
 // Presentational component used by dnd - do not add redux or dnd functionality
 
 const DimensionIcon = ({ dimensionType }) => {
-    const Icon = dimensionType
-        ? DIMENSION_TYPE_ICONS[dimensionType]
-        : DynamicDimensionIcon
+    const Icon =
+        dimensionType && DIMENSION_TYPE_ICONS[dimensionType]
+            ? DIMENSION_TYPE_ICONS[dimensionType]
+            : DynamicDimensionIcon
 
     return <Icon />
 }
