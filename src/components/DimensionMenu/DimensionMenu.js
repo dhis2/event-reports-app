@@ -41,7 +41,10 @@ const DimensionMenu = ({ currentAxisId, dimensionId }) => {
 
     return (
         <>
-            <div ref={buttonRef} className={!currentAxisId && styles.hidden}>
+            <div
+                ref={buttonRef}
+                className={!currentAxisId ? styles.hidden : undefined}
+            >
                 <IconButton
                     ariaOwns={menuIsOpen ? getMenuId() : null}
                     ariaHaspopup={true}
