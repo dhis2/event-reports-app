@@ -6,14 +6,14 @@ import {
 import { useMemo } from 'react'
 import { useStore, useSelector } from 'react-redux'
 import {
-    DIMENSION_TYPE_EVENT_DATE,
-    DIMENSION_TYPE_ENROLLMENT_DATE,
-    DIMENSION_TYPE_INCIDENT_DATE,
-    DIMENSION_TYPE_SCHEDULED_DATE,
-    DIMENSION_TYPE_LAST_UPDATED,
-    DIMENSION_TYPE_EVENT_STATUS,
-    DIMENSION_TYPE_PROGRAM_STATUS,
-} from '../modules/dimensionTypes.js'
+    DIMENSION_ID_EVENT_DATE,
+    DIMENSION_ID_ENROLLMENT_DATE,
+    DIMENSION_ID_INCIDENT_DATE,
+    DIMENSION_ID_SCHEDULED_DATE,
+    DIMENSION_ID_LAST_UPDATED,
+    DIMENSION_ID_EVENT_STATUS,
+    DIMENSION_ID_PROGRAM_STATUS,
+} from '../modules/dimensionConstants.js'
 import { getFilteredLayout } from '../modules/layout.js'
 import {
     getMainDimensions,
@@ -77,14 +77,14 @@ export const DEFAULT_UI = {
     program: {},
     layout: {
         // TODO: Populate the layout with the correct default dimensions, these are just temporary for testing
-        columns: [DIMENSION_ID_ORGUNIT, DIMENSION_TYPE_EVENT_DATE],
+        columns: [DIMENSION_ID_ORGUNIT, DIMENSION_ID_EVENT_DATE],
         filters: [],
     },
     itemsByDimension: {
         [DIMENSION_ID_ORGUNIT]: [],
-        [DIMENSION_TYPE_EVENT_DATE]: ['THIS_MONTH'],
-        [DIMENSION_TYPE_EVENT_STATUS]: [],
-        [DIMENSION_TYPE_PROGRAM_STATUS]: [],
+        [DIMENSION_ID_EVENT_DATE]: ['THIS_MONTH'],
+        [DIMENSION_ID_EVENT_STATUS]: [],
+        [DIMENSION_ID_PROGRAM_STATUS]: [],
     },
     options: getOptionsForUi(),
     showAccessoryPanel: false,
@@ -394,19 +394,19 @@ export const useTimeDimensions = () => {
     const programId = useSelector(sGetUiProgramId)
     const programStageId = useSelector(sGetUiProgramStageId)
     const eventDateDim = useSelector((state) =>
-        sGetMetadataById(state, DIMENSION_TYPE_EVENT_DATE)
+        sGetMetadataById(state, DIMENSION_ID_EVENT_DATE)
     )
     const enrollmentDateDim = useSelector((state) =>
-        sGetMetadataById(state, DIMENSION_TYPE_ENROLLMENT_DATE)
+        sGetMetadataById(state, DIMENSION_ID_ENROLLMENT_DATE)
     )
     const incidentDateDim = useSelector((state) =>
-        sGetMetadataById(state, DIMENSION_TYPE_INCIDENT_DATE)
+        sGetMetadataById(state, DIMENSION_ID_INCIDENT_DATE)
     )
     const scheduledDateDim = useSelector((state) =>
-        sGetMetadataById(state, DIMENSION_TYPE_SCHEDULED_DATE)
+        sGetMetadataById(state, DIMENSION_ID_SCHEDULED_DATE)
     )
     const lastUpdatedDim = useSelector((state) =>
-        sGetMetadataById(state, DIMENSION_TYPE_LAST_UPDATED)
+        sGetMetadataById(state, DIMENSION_ID_LAST_UPDATED)
     )
 
     return useMemo(() => {

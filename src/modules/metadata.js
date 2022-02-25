@@ -6,7 +6,7 @@ import {
     getDimensionById,
 } from '@dhis2/analytics'
 import i18n from '@dhis2/d2-i18n'
-import { DIMENSION_TYPE_OU } from './dimensionTypes.js'
+import { DIMENSION_TYPE_OU } from './dimensionConstants.js'
 import { getMainDimensions } from './mainDimensions.js'
 import { getTimeDimensions, getTimeDimensionName } from './timeDimensions.js'
 import { statusNames } from './visualization.js'
