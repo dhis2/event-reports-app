@@ -170,7 +170,7 @@ const OuterDndContext = ({ children }) => {
 
         if (SOURCE_DIMENSIONS.includes(sourceAxis)) {
             return (
-                <div className={styles.overlay}>
+                <div className={cx(styles.overlay, styles.dimensionItem)}>
                     <DimensionItemBase
                         name={name}
                         dimensionType={dimensionType}
