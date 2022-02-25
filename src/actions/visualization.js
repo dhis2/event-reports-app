@@ -27,8 +27,6 @@ export const acSetVisualization = (value) => {
             }
         })
 
-    console.log('acSetVis meta', metadata)
-
     return {
         type: SET_VISUALIZATION,
         value,
