@@ -174,6 +174,7 @@ const OuterDndContext = ({ children }) => {
                     <DimensionItemBase
                         name={name}
                         dimensionType={dimensionType}
+                        dragging={true}
                     />
                 </div>
             )

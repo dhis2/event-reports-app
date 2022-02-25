@@ -7,6 +7,7 @@ import styles from './DimensionItemBase.module.css'
 // Presentational component used by dnd - do not add redux or dnd functionality
 
 const DimensionItemBase = ({
+    dragging,
     name,
     dimensionType,
     selected,
@@ -19,6 +20,7 @@ const DimensionItemBase = ({
         className={cx(styles.dimensionItem, {
             [styles.selected]: selected,
             [styles.disabled]: disabled,
+            [styles.dragging]: dragging,
         })}
     >
         <div className={styles.iconAndLabelWrapper} onClick={onClick}>
@@ -43,6 +45,7 @@ DimensionItemBase.propTypes = {
     contextMenu: PropTypes.node,
     dimensionType: PropTypes.string,
     disabled: PropTypes.bool,
+    dragging: PropTypes.bool,
     selected: PropTypes.bool,
     stageName: PropTypes.string,
     onClick: PropTypes.func,

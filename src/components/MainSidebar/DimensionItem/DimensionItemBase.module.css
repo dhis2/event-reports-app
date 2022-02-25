@@ -1,5 +1,5 @@
 .dimensionItem {
-    background-color: transparent;
+    background-color: var(--colors-white);
     color: var(--colors-grey900);
     fill: var(--colors-grey800);
     display: flex;
@@ -11,7 +11,7 @@
     min-height: 24px;
 }
 
-.dimensionItem:not(.disabled):hover {
+.dimensionItem:not(.disabled):not(.dragging):hover {
     background-color: var(--colors-grey200);
 }
 
