@@ -1,4 +1,4 @@
-import { AXIS_ID_COLUMNS, AXIS_ID_FILTERS } from '@dhis2/analytics'
+import { AXIS_ID_FILTERS } from '@dhis2/analytics'
 import { Tooltip } from '@dhis2/ui'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
@@ -136,6 +136,7 @@ Chip.propTypes = {
     dimensionId: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
     activeIndex: PropTypes.number,
+    axisId: PropTypes.string,
     contextMenu: PropTypes.object,
     dimensionName: PropTypes.string,
     dimensionType: PropTypes.string,
