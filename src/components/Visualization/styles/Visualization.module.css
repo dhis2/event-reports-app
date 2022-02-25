@@ -75,13 +75,13 @@
     line-height: 11px;
 }
 .dataTable .headerCell.sizeComfortable {
-    padding: 16px 12px;
+    padding: 12px 12px;
 }
 .dataTable .headerCell.sizeNormal {
-    padding: 8px 8px;
+    padding: 4px 8px;
 }
 .dataTable .headerCell.sizeCompact {
-    padding: 4px 8px;
+    padding: 0px 8px;
 }
 
 /* Table body cells in various sizes */
