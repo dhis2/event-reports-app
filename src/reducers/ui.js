@@ -379,11 +379,11 @@ export const useMainDimensions = () => {
 
         return Object.values(getMainDimensions()).map((dimension) => ({
             ...dimension,
-            disabled: getIsMainDimensionDisabled(
-                dimension.id,
+            disabled: getIsMainDimensionDisabled({
+                dimensionId: dimension.id,
                 inputType,
-                programType
-            ),
+                programType,
+            }),
         }))
     }, [programId, inputType])
 }

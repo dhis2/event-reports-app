@@ -40,14 +40,14 @@ export const getMainDimensions = () => ({
     },
 })
 
-export const getIsMainDimensionDisabled = (
-    dimensionType,
+export const getIsMainDimensionDisabled = ({
+    dimensionId,
     inputType,
-    programType
-) => {
-    if (dimensionType === DIMENSION_ID_PROGRAM_STATUS) {
+    programType,
+}) => {
+    if (dimensionId === DIMENSION_ID_PROGRAM_STATUS) {
         return !programType || programType === PROGRAM_TYPE_WITHOUT_REGISTRATION
-    } else if (dimensionType === DIMENSION_ID_EVENT_STATUS) {
+    } else if (dimensionId === DIMENSION_ID_EVENT_STATUS) {
         return !programType || inputType === OUTPUT_TYPE_ENROLLMENT
     } else {
         return false
