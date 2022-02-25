@@ -26,7 +26,7 @@ export const DIMENSION_TYPES_YOURS = new Set([
 ])
 
 /**MAIN**/
-export const DIMENSION_TYPE_OU = 'ou'
+export const DIMENSION_TYPE_OU = 'ORGANISATION_UNIT'
 export const DIMENSION_TYPE_PROGRAM_STATUS = 'programStatus'
 export const DIMENSION_TYPE_EVENT_STATUS = 'eventStatus'
 export const DIMENSION_TYPE_CREATED_BY = 'createdBy'
