@@ -13,9 +13,7 @@ const AFTER = 'AFTER'
 
 const Chip = ({
     numberOfConditions,
-    dimensionId,
-    dimensionName,
-    dimensionType,
+    dimension,
     items,
     isLast,
     overLastDropZone,
@@ -23,6 +21,8 @@ const Chip = ({
     contextMenu,
     activeIndex,
 }) => {
+    const { id: dimensionId, name: dimensionName, dimensionType } = dimension
+
     const {
         attributes,
         listeners,
@@ -74,9 +74,7 @@ const Chip = ({
 
     const dataTest = `layout-chip-${dimensionId}`
 
-    const renderTooltipContent = () => (
-        <TooltipContent dimensionId={dimensionId} itemIds={items} />
-    )
+    const renderTooltipContent = () => <TooltipContent dimension={dimension} />
 
     return (
         <div
@@ -133,12 +131,10 @@ const Chip = ({
 }
 
 Chip.propTypes = {
-    dimensionId: PropTypes.string.isRequired,
+    dimension: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
     activeIndex: PropTypes.number,
     contextMenu: PropTypes.object,
-    dimensionName: PropTypes.string,
-    dimensionType: PropTypes.string,
     isLast: PropTypes.bool,
     items: PropTypes.array,
     numberOfConditions: PropTypes.number,

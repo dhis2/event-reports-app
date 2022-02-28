@@ -41,28 +41,16 @@ const DefaultAxis = ({
     // is a temporary workaround
     // until the backend is updated to return programStageId.dimensionId
     // in analytics response.metadata.items
-    const getDimensionName = (id) => {
-        let name
+    const getDimension = (id) => {
+        let dimension
         if (metadata[id]?.name) {
-            name = metadata[id].name || ''
+            dimension = metadata[id]
         } else {
             const [rawDimensionId] = id.split('.').reverse()
-            name = metadata[rawDimensionId]?.name || ''
+            dimension = metadata[rawDimensionId]
         }
 
-        return name
-    }
-
-    const getDimensionType = (id) => {
-        let dimensionType
-        if (metadata[id]?.dimensionType) {
-            dimensionType = metadata[id].dimensionType || null
-        } else {
-            const [rawDimensionId] = id.split('.').reverse()
-            dimensionType = metadata[rawDimensionId]?.dimensionType || null
-        }
-
-        return dimensionType
+        return dimension || {}
     }
 
     const activeIndex = draggingId ? axis.indexOf(draggingId) : -1
@@ -100,9 +88,7 @@ const DefaultAxis = ({
                                 <Chip
                                     key={`${axisId}-${id}`}
                                     onClick={getOpenHandler(id)}
-                                    dimensionId={id}
-                                    dimensionName={getDimensionName(id)}
-                                    dimensionType={getDimensionType(id)}
+                                    dimension={getDimension(id)}
                                     items={getItemsByDimension(id)}
                                     numberOfConditions={getNumberOfConditions(
                                         id

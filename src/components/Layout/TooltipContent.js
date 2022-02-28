@@ -1,10 +1,10 @@
 import { ouIdHelper } from '@dhis2/analytics'
 import i18n from '@dhis2/d2-i18n'
-import { IconWarningFilled16, IconLock16 } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
 import { sGetMetadata } from '../../reducers/metadata.js'
+import { sGetUiItemsByDimension } from '../../reducers/ui.js'
 import styles from './styles/Tooltip.module.css'
 
 const labels = {
@@ -15,25 +15,7 @@ const labels = {
     allItems: () => i18n.t('All items are selected'),
 }
 
-export const TooltipContent = ({
-    dimensionId,
-    itemIds,
-    metadata,
-    displayLimitedAmount,
-    lockedLabel,
-}) => {
-    const getWarningLabel = () => {
-        const warningLabel =
-            itemIds.length === 1
-                ? labels.onlyOneInUse(
-                      metadata[itemIds[0]]
-                          ? metadata[itemIds[0]].name
-                          : itemIds[0]
-                  )
-                : labels.onlyLimitedNumberInUse(itemIds.length)
-        return displayLimitedAmount ? warningLabel : null
-    }
-
+export const TooltipContent = ({ dimension, itemIds, metadata }) => {
     const getNameList = (idList, label, metadata) =>
         idList.reduce(
             (levelString, levelId, index) =>
@@ -48,39 +30,28 @@ export const TooltipContent = ({
         const groupIds = []
         const itemDisplayNames = []
 
-        if (!displayLimitedAmount) {
-            itemIds.forEach((id) => {
-                if (ouIdHelper.hasLevelPrefix(id)) {
-                    levelIds.push(ouIdHelper.removePrefix(id))
-                } else if (ouIdHelper.hasGroupPrefix(id)) {
-                    groupIds.push(ouIdHelper.removePrefix(id))
-                } else {
-                    itemDisplayNames.push(metadata[id] ? metadata[id].name : id)
-                }
-            })
+        itemIds.forEach((id) => {
+            if (ouIdHelper.hasLevelPrefix(id)) {
+                levelIds.push(ouIdHelper.removePrefix(id))
+            } else if (ouIdHelper.hasGroupPrefix(id)) {
+                groupIds.push(ouIdHelper.removePrefix(id))
+            } else {
+                itemDisplayNames.push(metadata[id] ? metadata[id].name : id)
+            }
+        })
 
-            levelIds.length &&
-                itemDisplayNames.push(
-                    getNameList(levelIds, i18n.t('Levels'), metadata)
-                )
+        levelIds.length &&
+            itemDisplayNames.push(
+                getNameList(levelIds, i18n.t('Levels'), metadata)
+            )
 
-            groupIds.length &&
-                itemDisplayNames.push(
-                    getNameList(groupIds, i18n.t('Groups'), metadata)
-                )
-        }
+        groupIds.length &&
+            itemDisplayNames.push(
+                getNameList(groupIds, i18n.t('Groups'), metadata)
+            )
 
         return itemDisplayNames
     }
-
-    const renderWarningLabel = (warningLabel) => (
-        <li className={styles.item}>
-            <div className={styles.iconWrapper}>
-                <IconWarningFilled16 />
-                <span className={styles.label}>{warningLabel}</span>
-            </div>
-        </li>
-    )
 
     const renderItems = (itemDisplayNames) => {
         const renderLimit = 5
@@ -88,14 +59,17 @@ export const TooltipContent = ({
         const itemsToRender = itemDisplayNames
             .slice(0, renderLimit)
             .map((name) => (
-                <li key={`${dimensionId}-${name}`} className={styles.item}>
+                <li key={`${dimension.id}-${name}`} className={styles.item}>
                     {name}
                 </li>
             ))
 
         if (itemDisplayNames.length > renderLimit) {
             itemsToRender.push(
-                <li key={`${dimensionId}-render-limit`} className={styles.item}>
+                <li
+                    key={`${dimension.id}-render-limit`}
+                    className={styles.item}
+                >
                     {itemDisplayNames.length - renderLimit === 1
                         ? i18n.t('And 1 other...')
                         : i18n.t('And {{numberOfItems}} others...', {
@@ -109,32 +83,20 @@ export const TooltipContent = ({
         return itemsToRender
     }
 
-    const renderLockedLabel = () => (
-        <li className={styles.item}>
-            <div className={styles.iconWrapper}>
-                <IconLock16 />
-                <span className={styles.label}>{lockedLabel}</span>
-            </div>
-        </li>
-    )
-
     const renderNoItemsLabel = () => (
         <li
-            key={`${dimensionId}-${labels.noneSelected()}`}
+            key={`${dimension.id}-${labels.noneSelected()}`}
             className={styles.item}
         >
             {labels.noneSelected()}
         </li>
     )
 
-    const itemDisplayNames = getItemDisplayNames()
-    const warningLabel = getWarningLabel()
-    const hasNoItemsLabel = !itemDisplayNames.length && !warningLabel
+    const itemDisplayNames = Boolean(itemIds.length) && getItemDisplayNames()
+    const hasNoItemsLabel = !itemDisplayNames.length
 
     return (
         <ul className={styles.list}>
-            {warningLabel && renderWarningLabel(warningLabel)}
-            {lockedLabel && renderLockedLabel()}
             {itemDisplayNames && renderItems(itemDisplayNames)}
             {hasNoItemsLabel && renderNoItemsLabel()}
         </ul>
@@ -142,15 +104,14 @@ export const TooltipContent = ({
 }
 
 TooltipContent.propTypes = {
-    dimensionId: PropTypes.string.isRequired,
+    dimension: PropTypes.object.isRequired,
     metadata: PropTypes.object.isRequired,
-    displayLimitedAmount: PropTypes.bool,
     itemIds: PropTypes.array,
-    lockedLabel: PropTypes.string,
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
     metadata: sGetMetadata(state),
+    itemIds: sGetUiItemsByDimension(state, ownProps.dimension.id) || [],
 })
 
 export default connect(mapStateToProps)(TooltipContent)
