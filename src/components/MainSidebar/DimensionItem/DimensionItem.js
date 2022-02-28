@@ -3,10 +3,7 @@ import { CSS } from '@dnd-kit/utilities'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import {
-    acSetUiOpenDimensionModal,
-    acAddUiLayoutDimensions,
-} from '../../../actions/ui.js'
+import { acSetUiOpenDimensionModal } from '../../../actions/ui.js'
 import DimensionMenu from '../../DimensionMenu/DimensionMenu.js'
 import { DimensionItemBase } from './DimensionItemBase.js'
 
@@ -36,15 +33,6 @@ export const DimensionItem = ({
     const onClick = disabled
         ? undefined
         : () => dispatch(acSetUiOpenDimensionModal(id, dimensionMetadata))
-
-    const onAxisItemClick = ({ dimensionId, axisId }) => {
-        dispatch(
-            acAddUiLayoutDimensions(
-                { [dimensionId]: { axisId } },
-                dimensionMetadata
-            )
-        )
-    }
 
     const onMouseOver = () => setMouseIsOver(true)
     const onMouseExit = () => setMouseIsOver(false)
@@ -96,7 +84,7 @@ export const DimensionItem = ({
                     mouseIsOver && !disabled ? (
                         <DimensionMenu
                             dimensionId={id}
-                            onAxisItemClick={onAxisItemClick}
+                            dimensionMetadata={dimensionMetadata}
                         />
                     ) : null
                 }
