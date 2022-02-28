@@ -1,4 +1,5 @@
 import { Layer, Popper, IconMore16 } from '@dhis2/ui'
+import cx from 'classnames'
 import PropTypes from 'prop-types'
 import React, { useState, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -43,7 +44,9 @@ const DimensionMenu = ({ currentAxisId, dimensionId }) => {
         <>
             <div
                 ref={buttonRef}
-                className={!currentAxisId ? styles.hidden : undefined}
+                className={cx(styles.button, {
+                    [styles.hidden]: !currentAxisId,
+                })}
             >
                 <IconButton
                     ariaOwns={menuIsOpen ? getMenuId() : null}
