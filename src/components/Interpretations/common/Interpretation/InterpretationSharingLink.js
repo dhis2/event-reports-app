@@ -32,6 +32,7 @@ const InterpretationSharingLink = ({ type, id }) => {
                     margin-top: ${spacers.dp8};
                     font-size: 13px;
                     color: ${colors.grey800};
+                    cursor: pointer;
                 }
 
                 .link {
