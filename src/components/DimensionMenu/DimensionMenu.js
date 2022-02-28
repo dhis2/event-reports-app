@@ -18,7 +18,7 @@ const getAxisIdForDimension = (dimensionId, layout) => {
     return axisLayout ? axisLayout[0] : undefined
 }
 
-const DimensionMenu = ({ currentAxisId, dimensionId }) => {
+const DimensionMenu = ({ currentAxisId, dimensionId, onAxisItemClick }) => {
     const dispatch = useDispatch()
     const visType = useSelector(sGetUiType)
     const layout = useSelector(sGetUiLayout)
@@ -57,7 +57,7 @@ const DimensionMenu = ({ currentAxisId, dimensionId }) => {
                             dimensionId={dimensionId}
                             currentAxisId={axisId}
                             visType={visType}
-                            axisItemHandler={axisItemHandler}
+                            axisItemHandler={onAxisItemClick || axisItemHandler}
                             removeItemHandler={removeItemHandler}
                             onClose={toggleMenu}
                             dataTest={'layout-dimension-menu-dimension-menu'}
@@ -72,6 +72,7 @@ const DimensionMenu = ({ currentAxisId, dimensionId }) => {
 DimensionMenu.propTypes = {
     currentAxisId: PropTypes.string,
     dimensionId: PropTypes.string,
+    onAxisItemClick: PropTypes.func,
 }
 
 export default DimensionMenu

@@ -3,7 +3,10 @@ import { CSS } from '@dnd-kit/utilities'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { acSetUiOpenDimensionModal } from '../../../actions/ui.js'
+import {
+    acSetUiOpenDimensionModal,
+    acAddUiLayoutDimensions,
+} from '../../../actions/ui.js'
 import DimensionMenu from '../../DimensionMenu/DimensionMenu.js'
 import { DimensionItemBase } from './DimensionItemBase.js'
 
@@ -20,20 +23,28 @@ export const DimensionItem = ({
 }) => {
     const dispatch = useDispatch()
     const [mouseIsOver, setMouseIsOver] = useState(false)
+    const dimensionMetadata = {
+        [id]: {
+            id,
+            name,
+            dimensionType,
+            valueType,
+            optionSet,
+        },
+    }
+
     const onClick = disabled
         ? undefined
-        : () =>
-              dispatch(
-                  acSetUiOpenDimensionModal(id, {
-                      [id]: {
-                          id,
-                          name,
-                          dimensionType,
-                          valueType,
-                          optionSet,
-                      },
-                  })
-              )
+        : () => dispatch(acSetUiOpenDimensionModal(id, dimensionMetadata))
+
+    const onAxisItemClick = ({ dimensionId, axisId }) => {
+        dispatch(
+            acAddUiLayoutDimensions(
+                { [dimensionId]: { axisId } },
+                dimensionMetadata
+            )
+        )
+    }
 
     const onMouseOver = () => setMouseIsOver(true)
     const onMouseExit = () => setMouseIsOver(false)
@@ -87,7 +98,10 @@ export const DimensionItem = ({
                 onClick={onClick}
                 contextMenu={
                     mouseIsOver && !disabled ? (
-                        <DimensionMenu dimensionId={id} />
+                        <DimensionMenu
+                            dimensionId={id}
+                            onAxisItemClick={onAxisItemClick}
+                        />
                     ) : null
                 }
             />
