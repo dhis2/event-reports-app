@@ -59,11 +59,7 @@ export const DimensionItem = ({
     } = useSortable({
         id: draggableId || id,
         disabled: disabled || selected,
-        data: {
-            name,
-            dimensionType,
-            valueType,
-        },
+        data: dimensionMetadata,
     })
 
     const style = transform
