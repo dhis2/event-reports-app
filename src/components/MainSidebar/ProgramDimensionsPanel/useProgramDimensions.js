@@ -3,7 +3,7 @@ import { useEffect, useReducer, useCallback, useRef, useMemo } from 'react'
 import {
     DIMENSION_TYPE_ALL,
     DIMENSION_TYPE_DATA_ELEMENT,
-} from '../../../modules/dimensionTypes.js'
+} from '../../../modules/dimensionConstants.js'
 import {
     OUTPUT_TYPE_EVENT,
     OUTPUT_TYPE_ENROLLMENT,
@@ -82,6 +82,7 @@ const createDimensionsQuery = ({
         page,
         fields: DIMENSION_LIST_FIELDS,
         filter: [],
+        order: 'displayName:asc',
     }
 
     if (programId && inputType === OUTPUT_TYPE_ENROLLMENT) {
