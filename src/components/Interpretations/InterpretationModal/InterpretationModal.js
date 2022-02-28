@@ -173,16 +173,15 @@ const InterpretationModal = ({
                 <style jsx>{`
                     .title {
                         color: ${colors.grey900};
-                        font-size: 20px;
-                        font-weight: 500;
-                        line-height: 24px;
                         margin: 0px;
-                        padding: ${spacers.dp24} ${spacers.dp24} 0;
+                        padding: ${spacers.dp24} ${spacers.dp24} ${spacers.dp4};
                     }
 
                     .ellipsis {
                         display: inline-block;
-                        line-height: 20px;
+                        font-size: 20px;
+                        font-weight: 500;
+                        line-height: 24px;
                         white-space: nowrap;
                         width: 100%;
                         overflow: hidden;
