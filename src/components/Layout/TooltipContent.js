@@ -3,16 +3,21 @@ import i18n from '@dhis2/d2-i18n'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
+import {
+    DIMENSION_TYPE_CATEGORY,
+    DIMENSION_TYPE_CATEGORY_OPTION_GROUP_SET,
+    DIMENSION_TYPE_ORGANISATION_UNIT_GROUP_SET,
+    DIMENSION_TYPE_STATUS,
+    DIMENSION_TYPE_PERIOD,
+    DIMENSION_TYPE_OU,
+} from '../../modules/dimensionConstants.js'
 import { sGetMetadata } from '../../reducers/metadata.js'
 import { sGetUiItemsByDimension } from '../../reducers/ui.js'
 import styles from './styles/Tooltip.module.css'
 
 const labels = {
     noneSelected: () => i18n.t('None selected'),
-    onlyOneInUse: (name) => i18n.t("Only '{{- name}}' in use", { name }),
-    onlyLimitedNumberInUse: (number) =>
-        i18n.t("Only '{{number}}' in use", { number }),
-    allItems: () => i18n.t('All items are selected'),
+    allSelected: () => i18n.t('Showing all values for this dimension'),
 }
 
 export const TooltipContent = ({ dimension, itemIds, metadata }) => {
@@ -83,6 +88,11 @@ export const TooltipContent = ({ dimension, itemIds, metadata }) => {
         return itemsToRender
     }
 
+    const renderConditions = () => {
+        // TODO: add a similar pattern as found in ConditionsManager.js for splitting the condition into different parts
+        return null
+    }
+
     const renderNoItemsLabel = () => (
         <li
             key={`${dimension.id}-${labels.noneSelected()}`}
@@ -92,15 +102,51 @@ export const TooltipContent = ({ dimension, itemIds, metadata }) => {
         </li>
     )
 
-    const itemDisplayNames = Boolean(itemIds.length) && getItemDisplayNames()
-    const hasNoItemsLabel = !itemDisplayNames.length
-
-    return (
-        <ul className={styles.list}>
-            {itemDisplayNames && renderItems(itemDisplayNames)}
-            {hasNoItemsLabel && renderNoItemsLabel()}
-        </ul>
+    const renderAllItemsLabel = () => (
+        <li
+            key={`${dimension.id}-${labels.allSelected()}`}
+            className={styles.item}
+        >
+            {labels.allSelected()}
+        </li>
     )
+
+    const itemDisplayNames = Boolean(itemIds.length) && getItemDisplayNames()
+
+    switch (dimension.dimensionType) {
+        case DIMENSION_TYPE_CATEGORY:
+        case DIMENSION_TYPE_CATEGORY_OPTION_GROUP_SET:
+        case DIMENSION_TYPE_ORGANISATION_UNIT_GROUP_SET:
+        case DIMENSION_TYPE_STATUS:
+            return (
+                <ul className={styles.list}>
+                    {itemDisplayNames
+                        ? renderItems(itemDisplayNames)
+                        : renderAllItemsLabel()}
+                </ul>
+            )
+
+        case DIMENSION_TYPE_PERIOD:
+        case DIMENSION_TYPE_OU:
+            return (
+                <ul className={styles.list}>
+                    {itemDisplayNames
+                        ? renderItems(itemDisplayNames)
+                        : renderNoItemsLabel()}
+                </ul>
+            )
+
+        default: {
+            const conditions = []
+            return (
+                <ul className={styles.list}>
+                    {conditions
+                        ? renderConditions(conditions)
+                        : renderAllItemsLabel()}
+                </ul>
+            )
+        }
+    }
 }
 
 TooltipContent.propTypes = {
