@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2022-02-28T10:52:27.426Z\n"
-"PO-Revision-Date: 2022-02-28T10:52:27.426Z\n"
+"POT-Creation-Date: 2022-02-28T14:28:34.391Z\n"
+"PO-Revision-Date: 2022-02-28T14:28:34.391Z\n"
 
 msgid "Add to {{axisName}}"
 msgstr "Add to {{axisName}}"
@@ -249,6 +249,9 @@ msgstr "Reply"
 
 msgid "See interpretation"
 msgstr "See interpretation"
+
+msgid "Manage sharing"
+msgstr "Manage sharing"
 
 msgid "Could not update interpretation"
 msgstr "Could not update interpretation"
