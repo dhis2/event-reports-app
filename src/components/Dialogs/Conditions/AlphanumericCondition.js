@@ -10,25 +10,13 @@ import PropTypes from 'prop-types'
 import React, { useEffect } from 'react'
 import {
     NULL_VALUE,
-    OPERATOR_CONTAINS,
-    OPERATOR_EMPTY,
-    OPERATOR_EQUAL,
-    OPERATOR_NOT_CONTAINS,
-    OPERATOR_NOT_EMPTY,
-    OPERATOR_NOT_EQUAL,
     CASE_INSENSITIVE_PREFIX,
     NOT_PREFIX,
+    OPERATOR_NOT_EMPTY,
+    OPERATOR_EMPTY,
+    ALPHA_NUMERIC_OPERATORS,
 } from '../../../modules/conditions.js'
 import classes from './styles/Condition.module.css'
-
-const operators = {
-    [OPERATOR_EQUAL]: i18n.t('exactly'),
-    [OPERATOR_NOT_EQUAL]: i18n.t('is not'),
-    [OPERATOR_CONTAINS]: i18n.t('contains'),
-    [OPERATOR_NOT_CONTAINS]: i18n.t('does not contain'),
-    [OPERATOR_EMPTY]: i18n.t('is empty / null'),
-    [OPERATOR_NOT_EMPTY]: i18n.t('is not empty / not null'),
-}
 
 const prefixOperator = (operator, isCaseSensitive) => {
     if (isCaseSensitive) {
@@ -122,12 +110,8 @@ const BaseCondition = ({
                 onChange={({ selected }) => setOperator(selected)}
                 className={classes.operatorSelect}
             >
-                {Object.keys(operators).map((key) => (
-                    <SingleSelectOption
-                        key={key}
-                        value={key}
-                        label={operators[key]}
-                    />
+                {Object.entries(ALPHA_NUMERIC_OPERATORS).map(([key, value]) => (
+                    <SingleSelectOption key={key} value={key} label={value} />
                 ))}
             </SingleSelectField>
             {operator && !operator.includes(NULL_VALUE) && (
