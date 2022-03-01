@@ -30,6 +30,7 @@ import {
     DATE_OPERATORS,
     unprefixOperator,
     NULL_VALUE,
+    OPERATOR_IN,
 } from '../../modules/conditions.js'
 import {
     DIMENSION_TYPE_CATEGORY,
@@ -57,6 +58,43 @@ const labels = {
 }
 
 const renderLimit = 5
+
+const getOperatorsByValueType = (valueType) => {
+    switch (valueType) {
+        case VALUE_TYPE_NUMBER:
+        case VALUE_TYPE_UNIT_INTERVAL:
+        case VALUE_TYPE_PERCENTAGE:
+        case VALUE_TYPE_INTEGER:
+        case VALUE_TYPE_INTEGER_POSITIVE:
+        case VALUE_TYPE_INTEGER_NEGATIVE:
+        case VALUE_TYPE_INTEGER_ZERO_OR_POSITIVE:
+        case VALUE_TYPE_PHONE_NUMBER: {
+            return NUMERIC_OPERATORS
+        }
+        case VALUE_TYPE_LETTER:
+        case VALUE_TYPE_TEXT:
+        case VALUE_TYPE_LONG_TEXT:
+        case VALUE_TYPE_EMAIL:
+        case VALUE_TYPE_USERNAME:
+        case VALUE_TYPE_URL: {
+            return ALPHA_NUMERIC_OPERATORS
+        }
+        case VALUE_TYPE_BOOLEAN:
+        case VALUE_TYPE_TRUE_ONLY: {
+            // TODO: booleans
+            return null
+        }
+        case VALUE_TYPE_DATE:
+        case VALUE_TYPE_TIME:
+        case VALUE_TYPE_DATETIME: {
+            return DATE_OPERATORS
+        }
+        case VALUE_TYPE_ORGANISATION_UNIT: {
+            // TODO: org unit
+            return null
+        }
+    }
+}
 
 export const TooltipContent = ({
     dimension,
@@ -133,55 +171,22 @@ export const TooltipContent = ({
             conditions.condition
         )
 
-        if (dimension.optionSet) {
-            // TODO: Option set with selection
-            return null
-        }
-
         if (dimension.legendSet) {
             // TODO: Legend set
             return null
         }
 
-        let operators = {}
-
-        switch (dimension.valueType) {
-            case VALUE_TYPE_NUMBER:
-            case VALUE_TYPE_UNIT_INTERVAL:
-            case VALUE_TYPE_PERCENTAGE:
-            case VALUE_TYPE_INTEGER:
-            case VALUE_TYPE_INTEGER_POSITIVE:
-            case VALUE_TYPE_INTEGER_NEGATIVE:
-            case VALUE_TYPE_INTEGER_ZERO_OR_POSITIVE:
-            case VALUE_TYPE_PHONE_NUMBER: {
-                operators = NUMERIC_OPERATORS
-                break
-            }
-            case VALUE_TYPE_LETTER:
-            case VALUE_TYPE_TEXT:
-            case VALUE_TYPE_LONG_TEXT:
-            case VALUE_TYPE_EMAIL:
-            case VALUE_TYPE_USERNAME:
-            case VALUE_TYPE_URL: {
-                operators = ALPHA_NUMERIC_OPERATORS
-                break
-            }
-            case VALUE_TYPE_BOOLEAN:
-            case VALUE_TYPE_TRUE_ONLY: {
-                // TODO: booleans
-                break
-            }
-            case VALUE_TYPE_DATE:
-            case VALUE_TYPE_TIME:
-            case VALUE_TYPE_DATETIME: {
-                operators = DATE_OPERATORS
-                break
-            }
-            case VALUE_TYPE_ORGANISATION_UNIT: {
-                // TODO: org unit
-                break
-            }
+        if (dimension.optionSet && conditionsList[0]?.startsWith(OPERATOR_IN)) {
+            const items = conditionsList[0].split(':').pop().split(';')
+            const itemNames = items.map(
+                (code) =>
+                    Object.values(metadata).find((item) => item.code === code)
+                        .name
+            )
+            return renderItems(itemNames)
         }
+
+        const operators = getOperatorsByValueType(dimension.valueType)
 
         const parsedConditions = conditionsList.map((condition) => {
             let operator, value
