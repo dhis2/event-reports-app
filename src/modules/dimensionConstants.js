@@ -55,7 +55,7 @@ export const DIMENSION_IDS_TIME = new Set([
     DIMENSION_ID_LAST_UPDATED,
 ])
 
-export const getDimensionType = ({ dimensionId, dimensionType }) => {
+export const getUiDimensionType = ({ dimensionId, dimensionType }) => {
     switch (dimensionId) {
         case DIMENSION_ID_PROGRAM_STATUS:
         case DIMENSION_ID_EVENT_STATUS:
