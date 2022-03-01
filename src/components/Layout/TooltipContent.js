@@ -164,9 +164,17 @@ export const TooltipContent = ({
             conditions.condition
         )
 
-        if (dimension.legendSet) {
-            // TODO: Legend set
-            return null
+        if (conditions.legendSet) {
+            if (!conditionsList?.length) {
+                return renderItems([metadata[conditions.legendSet]?.name])
+            } else {
+                const legends = conditionsList[0].split(':').pop().split(';')
+                const allLegends = metadata[conditions.legendSet]?.legends
+                const legendNames = legends.map(
+                    (legend) => allLegends.find((l) => l.id === legend).name
+                )
+                return renderItems(legendNames)
+            }
         }
 
         if (dimension.optionSet && conditionsList[0]?.startsWith(OPERATOR_IN)) {
