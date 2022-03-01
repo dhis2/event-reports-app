@@ -11,55 +11,14 @@ import React, { useEffect } from 'react'
 import {
     NULL_VALUE,
     CASE_INSENSITIVE_PREFIX,
-    NOT_PREFIX,
     OPERATOR_NOT_EMPTY,
     OPERATOR_EMPTY,
     ALPHA_NUMERIC_OPERATORS,
+    prefixOperator,
+    unprefixOperator,
+    checkIsCaseSensitive,
 } from '../../../modules/conditions.js'
 import classes from './styles/Condition.module.css'
-
-const prefixOperator = (operator, isCaseSensitive) => {
-    if (isCaseSensitive) {
-        // e.g. LIKE -> LIKE
-        return operator
-    } else {
-        if (operator[0] === NOT_PREFIX) {
-            // e.g. !LIKE -> !ILIKE
-            return `${NOT_PREFIX}${CASE_INSENSITIVE_PREFIX}${operator.substring(
-                1
-            )}`
-        } else {
-            // e.g. LIKE -> ILIKE
-            return `${CASE_INSENSITIVE_PREFIX}${operator}`
-        }
-    }
-}
-
-const unprefixOperator = (operator) => {
-    const isCaseSensitive = checkIsCaseSensitive(operator)
-    if (isCaseSensitive) {
-        // e.g. LIKE -> LIKE, !LIKE -> !LIKE
-        return operator
-    } else {
-        if (operator[0] === NOT_PREFIX) {
-            // e.g. !ILIKE -> !LIKE
-            return `${NOT_PREFIX}${operator.substring(2)}`
-        } else {
-            // e.g. ILIKE -> LIKE
-            return `${operator.substring(1)}`
-        }
-    }
-}
-
-const checkIsCaseSensitive = (operator) => {
-    if (operator[0] === NOT_PREFIX) {
-        // !LIKE, !ILIKE, !EQ, !IEQ
-        return operator[1] !== CASE_INSENSITIVE_PREFIX
-    } else {
-        // LIKE, ILIKE, EQ, IEQ
-        return operator[0] !== CASE_INSENSITIVE_PREFIX
-    }
-}
 
 const BaseCondition = ({
     condition,

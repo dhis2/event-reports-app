@@ -53,3 +53,67 @@ export const DATE_OPERATORS = {
     [OPERATOR_EMPTY]: i18n.t('is empty / null'),
     [OPERATOR_NOT_EMPTY]: i18n.t('is not empty / not null'),
 }
+
+export const VALUE_TYPE_NUMBER = 'NUMBER'
+export const VALUE_TYPE_UNIT_INTERVAL = 'UNIT_INTERVAL'
+export const VALUE_TYPE_PERCENTAGE = 'PERCENTAGE'
+export const VALUE_TYPE_INTEGER = 'INTEGER'
+export const VALUE_TYPE_INTEGER_POSITIVE = 'INTEGER_POSITIVE'
+export const VALUE_TYPE_INTEGER_NEGATIVE = 'INTEGER_NEGATIVE'
+export const VALUE_TYPE_INTEGER_ZERO_OR_POSITIVE = 'INTEGER_ZERO_OR_POSITIVE'
+export const VALUE_TYPE_TEXT = 'TEXT'
+export const VALUE_TYPE_LONG_TEXT = 'LONG_TEXT'
+export const VALUE_TYPE_LETTER = 'LETTER'
+export const VALUE_TYPE_PHONE_NUMBER = 'PHONE_NUMBER'
+export const VALUE_TYPE_EMAIL = 'EMAIL'
+export const VALUE_TYPE_USERNAME = 'USERNAME'
+export const VALUE_TYPE_URL = 'URL'
+export const VALUE_TYPE_BOOLEAN = 'BOOLEAN'
+export const VALUE_TYPE_TRUE_ONLY = 'TRUE_ONLY'
+export const VALUE_TYPE_DATE = 'DATE'
+export const VALUE_TYPE_TIME = 'TIME'
+export const VALUE_TYPE_DATETIME = 'DATETIME'
+export const VALUE_TYPE_ORGANISATION_UNIT = 'ORGANISATION_UNIT'
+
+export const prefixOperator = (operator, isCaseSensitive) => {
+    if (isCaseSensitive) {
+        // e.g. LIKE -> LIKE
+        return operator
+    } else {
+        if (operator[0] === NOT_PREFIX) {
+            // e.g. !LIKE -> !ILIKE
+            return `${NOT_PREFIX}${CASE_INSENSITIVE_PREFIX}${operator.substring(
+                1
+            )}`
+        } else {
+            // e.g. LIKE -> ILIKE
+            return `${CASE_INSENSITIVE_PREFIX}${operator}`
+        }
+    }
+}
+
+export const unprefixOperator = (operator) => {
+    const isCaseSensitive = checkIsCaseSensitive(operator)
+    if (isCaseSensitive) {
+        // e.g. LIKE -> LIKE, !LIKE -> !LIKE
+        return operator
+    } else {
+        if (operator[0] === NOT_PREFIX) {
+            // e.g. !ILIKE -> !LIKE
+            return `${NOT_PREFIX}${operator.substring(2)}`
+        } else {
+            // e.g. ILIKE -> LIKE
+            return `${operator.substring(1)}`
+        }
+    }
+}
+
+export const checkIsCaseSensitive = (operator) => {
+    if (operator[0] === NOT_PREFIX) {
+        // !LIKE, !ILIKE, !EQ, !IEQ
+        return operator[1] !== CASE_INSENSITIVE_PREFIX
+    } else {
+        // LIKE, ILIKE, EQ, IEQ
+        return operator[0] !== CASE_INSENSITIVE_PREFIX
+    }
+}
