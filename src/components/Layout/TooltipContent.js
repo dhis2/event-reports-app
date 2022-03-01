@@ -32,6 +32,7 @@ import {
     NULL_VALUE,
     OPERATOR_IN,
     BOOLEAN_VALUES,
+    OPERATOR_EQUAL,
 } from '../../modules/conditions.js'
 import {
     DIMENSION_TYPE_CATEGORY,
@@ -84,10 +85,6 @@ const getOperatorsByValueType = (valueType) => {
         case VALUE_TYPE_TIME:
         case VALUE_TYPE_DATETIME: {
             return DATE_OPERATORS
-        }
-        case VALUE_TYPE_ORGANISATION_UNIT: {
-            // TODO: org unit
-            return null
         }
     }
 }
@@ -191,6 +188,15 @@ export const TooltipContent = ({
             const values = conditionsList[0].split(':').pop().split(';')
             const valueNames = values.map((value) => BOOLEAN_VALUES[value])
             return renderItems(valueNames)
+        }
+
+        if (
+            dimension.valueType === VALUE_TYPE_ORGANISATION_UNIT &&
+            conditionsList[0]?.startsWith(OPERATOR_EQUAL)
+        ) {
+            const ous = conditionsList[0].split(':').pop().split(';')
+            const ouNames = ous.map((ou) => metadata[ou]?.name)
+            return renderItems(ouNames)
         }
 
         const operators = getOperatorsByValueType(dimension.valueType)
