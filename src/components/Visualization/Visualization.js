@@ -141,7 +141,7 @@ export const Visualization = ({
                 .map((header) => headersMap[header])
                 .includes(header?.name)
         ) {
-            return moment(value).format('L')
+            return moment(value).format('yyyy-MM-DD')
         } else {
             return formatValue(value, header?.valueType || 'TEXT', {
                 digitGroupSeparator: visualization.digitGroupSeparator,
