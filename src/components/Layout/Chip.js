@@ -1,9 +1,12 @@
+import { AXIS_ID_FILTERS } from '@dhis2/analytics'
 import { Tooltip } from '@dhis2/ui'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { sGetLoadError } from '../../reducers/loader.js'
 import { ChipBase } from './ChipBase.js'
 import styles from './styles/Chip.module.css'
 import { default as TooltipContent } from './TooltipContent.js'
@@ -13,6 +16,7 @@ const AFTER = 'AFTER'
 
 const Chip = ({
     numberOfConditions,
+    axisId,
     dimensionId,
     dimensionName,
     dimensionType,
@@ -40,6 +44,7 @@ const Chip = ({
             dimensionType,
         },
     })
+    const globalLoadError = useSelector(sGetLoadError)
 
     let insertPosition = undefined
     if (over?.id === dimensionId) {
@@ -78,6 +83,10 @@ const Chip = ({
         <TooltipContent dimensionId={dimensionId} itemIds={items} />
     )
 
+    if (globalLoadError && !dimensionName) {
+        return null
+    }
+
     return (
         <div
             ref={setNodeRef}
@@ -87,8 +96,11 @@ const Chip = ({
             style={style}
         >
             <div
-                className={cx(styles.chipWrapper, {
-                    [styles.chipEmpty]: !items.length && !numberOfConditions,
+                className={cx(styles.chip, {
+                    [styles.chipEmpty]:
+                        axisId === AXIS_ID_FILTERS &&
+                        !items.length &&
+                        !numberOfConditions,
                     [styles.active]: isDragging,
                     [styles.insertBefore]: insertPosition === BEFORE,
                     [styles.insertAfter]: insertPosition === AFTER,
@@ -105,7 +117,6 @@ const Chip = ({
                                 <div
                                     data-test={dataTest}
                                     id={id}
-                                    className={cx(styles.chip, styles.chipLeft)}
                                     onClick={onClick}
                                     ref={ref}
                                     onMouseOver={onMouseOver}
@@ -121,11 +132,7 @@ const Chip = ({
                             )}
                         </Tooltip>
                     }
-                    {contextMenu && (
-                        <div className={cx(styles.chip, styles.chipRight)}>
-                            {contextMenu}
-                        </div>
-                    )}
+                    {contextMenu}
                 </div>
             </div>
         </div>
@@ -136,6 +143,7 @@ Chip.propTypes = {
     dimensionId: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
     activeIndex: PropTypes.number,
+    axisId: PropTypes.string,
     contextMenu: PropTypes.object,
     dimensionName: PropTypes.string,
     dimensionType: PropTypes.string,

@@ -1,7 +1,7 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import PropTypes from 'prop-types'
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch } from 'react-redux'
 import { acSetUiOpenDimensionModal } from '../../../actions/ui.js'
 import DimensionMenu from '../../DimensionMenu/DimensionMenu.js'
@@ -19,24 +19,19 @@ export const DimensionItem = ({
     selected,
 }) => {
     const dispatch = useDispatch()
-    const [mouseIsOver, setMouseIsOver] = useState(false)
+    const dimensionMetadata = {
+        [id]: {
+            id,
+            name,
+            dimensionType,
+            valueType,
+            optionSet,
+        },
+    }
+
     const onClick = disabled
         ? undefined
-        : () =>
-              dispatch(
-                  acSetUiOpenDimensionModal(id, {
-                      [id]: {
-                          id,
-                          name,
-                          dimensionType,
-                          valueType,
-                          optionSet,
-                      },
-                  })
-              )
-
-    const onMouseOver = () => setMouseIsOver(true)
-    const onMouseExit = () => setMouseIsOver(false)
+        : () => dispatch(acSetUiOpenDimensionModal(id, dimensionMetadata))
 
     const {
         attributes,
@@ -48,11 +43,7 @@ export const DimensionItem = ({
     } = useSortable({
         id: draggableId || id,
         disabled: disabled || selected,
-        data: {
-            name,
-            dimensionType,
-            valueType,
-        },
+        data: dimensionMetadata[id],
     })
 
     const style = transform
@@ -70,14 +61,7 @@ export const DimensionItem = ({
         : undefined
 
     return (
-        <div
-            {...attributes}
-            {...listeners}
-            ref={setNodeRef}
-            style={style}
-            onMouseOver={onMouseOver}
-            onMouseLeave={onMouseExit}
-        >
+        <div {...attributes} {...listeners} ref={setNodeRef} style={style}>
             <DimensionItemBase
                 name={name}
                 dimensionType={dimensionType}
@@ -86,9 +70,12 @@ export const DimensionItem = ({
                 stageName={stageName}
                 onClick={onClick}
                 contextMenu={
-                    mouseIsOver && !disabled ? (
-                        <DimensionMenu dimensionId={id} />
-                    ) : null
+                    !disabled && (
+                        <DimensionMenu
+                            dimensionId={id}
+                            dimensionMetadata={dimensionMetadata}
+                        />
+                    )
                 }
             />
         </div>

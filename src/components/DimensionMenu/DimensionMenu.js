@@ -1,4 +1,5 @@
 import { Layer, Popper, IconMore16 } from '@dhis2/ui'
+import cx from 'classnames'
 import PropTypes from 'prop-types'
 import React, { useState, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -8,6 +9,7 @@ import {
 } from '../../actions/ui.js'
 import { sGetUiType, sGetUiLayout } from '../../reducers/ui.js'
 import IconButton from '../IconButton/IconButton.js'
+import styles from './DimensionMenu.module.css'
 import MenuItems from './MenuItems.js'
 
 const getAxisIdForDimension = (dimensionId, layout) => {
@@ -18,7 +20,8 @@ const getAxisIdForDimension = (dimensionId, layout) => {
     return axisLayout ? axisLayout[0] : undefined
 }
 
-const DimensionMenu = ({ currentAxisId, dimensionId }) => {
+const DimensionMenu = ({ currentAxisId, dimensionId, dimensionMetadata }) => {
+    console.log('DimMenu', dimensionId, dimensionMetadata)
     const dispatch = useDispatch()
     const visType = useSelector(sGetUiType)
     const layout = useSelector(sGetUiLayout)
@@ -33,14 +36,24 @@ const DimensionMenu = ({ currentAxisId, dimensionId }) => {
     const getMenuId = () => `menu-for-${dimensionId}`
 
     const axisItemHandler = ({ dimensionId, axisId }) => {
-        dispatch(acAddUiLayoutDimensions({ [dimensionId]: { axisId } }))
+        dispatch(
+            acAddUiLayoutDimensions(
+                { [dimensionId]: { axisId } },
+                dimensionMetadata
+            )
+        )
     }
 
     const removeItemHandler = (id) => dispatch(acRemoveUiLayoutDimensions(id))
 
     return (
         <>
-            <div ref={buttonRef}>
+            <div
+                ref={buttonRef}
+                className={cx(styles.button, {
+                    [styles.hidden]: !currentAxisId,
+                })}
+            >
                 <IconButton
                     ariaOwns={menuIsOpen ? getMenuId() : null}
                     ariaHaspopup={true}
@@ -72,6 +85,7 @@ const DimensionMenu = ({ currentAxisId, dimensionId }) => {
 DimensionMenu.propTypes = {
     currentAxisId: PropTypes.string,
     dimensionId: PropTypes.string,
+    dimensionMetadata: PropTypes.object,
 }
 
 export default DimensionMenu
