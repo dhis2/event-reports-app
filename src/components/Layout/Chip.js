@@ -6,7 +6,12 @@ import cx from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { parseConditionsStringToArray } from '../../modules/conditions.js'
 import { sGetLoadError } from '../../reducers/loader.js'
+import {
+    sGetUiItemsByDimension,
+    sGetUiConditionsByDimension,
+} from '../../reducers/ui.js'
 import { ChipBase } from './ChipBase.js'
 import styles from './styles/Chip.module.css'
 import { default as TooltipContent } from './TooltipContent.js'
@@ -15,17 +20,20 @@ const BEFORE = 'BEFORE'
 const AFTER = 'AFTER'
 
 const Chip = ({
-    numberOfConditions,
     dimension,
     axisId,
-    items,
     isLast,
     overLastDropZone,
     onClick,
     contextMenu,
     activeIndex,
 }) => {
-    const { id: dimensionId, name: dimensionName, dimensionType } = dimension
+    const {
+        id: dimensionId,
+        name: dimensionName,
+        dimensionType,
+        valueType,
+    } = dimension
 
     const {
         attributes,
@@ -42,9 +50,17 @@ const Chip = ({
         data: {
             name: dimensionName,
             dimensionType,
+            valueType,
         },
     })
     const globalLoadError = useSelector(sGetLoadError)
+    const conditions =
+        useSelector((state) =>
+            sGetUiConditionsByDimension(state, dimension.id)
+        ) || []
+    const items =
+        useSelector((state) => sGetUiItemsByDimension(state, dimension.id)) ||
+        []
 
     let insertPosition = undefined
     if (over?.id === dimensionId) {
@@ -80,6 +96,10 @@ const Chip = ({
     const dataTest = `layout-chip-${dimensionId}`
 
     const renderTooltipContent = () => <TooltipContent dimension={dimension} />
+
+    const numberOfConditions =
+        parseConditionsStringToArray(conditions.condition).length ||
+        (conditions.legendSet ? 1 : 0)
 
     if (globalLoadError && !dimensionName) {
         return null
@@ -144,14 +164,7 @@ Chip.propTypes = {
     axisId: PropTypes.string,
     contextMenu: PropTypes.object,
     isLast: PropTypes.bool,
-    items: PropTypes.array,
-    numberOfConditions: PropTypes.number,
     overLastDropZone: PropTypes.bool,
-}
-
-Chip.defaultProps = {
-    conditions: [],
-    items: [],
 }
 
 export default Chip
