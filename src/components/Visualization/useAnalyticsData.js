@@ -72,9 +72,11 @@ const getAdaptedVisualization = (visualization) => {
                 dimensionId === DIMENSION_ID_EVENT_STATUS ||
                 dimensionId === DIMENSION_ID_PROGRAM_STATUS
             ) {
-                parameters[dimensionId] = dimensionObj.items?.map(
-                    (item) => item.id
-                )
+                if (dimensionObj.items?.length) {
+                    parameters[dimensionId] = dimensionObj.items?.map(
+                        (item) => item.id
+                    )
+                }
             } else if (!excludedDimensions.includes(dimensionId)) {
                 adaptedDimensions.push(dimensionObj)
             }
