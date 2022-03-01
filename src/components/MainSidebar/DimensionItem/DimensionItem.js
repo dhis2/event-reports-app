@@ -19,20 +19,19 @@ export const DimensionItem = ({
     selected,
 }) => {
     const dispatch = useDispatch()
+    const dimensionMetadata = {
+        [id]: {
+            id,
+            name,
+            dimensionType,
+            valueType,
+            optionSet,
+        },
+    }
+
     const onClick = disabled
         ? undefined
-        : () =>
-              dispatch(
-                  acSetUiOpenDimensionModal(id, {
-                      [id]: {
-                          id,
-                          name,
-                          dimensionType,
-                          valueType,
-                          optionSet,
-                      },
-                  })
-              )
+        : () => dispatch(acSetUiOpenDimensionModal(id, dimensionMetadata))
 
     const {
         attributes,
@@ -44,11 +43,7 @@ export const DimensionItem = ({
     } = useSortable({
         id: draggableId || id,
         disabled: disabled || selected,
-        data: {
-            name,
-            dimensionType,
-            valueType,
-        },
+        data: dimensionMetadata[id],
     })
 
     const style = transform
@@ -74,7 +69,14 @@ export const DimensionItem = ({
                 selected={selected}
                 stageName={stageName}
                 onClick={onClick}
-                contextMenu={!disabled && <DimensionMenu dimensionId={id} />}
+                contextMenu={
+                    !disabled && (
+                        <DimensionMenu
+                            dimensionId={id}
+                            dimensionMetadata={dimensionMetadata}
+                        />
+                    )
+                }
             />
         </div>
     )
