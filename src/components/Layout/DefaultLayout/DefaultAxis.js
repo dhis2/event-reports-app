@@ -89,6 +89,7 @@ const DefaultAxis = ({
                                     key={`${axisId}-${id}`}
                                     onClick={getOpenHandler(id)}
                                     dimension={getDimension(id)}
+                                    axisId={axisId}
                                     items={getItemsByDimension(id)}
                                     numberOfConditions={getNumberOfConditions(
                                         id

@@ -1,3 +1,4 @@
+import { AXIS_ID_FILTERS } from '@dhis2/analytics'
 import { Tooltip } from '@dhis2/ui'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
@@ -16,6 +17,7 @@ const AFTER = 'AFTER'
 const Chip = ({
     numberOfConditions,
     dimension,
+    axisId,
     items,
     isLast,
     overLastDropZone,
@@ -92,8 +94,11 @@ const Chip = ({
             style={style}
         >
             <div
-                className={cx(styles.chipWrapper, {
-                    [styles.chipEmpty]: !items.length && !numberOfConditions,
+                className={cx(styles.chip, {
+                    [styles.chipEmpty]:
+                        axisId === AXIS_ID_FILTERS &&
+                        !items.length &&
+                        !numberOfConditions,
                     [styles.active]: isDragging,
                     [styles.insertBefore]: insertPosition === BEFORE,
                     [styles.insertAfter]: insertPosition === AFTER,
@@ -110,7 +115,6 @@ const Chip = ({
                                 <div
                                     data-test={dataTest}
                                     id={id}
-                                    className={cx(styles.chip, styles.chipLeft)}
                                     onClick={onClick}
                                     ref={ref}
                                     onMouseOver={onMouseOver}
@@ -126,11 +130,7 @@ const Chip = ({
                             )}
                         </Tooltip>
                     }
-                    {contextMenu && (
-                        <div className={cx(styles.chip, styles.chipRight)}>
-                            {contextMenu}
-                        </div>
-                    )}
+                    {contextMenu}
                 </div>
             </div>
         </div>
@@ -141,6 +141,7 @@ Chip.propTypes = {
     dimension: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
     activeIndex: PropTypes.number,
+    axisId: PropTypes.string,
     contextMenu: PropTypes.object,
     isLast: PropTypes.bool,
     items: PropTypes.array,
