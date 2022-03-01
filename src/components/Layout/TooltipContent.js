@@ -4,6 +4,34 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
 import {
+    parseConditionsStringToArray,
+    VALUE_TYPE_NUMBER,
+    VALUE_TYPE_UNIT_INTERVAL,
+    VALUE_TYPE_PERCENTAGE,
+    VALUE_TYPE_INTEGER,
+    VALUE_TYPE_INTEGER_POSITIVE,
+    VALUE_TYPE_INTEGER_NEGATIVE,
+    VALUE_TYPE_INTEGER_ZERO_OR_POSITIVE,
+    VALUE_TYPE_TEXT,
+    VALUE_TYPE_LONG_TEXT,
+    VALUE_TYPE_LETTER,
+    VALUE_TYPE_PHONE_NUMBER,
+    VALUE_TYPE_EMAIL,
+    VALUE_TYPE_USERNAME,
+    VALUE_TYPE_URL,
+    VALUE_TYPE_BOOLEAN,
+    VALUE_TYPE_TRUE_ONLY,
+    VALUE_TYPE_DATE,
+    VALUE_TYPE_TIME,
+    VALUE_TYPE_DATETIME,
+    VALUE_TYPE_ORGANISATION_UNIT,
+    NUMERIC_OPERATORS,
+    ALPHA_NUMERIC_OPERATORS,
+    DATE_OPERATORS,
+    unprefixOperator,
+    NULL_VALUE,
+} from '../../modules/conditions.js'
+import {
     DIMENSION_TYPE_CATEGORY,
     DIMENSION_TYPE_CATEGORY_OPTION_GROUP_SET,
     DIMENSION_TYPE_ORGANISATION_UNIT_GROUP_SET,
@@ -12,15 +40,30 @@ import {
     DIMENSION_TYPE_OU,
 } from '../../modules/dimensionConstants.js'
 import { sGetMetadata } from '../../reducers/metadata.js'
-import { sGetUiItemsByDimension } from '../../reducers/ui.js'
+import {
+    sGetUiConditionsByDimension,
+    sGetUiItemsByDimension,
+} from '../../reducers/ui.js'
 import styles from './styles/Tooltip.module.css'
 
 const labels = {
     noneSelected: () => i18n.t('None selected'),
     allSelected: () => i18n.t('Showing all values for this dimension'),
+    oneOverLimit: () => i18n.t('And 1 other...'),
+    nOverLimit: (n) =>
+        i18n.t('And {{numberOfItems}} others...', {
+            numberOfItems: n,
+        }),
 }
 
-export const TooltipContent = ({ dimension, itemIds, metadata }) => {
+const renderLimit = 5
+
+export const TooltipContent = ({
+    dimension,
+    itemIds,
+    metadata,
+    conditions,
+}) => {
     const getNameList = (idList, label, metadata) =>
         idList.reduce(
             (levelString, levelId, index) =>
@@ -59,8 +102,6 @@ export const TooltipContent = ({ dimension, itemIds, metadata }) => {
     }
 
     const renderItems = (itemDisplayNames) => {
-        const renderLimit = 5
-
         const itemsToRender = itemDisplayNames
             .slice(0, renderLimit)
             .map((name) => (
@@ -76,11 +117,10 @@ export const TooltipContent = ({ dimension, itemIds, metadata }) => {
                     className={styles.item}
                 >
                     {itemDisplayNames.length - renderLimit === 1
-                        ? i18n.t('And 1 other...')
-                        : i18n.t('And {{numberOfItems}} others...', {
-                              numberOfItems:
-                                  itemDisplayNames.length - renderLimit,
-                          })}
+                        ? labels.oneOverLimit
+                        : labels.nOverLimit(
+                              itemDisplayNames.length - renderLimit
+                          )}
                 </li>
             )
         }
@@ -89,8 +129,80 @@ export const TooltipContent = ({ dimension, itemIds, metadata }) => {
     }
 
     const renderConditions = () => {
-        // TODO: add a similar pattern as found in ConditionsManager.js for splitting the condition into different parts
-        return null
+        const conditionsList = parseConditionsStringToArray(
+            conditions.condition
+        )
+
+        if (dimension.optionSet) {
+            // TODO: Option set with selection
+            return null
+        }
+
+        if (dimension.legendSet) {
+            // TODO: Legend set
+            return null
+        }
+
+        let operators = {}
+
+        switch (dimension.valueType) {
+            case VALUE_TYPE_NUMBER:
+            case VALUE_TYPE_UNIT_INTERVAL:
+            case VALUE_TYPE_PERCENTAGE:
+            case VALUE_TYPE_INTEGER:
+            case VALUE_TYPE_INTEGER_POSITIVE:
+            case VALUE_TYPE_INTEGER_NEGATIVE:
+            case VALUE_TYPE_INTEGER_ZERO_OR_POSITIVE:
+            case VALUE_TYPE_PHONE_NUMBER: {
+                operators = NUMERIC_OPERATORS
+                break
+            }
+            case VALUE_TYPE_LETTER:
+            case VALUE_TYPE_TEXT:
+            case VALUE_TYPE_LONG_TEXT:
+            case VALUE_TYPE_EMAIL:
+            case VALUE_TYPE_USERNAME:
+            case VALUE_TYPE_URL: {
+                operators = ALPHA_NUMERIC_OPERATORS
+                break
+            }
+            case VALUE_TYPE_BOOLEAN:
+            case VALUE_TYPE_TRUE_ONLY: {
+                // TODO: booleans
+                break
+            }
+            case VALUE_TYPE_DATE:
+            case VALUE_TYPE_TIME:
+            case VALUE_TYPE_DATETIME: {
+                operators = DATE_OPERATORS
+                break
+            }
+            case VALUE_TYPE_ORGANISATION_UNIT: {
+                // TODO: org unit
+                break
+            }
+        }
+
+        const parsedConditions = conditionsList.map((condition) => {
+            let operator, value
+
+            if (condition.includes(NULL_VALUE)) {
+                operator = condition
+            } else {
+                const parts = condition.split(':')
+                operator = unprefixOperator(parts[0])
+                value = parts[1]
+            }
+
+            const operatorName = operators[operator]
+            const capitalCaseOperatorName =
+                operatorName[0].toUpperCase() + operatorName.substring(1)
+            return value
+                ? `${capitalCaseOperatorName}: ${value}`
+                : capitalCaseOperatorName
+        })
+
+        return renderItems(parsedConditions)
     }
 
     const renderNoItemsLabel = () => (
@@ -137,10 +249,9 @@ export const TooltipContent = ({ dimension, itemIds, metadata }) => {
             )
 
         default: {
-            const conditions = []
             return (
                 <ul className={styles.list}>
-                    {conditions
+                    {conditions?.condition || conditions?.legendSet
                         ? renderConditions(conditions)
                         : renderAllItemsLabel()}
                 </ul>
@@ -150,6 +261,7 @@ export const TooltipContent = ({ dimension, itemIds, metadata }) => {
 }
 
 TooltipContent.propTypes = {
+    conditions: PropTypes.object.isRequired,
     dimension: PropTypes.object.isRequired,
     metadata: PropTypes.object.isRequired,
     itemIds: PropTypes.array,
@@ -158,6 +270,7 @@ TooltipContent.propTypes = {
 const mapStateToProps = (state, ownProps) => ({
     metadata: sGetMetadata(state),
     itemIds: sGetUiItemsByDimension(state, ownProps.dimension.id) || [],
+    conditions: sGetUiConditionsByDimension(state, ownProps.dimension.id) || {},
 })
 
 export default connect(mapStateToProps)(TooltipContent)
