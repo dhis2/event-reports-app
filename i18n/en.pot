@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2022-03-01T17:13:28.012Z\n"
-"PO-Revision-Date: 2022-03-01T17:13:28.012Z\n"
+"POT-Creation-Date: 2022-03-01T17:33:45.340Z\n"
+"PO-Revision-Date: 2022-03-01T17:33:45.340Z\n"
 
 msgid "Add to {{axisName}}"
 msgstr "Add to {{axisName}}"
@@ -19,15 +19,6 @@ msgstr "Case sensitive"
 
 msgid "Remove"
 msgstr "Remove"
-
-msgid "Yes"
-msgstr "Yes"
-
-msgid "No"
-msgstr "No"
-
-msgid "Not answered"
-msgstr "Not answered"
 
 msgid "and"
 msgstr "and"
@@ -244,16 +235,6 @@ msgstr "Searching for \"{{searchText}}\""
 msgid "No results found"
 msgstr "No results found"
 
-msgid "{{count}} selected"
-msgid_plural "{{count}} selected"
-msgstr[0] "{{count}} selected"
-msgstr[1] "{{count}} selected"
-
-msgid "{{count}} conditions"
-msgid_plural "{{count}} conditions"
-msgstr[0] "{{count}} condition"
-msgstr[1] "{{count}} conditions"
-
 msgid "None selected"
 msgstr "None selected"
 
@@ -419,11 +400,6 @@ msgstr "oldest"
 
 msgid "Cases per page"
 msgstr "Cases per page"
-
-msgid "{{firstCaseIndex}}-{{lastCaseIndex}} of {{count}} cases"
-msgid_plural "{{firstCaseIndex}}-{{lastCaseIndex}} of {{count}} cases"
-msgstr[0] "{{firstCaseIndex}} of {{count}} case"
-msgstr[1] "{{firstCaseIndex}}-{{lastCaseIndex}} of {{count}} cases"
 
 msgid "Column sub-totals"
 msgstr "Column sub-totals"
@@ -592,6 +568,15 @@ msgstr "before"
 
 msgid "before or including"
 msgstr "before or including"
+
+msgid "Yes"
+msgstr "Yes"
+
+msgid "No"
+msgstr "No"
+
+msgid "Not answered"
+msgstr "Not answered"
 
 msgid "There is a problem with this visualization."
 msgstr "There is a problem with this visualization."

@@ -9,6 +9,8 @@ export const parseConditionsArrayToString = (conditionsArray) =>
     conditionsArray.join(':')
 
 export const NULL_VALUE = 'NV'
+export const TRUE_VALUE = '1'
+export const FALSE_VALUE = '0'
 export const OPERATOR_EQUAL = 'EQ'
 export const OPERATOR_GREATER = 'GT'
 export const OPERATOR_GREATER_OR_EQUAL = 'GE'
@@ -52,6 +54,12 @@ export const DATE_OPERATORS = {
     [OPERATOR_LESS_OR_EQUAL]: i18n.t('before or including'),
     [OPERATOR_EMPTY]: i18n.t('is empty / null'),
     [OPERATOR_NOT_EMPTY]: i18n.t('is not empty / not null'),
+}
+
+export const BOOLEAN_VALUES = {
+    [TRUE_VALUE]: i18n.t('Yes'),
+    [FALSE_VALUE]: i18n.t('No'),
+    [NULL_VALUE]: i18n.t('Not answered'),
 }
 
 export const VALUE_TYPE_NUMBER = 'NUMBER'

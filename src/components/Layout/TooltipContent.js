@@ -31,6 +31,7 @@ import {
     unprefixOperator,
     NULL_VALUE,
     OPERATOR_IN,
+    BOOLEAN_VALUES,
 } from '../../modules/conditions.js'
 import {
     DIMENSION_TYPE_CATEGORY,
@@ -78,11 +79,6 @@ const getOperatorsByValueType = (valueType) => {
         case VALUE_TYPE_USERNAME:
         case VALUE_TYPE_URL: {
             return ALPHA_NUMERIC_OPERATORS
-        }
-        case VALUE_TYPE_BOOLEAN:
-        case VALUE_TYPE_TRUE_ONLY: {
-            // TODO: booleans
-            return null
         }
         case VALUE_TYPE_DATE:
         case VALUE_TYPE_TIME:
@@ -184,6 +180,17 @@ export const TooltipContent = ({
                         .name
             )
             return renderItems(itemNames)
+        }
+
+        if (
+            [VALUE_TYPE_BOOLEAN, VALUE_TYPE_TRUE_ONLY].includes(
+                dimension.valueType
+            ) &&
+            conditionsList[0]?.startsWith(OPERATOR_IN)
+        ) {
+            const values = conditionsList[0].split(':').pop().split(';')
+            const valueNames = values.map((value) => BOOLEAN_VALUES[value])
+            return renderItems(valueNames)
         }
 
         const operators = getOperatorsByValueType(dimension.valueType)
