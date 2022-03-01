@@ -59,9 +59,7 @@ const DefaultAxis = ({
         const conditions = getConditionsByDimension(dimensionId)
         const numberOfConditions =
             parseConditionsStringToArray(conditions.condition).length ||
-            conditions.legendSet
-                ? 1
-                : 0
+            (conditions.legendSet ? 1 : 0)
 
         return numberOfConditions
     }
