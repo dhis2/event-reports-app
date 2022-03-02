@@ -162,12 +162,6 @@ const OuterDndContext = ({ children }) => {
             dimensionType = metadata[rawDimensionId]?.dimensionType || null
         }
 
-        const numberOfConditions =
-            parseConditionsStringToArray(chipConditions.condition).length ||
-            chipConditions.legendSet
-                ? 1
-                : 0
-
         if (SOURCE_DIMENSIONS.includes(sourceAxis)) {
             return (
                 <div className={cx(styles.overlay, styles.dimensionItem)}>
@@ -179,6 +173,10 @@ const OuterDndContext = ({ children }) => {
                 </div>
             )
         }
+
+        const numberOfConditions =
+            parseConditionsStringToArray(chipConditions.condition).length ||
+            (chipConditions.legendSet ? 1 : 0)
 
         return (
             <div
@@ -260,6 +258,7 @@ const OuterDndContext = ({ children }) => {
                     name: active.data.current.name,
                     dimensionType: active.data.current.dimensionType,
                     valueType: active.data.current.valueType,
+                    optionSet: active.data.current.optionSet,
                 },
             })
         )
