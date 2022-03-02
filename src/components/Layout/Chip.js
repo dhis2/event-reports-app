@@ -1,3 +1,4 @@
+import { AXIS_ID_FILTERS } from '@dhis2/analytics'
 import { Tooltip } from '@dhis2/ui'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
@@ -5,7 +6,12 @@ import cx from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { parseConditionsStringToArray } from '../../modules/conditions.js'
 import { sGetLoadError } from '../../reducers/loader.js'
+import {
+    sGetUiItemsByDimension,
+    sGetUiConditionsByDimension,
+} from '../../reducers/ui.js'
 import { ChipBase } from './ChipBase.js'
 import styles from './styles/Chip.module.css'
 import { default as TooltipContent } from './TooltipContent.js'
@@ -14,17 +20,21 @@ const BEFORE = 'BEFORE'
 const AFTER = 'AFTER'
 
 const Chip = ({
-    numberOfConditions,
-    dimensionId,
-    dimensionName,
-    dimensionType,
-    items,
+    dimension,
+    axisId,
     isLast,
     overLastDropZone,
     onClick,
     contextMenu,
     activeIndex,
 }) => {
+    const {
+        id: dimensionId,
+        name: dimensionName,
+        dimensionType,
+        valueType,
+    } = dimension
+
     const {
         attributes,
         listeners,
@@ -40,9 +50,17 @@ const Chip = ({
         data: {
             name: dimensionName,
             dimensionType,
+            valueType,
         },
     })
     const globalLoadError = useSelector(sGetLoadError)
+    const conditions =
+        useSelector((state) =>
+            sGetUiConditionsByDimension(state, dimension.id)
+        ) || []
+    const items =
+        useSelector((state) => sGetUiItemsByDimension(state, dimension.id)) ||
+        []
 
     let insertPosition = undefined
     if (over?.id === dimensionId) {
@@ -77,9 +95,11 @@ const Chip = ({
 
     const dataTest = `layout-chip-${dimensionId}`
 
-    const renderTooltipContent = () => (
-        <TooltipContent dimensionId={dimensionId} itemIds={items} />
-    )
+    const renderTooltipContent = () => <TooltipContent dimension={dimension} />
+
+    const numberOfConditions =
+        parseConditionsStringToArray(conditions.condition).length ||
+        (conditions.legendSet ? 1 : 0)
 
     if (globalLoadError && !dimensionName) {
         return null
@@ -94,8 +114,11 @@ const Chip = ({
             style={style}
         >
             <div
-                className={cx(styles.chipWrapper, {
-                    [styles.chipEmpty]: !items.length && !numberOfConditions,
+                className={cx(styles.chip, {
+                    [styles.chipEmpty]:
+                        axisId === AXIS_ID_FILTERS &&
+                        !items.length &&
+                        !numberOfConditions,
                     [styles.active]: isDragging,
                     [styles.insertBefore]: insertPosition === BEFORE,
                     [styles.insertAfter]: insertPosition === AFTER,
@@ -112,7 +135,6 @@ const Chip = ({
                                 <div
                                     data-test={dataTest}
                                     id={id}
-                                    className={cx(styles.chip, styles.chipLeft)}
                                     onClick={onClick}
                                     ref={ref}
                                     onMouseOver={onMouseOver}
@@ -128,11 +150,7 @@ const Chip = ({
                             )}
                         </Tooltip>
                     }
-                    {contextMenu && (
-                        <div className={cx(styles.chip, styles.chipRight)}>
-                            {contextMenu}
-                        </div>
-                    )}
+                    {contextMenu}
                 </div>
             </div>
         </div>
@@ -140,21 +158,13 @@ const Chip = ({
 }
 
 Chip.propTypes = {
-    dimensionId: PropTypes.string.isRequired,
+    dimension: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
     activeIndex: PropTypes.number,
+    axisId: PropTypes.string,
     contextMenu: PropTypes.object,
-    dimensionName: PropTypes.string,
-    dimensionType: PropTypes.string,
     isLast: PropTypes.bool,
-    items: PropTypes.array,
-    numberOfConditions: PropTypes.number,
     overLastDropZone: PropTypes.bool,
-}
-
-Chip.defaultProps = {
-    conditions: [],
-    items: [],
 }
 
 export default Chip

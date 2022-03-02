@@ -162,32 +162,33 @@ const OuterDndContext = ({ children }) => {
             dimensionType = metadata[rawDimensionId]?.dimensionType || null
         }
 
-        const numberOfConditions =
-            parseConditionsStringToArray(chipConditions.condition).length ||
-            chipConditions.legendSet
-                ? 1
-                : 0
-
         if (SOURCE_DIMENSIONS.includes(sourceAxis)) {
             return (
-                <div className={styles.overlay}>
+                <div className={cx(styles.overlay, styles.dimensionItem)}>
                     <DimensionItemBase
                         name={name}
                         dimensionType={dimensionType}
+                        dragging={true}
                     />
                 </div>
             )
         }
 
+        const numberOfConditions =
+            parseConditionsStringToArray(chipConditions.condition).length ||
+            (chipConditions.legendSet ? 1 : 0)
+
         return (
             <div
                 className={cx(
-                    chipStyles.chipWrapper,
-                    chipStyles.chipWrapperOverlay,
+                    chipStyles.chip,
+                    chipStyles.dragging,
                     styles.overlay,
                     {
                         [chipStyles.chipEmpty]:
-                            !chipItems.length && !numberOfConditions,
+                            sourceAxis === AXIS_ID_FILTERS &&
+                            !chipItems.length &&
+                            !numberOfConditions,
                     }
                 )}
             >
@@ -257,6 +258,7 @@ const OuterDndContext = ({ children }) => {
                     name: active.data.current.name,
                     dimensionType: active.data.current.dimensionType,
                     valueType: active.data.current.valueType,
+                    optionSet: active.data.current.optionSet,
                 },
             })
         )

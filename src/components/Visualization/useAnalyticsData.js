@@ -5,9 +5,14 @@ import {
     Analytics,
 } from '@dhis2/analytics'
 import { useDataEngine } from '@dhis2/app-runtime'
-import i18n from '@dhis2/d2-i18n'
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { useSelector } from 'react-redux'
+import {
+    BOOLEAN_VALUES,
+    NULL_VALUE,
+    VALUE_TYPE_BOOLEAN,
+    VALUE_TYPE_TRUE_ONLY,
+} from '../../modules/conditions.js'
 import {
     DIMENSION_ID_PROGRAM_STATUS,
     DIMENSION_ID_EVENT_STATUS,
@@ -21,14 +26,6 @@ import {
     headersMap,
 } from '../../modules/visualization.js'
 import { sGetIsVisualizationLoading } from '../../reducers/loader.js'
-
-const VALUE_TYPE_BOOLEAN = 'BOOLEAN'
-const VALUE_TYPE_TRUE_ONLY = 'TRUE_ONLY'
-
-const booleanMap = {
-    0: i18n.t('No'),
-    1: i18n.t('Yes'),
-}
 
 const analyticsApiEndpointMap = {
     [OUTPUT_TYPE_ENROLLMENT]: 'enrollments',
@@ -47,7 +44,7 @@ const formatRowValue = (rowValue, header, metaDataItems) => {
     switch (header.valueType) {
         case VALUE_TYPE_BOOLEAN:
         case VALUE_TYPE_TRUE_ONLY:
-            return booleanMap[rowValue] || i18n.t('Not answered')
+            return BOOLEAN_VALUES[rowValue || NULL_VALUE]
         default:
             return header.optionSet
                 ? findOptionSetItem(rowValue, metaDataItems)?.name || rowValue
@@ -56,6 +53,8 @@ const formatRowValue = (rowValue, header, metaDataItems) => {
 }
 
 const isTimeDimension = (dimensionId) => DIMENSION_IDS_TIME.has(dimensionId)
+
+const getAnalyticsEndpoint = (outputType) => analyticsApiEndpointMap[outputType]
 
 const getAdaptedVisualization = (visualization) => {
     const parameters = {}
@@ -70,9 +69,11 @@ const getAdaptedVisualization = (visualization) => {
                 dimensionId === DIMENSION_ID_EVENT_STATUS ||
                 dimensionId === DIMENSION_ID_PROGRAM_STATUS
             ) {
-                parameters[dimensionId] = dimensionObj.items?.map(
-                    (item) => item.id
-                )
+                if (dimensionObj.items?.length) {
+                    parameters[dimensionId] = dimensionObj.items?.map(
+                        (item) => item.id
+                    )
+                }
             } else if (!excludedDimensions.includes(dimensionId)) {
                 adaptedDimensions.push(dimensionObj)
             }
@@ -154,8 +155,7 @@ const fetchAnalyticsData = async ({
         }
     }
 
-    const analyticsApiEndpoint =
-        analyticsApiEndpointMap[visualization.outputType]
+    const analyticsApiEndpoint = getAnalyticsEndpoint(visualization.outputType)
 
     // for 2.38 only /query is used (since only Line List is enabled)
     const rawResponse = await analyticsEngine[analyticsApiEndpoint].getQuery(
@@ -303,4 +303,4 @@ const useAnalyticsData = ({
     }
 }
 
-export { useAnalyticsData }
+export { useAnalyticsData, getAnalyticsEndpoint, getAdaptedVisualization }
