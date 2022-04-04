@@ -1,3 +1,10 @@
+## [33.2.26](https://github.com/dhis2/event-reports-app/compare/v33.2.25...v33.2.26) (2022-04-04)
+
+
+### Bug Fixes
+
+* restore app on ci ([3f53ad7](https://github.com/dhis2/event-reports-app/commit/3f53ad7b48b19a8a2059329d6251fa76e1c21358))
+
 ## [33.2.25](https://github.com/dhis2/event-reports-app/compare/v33.2.24...v33.2.25) (2021-11-25)
 
 
