@@ -1,6 +1,6 @@
 export var DataTypeToolbar;
 
-DataTypeToolbar = function(refs) {
+DataTypeToolbar = function(refs) {
     var uiManager = refs.uiManager,
         i18nManager = refs.i18nManager,
         dimensionConfig = refs.dimensionConfig,
