@@ -271,6 +271,9 @@ Layout.prototype.req = function(source, format, isSorted, isTableLayout, isFilte
         request.add('completedOnly=true');
     }
 
+    // total pages
+    request.add('totalPages=false')
+
     // normal request only
     if (!isTableLayout) {
         // hierarchy

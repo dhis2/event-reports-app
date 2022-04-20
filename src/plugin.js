@@ -79,7 +79,7 @@ dimensionConfig.applyTo(arrayTo(table));
 optionConfig.applyTo([].concat(arrayTo(api), arrayTo(table)));
 
 // plugin
-function render(plugin, layout) {
+function render(plugin, layout) {
     if (!util.dom.validateTargetDiv(layout.el)) {
         return;
     }
@@ -108,7 +108,7 @@ function render(plugin, layout) {
     // initialize
     uiManager.setInstanceManager(instanceManager);
 
-    instanceManager.setFn(function(_layout) {
+    instanceManager.setFn(function(_layout) {
 
         if (!util.dom.validateTargetDiv(_layout.el)) {
             return;
@@ -123,10 +123,10 @@ function render(plugin, layout) {
                 uiManager.getTitleHtml(title) : '') + _tableObject.html;
         };
 
-        var createPivotTable = function(__layout) {
+        var createPivotTable = function(__layout) {
 
             // pre-sort if id
-            if (sortingId && sortingId !== 'total') {
+            if (sortingId && sortingId !== 'total') {
                 __layout.sort();
             }
 
@@ -137,7 +137,7 @@ function render(plugin, layout) {
             pivotTable.initialize();
             
             // sort if total
-            if (sortingId && sortingId === 'total') {
+            if (sortingId && sortingId === 'total') {
                 __layout.sort(pivotTable);
                 pivotTable.initialize();
             }
@@ -159,12 +159,12 @@ function render(plugin, layout) {
             uiManager.unmask();
         };
 
-        var createEventDataTable = function(__layout) {
+        var createEventDataTable = function(__layout) {
             let statusBar = uiManager.get('statusBar');
 
             let eventTable = new table.EventDataTable(refs, __layout, _response);
 
-            if (eventTable) {
+            if (eventTable) {
 
                 var html = getHtml(__layout.title || __layout.name, eventTable);
 
@@ -177,7 +177,7 @@ function render(plugin, layout) {
                 // events
                 tableManager.setColumnHeaderMouseHandlers(__layout, eventTable);
 
-                if (statusBar) {
+                if (statusBar) {
                     statusBar.setStatus(__layout, _response);
                 }
 
@@ -186,7 +186,7 @@ function render(plugin, layout) {
             }
         };
 
-        if (_layout.dataType === dimensionConfig.dataType['aggregated_values']) {
+        if (_layout.dataType === dimensionConfig.dataType['aggregated_values']) {
             createPivotTable(_layout);
         }
         else if (_layout.dataType === dimensionConfig.dataType['individual_cases']) {
@@ -194,12 +194,12 @@ function render(plugin, layout) {
         }
     });
 
-    if (plugin.loadingIndicator) {
+    if (plugin.loadingIndicator) {
         uiManager.renderLoadingIndicator(layout.el);
     }
 
-    if (layout.id) {
-        instanceManager.getById(layout.id, function(_layout) {
+    if (layout.id) {
+        instanceManager.getById(layout.id, function(_layout) {
             _layout = new api.Layout(instanceRefs, objectApplyIf(layout, _layout));
 
             if (!util.dom.validateTargetDiv(_layout.el)) {
