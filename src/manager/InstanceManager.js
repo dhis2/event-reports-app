@@ -4,7 +4,7 @@ import { InstanceManager } from 'd2-analysis';
 
 export { InstanceManager };
 
-InstanceManager.prototype.getReport = function(layout, isFavorite, skipState, forceUiState, fn) {
+InstanceManager.prototype.getReport = function(layout, isFavorite, skipState, forceUiState, fn) {
     var t = this,
         refs = t.getRefs();
 
@@ -12,8 +12,8 @@ InstanceManager.prototype.getReport = function(layout, isFavorite, skipState, fo
 
     var { Response } = refs.api;
 
-    var _fn = function() {
-        if (!skipState) {
+    var _fn = function() {
+        if (!skipState) {
             t.setState(layout, isFavorite, false, forceUiState);
         }
 
@@ -21,10 +21,10 @@ InstanceManager.prototype.getReport = function(layout, isFavorite, skipState, fo
     };
 
     // layout
-    if (!layout) {
+    if (!layout) {
         layout = t.getLayout();
 
-        if (!layout) {
+        if (!layout) {
             return;
         }
     }
@@ -40,7 +40,7 @@ InstanceManager.prototype.getReport = function(layout, isFavorite, skipState, fo
     var response = layout.getResponse();
 
     // fn
-    if (response) {
+    if (response) {
        _fn();
     }
     else {
@@ -53,14 +53,14 @@ InstanceManager.prototype.getReport = function(layout, isFavorite, skipState, fo
 
             // var optionSetIds = res.headers.filter(h => !!h.optionSet).map(h => h.optionSet);
 
-            // var fn = function() {
+            // var fn = function() {
                 // layout.setResponse(new Response(refs, res));
 
                 // _fn();
             // };
 
             // init
-            // if (optionSetIds.length) {
+            // if (optionSetIds.length) {
             //     indexedDbManager.getOptionSets(optionSetIds, fn);
             // }
             // else {

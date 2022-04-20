@@ -118,7 +118,7 @@ appManager.init(() => {
     requestManager.run();
 });
 
-function initialize() {
+function initialize() {
 
     // i18n init
     var i18n = i18nManager.get();
@@ -134,13 +134,13 @@ function initialize() {
     appManager.appName = i18n.event_reports || 'Event Reports';
 
     // instance manager
-    instanceManager.setFn(function(layout) {
+    instanceManager.setFn(function(layout) {
 
         let tableOptions = { renderLimit: 100000 }
         let sortingId = layout.sorting ? layout.sorting.id : null;
         let response = layout.getResponse();
 
-        let afterLoad = function() {
+        let afterLoad = function() {
 
             // mask
             uiManager.unmask();
@@ -149,7 +149,7 @@ function initialize() {
             instanceManager.postDataStatistics();
         };
 
-        let createPivotTable = function(layout, response) {
+        let createPivotTable = function(layout, response) {
 
             let statusBar = uiManager.get('statusBar');
 
@@ -161,7 +161,7 @@ function initialize() {
             }
 
             // pre-sort if id
-            if (sortingId && sortingId !== 'total') {
+            if (sortingId && sortingId !== 'total') {
                 layout.sort();
             }
 
@@ -183,11 +183,11 @@ function initialize() {
             afterLoad();
         };
 
-        var createEventDataTable = function(layout, response) {
+        var createEventDataTable = function(layout, response) {
             var _table = new table.EventDataTable(refs, layout, response);
             var statusBar = uiManager.get('statusBar');
 
-            if (_table) {
+            if (_table) {
 
                 // render
                 uiManager.update(_table.html);
@@ -199,7 +199,7 @@ function initialize() {
                 // events
                 tableManager.setColumnHeaderMouseHandlers(_layout, _table);
 
-                if (statusBar) {
+                if (statusBar) {
                     statusBar.setStatus(layout, response);
                 }
 
@@ -207,7 +207,7 @@ function initialize() {
             }
         };
 
-        if (layout.dataType === 'AGGREGATED_VALUES') {
+        if (layout.dataType === 'AGGREGATED_VALUES') {
             createPivotTable(layout, response);
         }
         else if (layout.dataType === 'EVENTS') {
@@ -226,7 +226,7 @@ function initialize() {
         }
 
        // sort if total
-       if (sortingId && sortingId === 'total') {
+       if (sortingId && sortingId === 'total') {
 
             // sort pivot table based on totals
             layout.sort(pivotTable);
@@ -364,14 +364,14 @@ function initialize() {
         menuItem3Text: i18n.open_last_chart
     });
 
-    var getWindowByDataType = function(aggName, queryName) {
+    var getWindowByDataType = function(aggName, queryName) {
         var dataType = uiManager.get('dataTypeToolbar').getDataType(),
             window;
 
-        if (dataType === dimensionConfig.dataType['aggregated_values']) {
+        if (dataType === dimensionConfig.dataType['aggregated_values']) {
             window = uiManager.get(aggName);
         }
-        else if (dataType === dimensionConfig.dataType['individual_cases']) {
+        else if (dataType === dimensionConfig.dataType['individual_cases']) {
             window = uiManager.get(queryName);
         }
 
@@ -385,16 +385,16 @@ function initialize() {
         westRegionItems: westRegionItems,
         dataTypeToolbar: dataTypeToolbar,
         statusBar: statusBar,
-        integrationButtons: [
+        integrationButtons: [
             defaultIntegrationButton,
             chartIntegrationButton
         ],
         DownloadButtonItems: DownloadButtonItems,
-    }, {
-        getLayoutWindow: function() {
+    }, {
+        getLayoutWindow: function() {
             return getWindowByDataType('aggregateLayoutWindow', 'queryLayoutWindow');
         },
-        getOptionsWindow: function() {
+        getOptionsWindow: function() {
             return getWindowByDataType('aggregateOptionsWindow', 'queryOptionsWindow');
         },
     }), 'viewport');
