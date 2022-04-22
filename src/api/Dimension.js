@@ -22,33 +22,33 @@ export var Dimension = function(refs, c, applyConfig, forceApplyConfig) {
         t.programStage = c.programStage;
     }
 
-    if (isString(c.filter)) {
+    if (isString(c.filter)) {
         t.filter = c.filter;
     }
 
-    if (isString(c.name)) {
+    if (isString(c.name)) {
         t.name = c.name;
     }
 
-    if (isObject(c.legendSet)) {
+    if (isObject(c.legendSet)) {
         t.legendSet = c.legendSet;
     }
 
     // force apply
     Object.assign(t, forceApplyConfig);
 
-    t.getIgnoreUrlDimensions = function() {
+    t.getIgnoreUrlDimensions = function() {
         return _ignoreUrlDimensions;
     };
 
-    t.getRefs = function() {
+    t.getRefs = function() {
         return refs;
     };
 };
 
 Dimension.prototype = d2aDimension.prototype;
 
-Dimension.prototype.isIgnoreDimension = function() {
+Dimension.prototype.isIgnoreDimension = function() {
     return arrayContains(this.getIgnoreUrlDimensions(), this.dimension);
 };
 
@@ -57,13 +57,13 @@ Dimension.prototype.isIgnoreDimension = function() {
 const getFullId = dim => (dim.programStage ? dim.programStage.id + '.' : '') + dim.dimension;
 
 Dimension.prototype.url = function(isSorted, response, isFilter) {
-    if (this.isIgnoreDimension()) {
+    if (this.isIgnoreDimension()) {
         return '';
     }
 
     var url = (isFilter ? 'filter' : 'dimension') + '=' + getFullId(this);
 
-    if (isObject(this.legendSet)) {
+    if (isObject(this.legendSet)) {
         url += '-' + this.legendSet.id;
     }
 
@@ -73,7 +73,7 @@ Dimension.prototype.url = function(isSorted, response, isFilter) {
         url += ':' + records.join(';');
     }
 
-    if (isString(this.filter)) {
+    if (isString(this.filter)) {
         url += ':' + this.filter;
     }
 
