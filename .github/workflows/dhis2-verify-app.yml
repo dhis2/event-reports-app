@@ -29,7 +29,7 @@ jobs:
                   path: '**/node_modules'
                   key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
 
-            - name: Install support lib
+            - name: Install prerequisites
               run: sudo apt-get install -y libpng-dev
 
             - name: Install
