@@ -1,3 +1,10 @@
+## [33.2.41](https://github.com/dhis2/event-reports-app/compare/v33.2.40...v33.2.41) (2023-05-27)
+
+
+### Bug Fixes
+
+* **translations:** sync translations from transifex (master) ([697d2ae](https://github.com/dhis2/event-reports-app/commit/697d2ae61a72d121b06e2a0bb34a7b1da43bf54f))
+
 ## [33.2.40](https://github.com/dhis2/event-reports-app/compare/v33.2.39...v33.2.40) (2023-05-26)
 
 
