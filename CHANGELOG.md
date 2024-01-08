@@ -1,3 +1,10 @@
+## [33.2.58](https://github.com/dhis2/event-reports-app/compare/v33.2.57...v33.2.58) (2024-01-08)
+
+
+### Bug Fixes
+
+* analytics@33.2.28 due/scheduled date ([#1240](https://github.com/dhis2/event-reports-app/issues/1240)) ([6fc54b4](https://github.com/dhis2/event-reports-app/commit/6fc54b4641789e437d073cbeec0895553c2dda14))
+
 ## [33.2.57](https://github.com/dhis2/event-reports-app/compare/v33.2.56...v33.2.57) (2023-12-24)
 
 
