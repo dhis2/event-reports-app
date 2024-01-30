@@ -1,3 +1,10 @@
+## [33.2.59](https://github.com/dhis2/event-reports-app/compare/v33.2.58...v33.2.59) (2024-01-30)
+
+
+### Bug Fixes
+
+* add class-name for push-analytics and upgrade d2-analysis ([1588e3b](https://github.com/dhis2/event-reports-app/commit/1588e3bd7730b38a2115a9b76bf4ab28db44f2d1))
+
 ## [33.2.58](https://github.com/dhis2/event-reports-app/compare/v33.2.57...v33.2.58) (2024-01-08)
 
 
