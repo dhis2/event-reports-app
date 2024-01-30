@@ -27,7 +27,6 @@ DownloadButtonItems = function(refs, layout) {
         {
             text: 'HTML (.html)',
             iconCls: 'ns-menu-item-tablelayout',
-            cls: 'push-analytics-download-as-html-menu-item',
             handler: function() {
                 uiManager.openTableLayoutTab(layout, 'html+css', true);
             }
