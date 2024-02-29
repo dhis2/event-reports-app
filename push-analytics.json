@@ -1,0 +1,29 @@
+{
+    "version": "0.0.1",
+    "showVisualization": {
+        "strategy": "navigateToUrl",
+        "steps": [
+            { "goto": "{{appUrl}}?id={{id}}" },
+            { "waitForSelector": "table.pivot" }
+        ]
+    },
+    "triggerDownload": {
+        "strategy": "useUiElements",
+        "steps": [
+            { "click": ".push-analytics-download-dropdown-menu-button" },
+            { "click": ".push-analytics-download-as-html-menu-item" }
+        ]
+    },
+    "obtainDownloadArtifact": {
+        "strategy": "scrapeDownloadPage",
+        "htmlSelector": "body",
+        "cssSelector": "style"
+    },
+    "clearVisualization": {
+        "strategy": "useUiElements",
+        "steps": [
+            { "click": ".push-analytics-favorites-dropdown-menu-button" },
+            { "click": ".push-analytics-new-events-report-menu-item" }
+        ]
+    }
+}
