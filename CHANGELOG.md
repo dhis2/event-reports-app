@@ -1,3 +1,10 @@
+## [33.2.61](https://github.com/dhis2/event-reports-app/compare/v33.2.60...v33.2.61) (2024-03-01)
+
+
+### Bug Fixes
+
+* **push-analytics:** add push analytics instructions ([#1253](https://github.com/dhis2/event-reports-app/issues/1253)) ([b01a766](https://github.com/dhis2/event-reports-app/commit/b01a766f8f6603a6ba0b5f49ef3ff3c9cd83de71))
+
 ## [33.2.60](https://github.com/dhis2/event-reports-app/compare/v33.2.59...v33.2.60) (2024-02-28)
 
 
