@@ -1756,20 +1756,7 @@ d2-manifest@1.0.0:
     minimist "^1.1.0"
     readline-sync "^1.4.1"
 
-d2-utilizr@0.2.13:
-  version "0.2.13"
-  resolved "https://registry.yarnpkg.com/d2-utilizr/-/d2-utilizr-0.2.13.tgz#aff6dfb054f92e2c974cf69f38f4fdc13699a6d3"
-  integrity sha1-r/bfsFT5LiyXTPafOPT9wTaZptM=
-  dependencies:
-    lodash.isboolean "^3.0.3"
-    lodash.isfunction "^3.0.8"
-    lodash.ismap "^4.3.0"
-    lodash.isnumber "^3.0.3"
-    lodash.isobject "^3.0.2"
-    lodash.isset "^4.3.0"
-    lodash.isstring "^4.0.1"
-
-d2-utilizr@^0.2.16:
+d2-utilizr@0.2.16, d2-utilizr@^0.2.16:
   version "0.2.16"
   resolved "https://registry.yarnpkg.com/d2-utilizr/-/d2-utilizr-0.2.16.tgz#b71df7ca8c7ab5125ca8bdb4899611bc6782a754"
   integrity sha512-8Cqwe/3TIsHeLfRVsWFKYqRrY3ZzuHAJqkEMCPGW9gyNCAAnTPVjROFwBwonv0zodQhVntn1DlJCay/GTBPj1A==
