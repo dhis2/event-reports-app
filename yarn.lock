@@ -1734,10 +1734,10 @@ currently-unhandled@^0.4.1:
   dependencies:
     array-find-index "^1.0.1"
 
-d2-analysis@^33.3.0:
-  version "33.3.0"
-  resolved "https://registry.yarnpkg.com/d2-analysis/-/d2-analysis-33.3.0.tgz#049a2f6768dba638033c3229ce271cd3b7551373"
-  integrity sha512-hR0nHonqtWJfFs2AyGoqu/MWZFMZHDxkaX0p8uTScAhausaqTzYvn5x29NbuhUGctEb/vlLPzyAoD087qXOEAA==
+d2-analysis@^33.3.1:
+  version "33.3.1"
+  resolved "https://registry.yarnpkg.com/d2-analysis/-/d2-analysis-33.3.1.tgz#6299beb6b79bc252d21c535db86ccab301700c95"
+  integrity sha512-VhGB5BWiyZrGFpwRDOMJt0SpK0mboFe50VGE7GRUP8JzqGNUG0FXxuzC5wepKcPuPOEimU+PjrqGtmPZFBo0XQ==
   dependencies:
     "@dhis2/d2-ui-rich-text" "^5.1.0"
     d2-utilizr "^0.2.16"
