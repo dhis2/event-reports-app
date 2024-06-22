@@ -1,3 +1,10 @@
+## [33.2.66](https://github.com/dhis2/event-reports-app/compare/v33.2.65...v33.2.66) (2024-06-22)
+
+
+### Bug Fixes
+
+* d2-analysis@33.3.1 apply filter when restoring data items ([#1283](https://github.com/dhis2/event-reports-app/issues/1283)) ([79e7393](https://github.com/dhis2/event-reports-app/commit/79e73931243c85a685dd7fe6e741121892186049))
+
 ## [33.2.65](https://github.com/dhis2/event-reports-app/compare/v33.2.64...v33.2.65) (2024-06-09)
 
 
