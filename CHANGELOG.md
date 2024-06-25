@@ -1,3 +1,10 @@
+## [33.2.67](https://github.com/dhis2/event-reports-app/compare/v33.2.66...v33.2.67) (2024-06-25)
+
+
+### Bug Fixes
+
+* migrate away from deprecated userCredentials object ([#1288](https://github.com/dhis2/event-reports-app/issues/1288)) ([1998c4d](https://github.com/dhis2/event-reports-app/commit/1998c4d69b3facc020d18e2c43ae865488726d8b))
+
 ## [33.2.66](https://github.com/dhis2/event-reports-app/compare/v33.2.65...v33.2.66) (2024-06-22)
 
 
