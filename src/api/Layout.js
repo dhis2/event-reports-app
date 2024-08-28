@@ -186,9 +186,19 @@ Layout.prototype.getDataTypeUrl = function() {
     var OUTPUT_TYPE_EVENT = optionConfig.getOutputType('event').id;
     var OUTPUT_TYPE_ENROLLMENT = optionConfig.getOutputType('enrollment').id;
 
-    var url = this.dataType === DATA_TYPE_AGG ? '/events/aggregate' :
-              this.outputType === OUTPUT_TYPE_EVENT ? '/events/query' :
-              '/enrollments/query';
+    var urlMap = {
+        [OUTPUT_TYPE_EVENT]: {
+            [DATA_TYPE_AGG]: '/events/aggregate',
+            [DATA_TYPE_EVENT]: '/events/query',
+        },
+        [OUTPUT_TYPE_ENROLLMENT]: {
+            [DATA_TYPE_AGG]: '/enrollments/aggregate',
+            [DATA_TYPE_EVENT]: '/enrollments/query',
+        }
+    }
+    
+    var url = urlMap[this.outputType][this.dataType]
+    console.log(url)
 
     return url || dimensionConfig.dataTypeUrl[dimensionConfig.getDefaultDataType()] || '';
 };
