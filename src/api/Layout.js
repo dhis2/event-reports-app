@@ -207,7 +207,7 @@ Layout.prototype.getDataTypeUrl = function() {
             [DATA_TYPE_EVENT]: '/enrollments/query',
         }
     }
-    
+
     var url = urlMap[this.outputType][this.dataType]
 
     return url || dimensionConfig.dataTypeUrl[dimensionConfig.getDefaultDataType()] || '';
