@@ -209,7 +209,6 @@ Layout.prototype.getDataTypeUrl = function() {
     }
     
     var url = urlMap[this.outputType][this.dataType]
-    console.log(url)
 
     return url || dimensionConfig.dataTypeUrl[dimensionConfig.getDefaultDataType()] || '';
 };
