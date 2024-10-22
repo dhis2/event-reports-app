@@ -54,7 +54,8 @@ Dimension.prototype.isIgnoreDimension = function() {
 
 // dep 1
 
-const getFullId = dim => (dim.programStage ? dim.programStage.id + '.' : '') + dim.dimension;
+const getFullId = dim => (dim.programStage && dim.programStage.id ?
+    dim.programStage.id + '.' : '') + dim.dimension;
 
 Dimension.prototype.url = function(isSorted, response, isFilter) {
     if (this.isIgnoreDimension()) {

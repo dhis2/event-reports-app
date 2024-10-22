@@ -6,7 +6,7 @@ import isNumeric from 'd2-utilizr/lib/isNumeric';
 import isObject from 'd2-utilizr/lib/isObject';
 import isString from 'd2-utilizr/lib/isString';
 
-import { Record, Layout as d2aLayout } from 'd2-analysis';
+import { Record, Layout as d2aLayout, dimensionsInit } from 'd2-analysis';
 
 export var Layout = function(refs, c, applyConfig, forceApplyConfig) {
     var t = this;
@@ -19,6 +19,22 @@ export var Layout = function(refs, c, applyConfig, forceApplyConfig) {
 
     // inherit
     Object.assign(t, new d2aLayout(refs, c, applyConfig));
+
+    // data element dimensions
+    if (c.dataElementDimensions) {
+        t.dataElementDimensions = c.dataElementDimensions;
+    }
+
+    // add isDataElement to distinguish from attributes and program indicators
+    if (t.dataElementDimensions) {
+        ([].concat(t.columns, t.rows, t.filters))
+            .filter(dimension => dimension)
+            .forEach(dimension => {
+            if (c.dataElementDimensions.find(de => de.dataElement.id === dimension.dimension)) {
+                dimension.isDataElement = true
+            }
+        })
+    }
 
     // program
     t.program = isObject(c.program) ? c.program : null;
@@ -185,11 +201,20 @@ Layout.prototype.getDataTypeUrl = function() {
     var DATA_TYPE_EVENT = dimensionConfig.dataType['individual_cases'];
     var OUTPUT_TYPE_EVENT = optionConfig.getOutputType('event').id;
     var OUTPUT_TYPE_ENROLLMENT = optionConfig.getOutputType('enrollment').id;
+    
+    var urlMap = {
+        [OUTPUT_TYPE_EVENT]: {
+            [DATA_TYPE_AGG]: '/events/aggregate',
+            [DATA_TYPE_EVENT]: '/events/query',
+        },
+        [OUTPUT_TYPE_ENROLLMENT]: {
+            [DATA_TYPE_AGG]: '/enrollments/aggregate',
+            [DATA_TYPE_EVENT]: '/enrollments/query',
+        }
+    }
 
-    var url = this.dataType === DATA_TYPE_AGG ? '/events/aggregate' :
-              this.outputType === OUTPUT_TYPE_EVENT ? '/events/query' :
-              '/enrollments/query';
-
+    var url = urlMap[this.outputType][this.dataType]
+    
     return url || dimensionConfig.dataTypeUrl[dimensionConfig.getDefaultDataType()] || '';
 };
 
