@@ -1,3 +1,10 @@
+## [33.2.69](https://github.com/dhis2/event-reports-app/compare/v33.2.68...v33.2.69) (2024-10-22)
+
+
+### Bug Fixes
+
+* enr agg endpoint + do not req stage for attr and pi (DHIS2-15691) ([#1334](https://github.com/dhis2/event-reports-app/issues/1334)) ([6890fe7](https://github.com/dhis2/event-reports-app/commit/6890fe7869ec0cf7090c1f778181e448bd88c464))
+
 ## [33.2.68](https://github.com/dhis2/event-reports-app/compare/v33.2.67...v33.2.68) (2024-07-24)
 
 
