@@ -1,6 +1,6 @@
 {
   "name": "event-reports-app",
-  "version": "33.2.69",
+  "version": "33.2.70",
   "description": "Event reports app",
   "main": "index.html",
   "scripts": {
