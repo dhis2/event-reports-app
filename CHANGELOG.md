@@ -1,3 +1,10 @@
+## [33.2.71](https://github.com/dhis2/event-reports-app/compare/v33.2.70...v33.2.71) (2025-02-07)
+
+
+### Bug Fixes
+
+* pass withCredentials ([#1383](https://github.com/dhis2/event-reports-app/issues/1383)) ([0e365d0](https://github.com/dhis2/event-reports-app/commit/0e365d0a1bbe3fe289693c863683c53b427ba4c9))
+
 ## [33.2.70](https://github.com/dhis2/event-reports-app/compare/v33.2.69...v33.2.70) (2024-10-27)
 
 
