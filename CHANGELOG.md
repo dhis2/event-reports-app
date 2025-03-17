@@ -1,3 +1,10 @@
+# [33.3.0](https://github.com/dhis2/event-reports-app/compare/v33.2.72...v33.3.0) (2025-03-17)
+
+
+### Features
+
+* bundle icon with app ([606a769](https://github.com/dhis2/event-reports-app/commit/606a769214efbac05463dabd7ccb7557c599dc2c))
+
 ## [33.2.72](https://github.com/dhis2/event-reports-app/compare/v33.2.71...v33.2.72) (2025-02-09)
 
 
