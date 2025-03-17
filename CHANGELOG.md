@@ -1,3 +1,10 @@
+## [33.3.1](https://github.com/dhis2/event-reports-app/compare/v33.3.0...v33.3.1) (2025-03-17)
+
+
+### Bug Fixes
+
+* clean up manifest and move icon ([2112620](https://github.com/dhis2/event-reports-app/commit/2112620358abdb35c0ca70a76b11ebf0a959cc08))
+
 # [33.3.0](https://github.com/dhis2/event-reports-app/compare/v33.2.72...v33.3.0) (2025-03-17)
 
 
