@@ -1,3 +1,10 @@
+## [33.3.3](https://github.com/dhis2/event-reports-app/compare/v33.3.2...v33.3.3) (2025-03-18)
+
+
+### Bug Fixes
+
+* update manifest ([#1385](https://github.com/dhis2/event-reports-app/issues/1385)) ([856274c](https://github.com/dhis2/event-reports-app/commit/856274c04d64170bf9034766c6e6d6114fa2ead6))
+
 ## [33.3.2](https://github.com/dhis2/event-reports-app/compare/v33.3.1...v33.3.2) (2025-03-18)
 
 
