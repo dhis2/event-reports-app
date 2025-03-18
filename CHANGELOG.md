@@ -1,3 +1,10 @@
+## [33.3.2](https://github.com/dhis2/event-reports-app/compare/v33.3.1...v33.3.2) (2025-03-18)
+
+
+### Bug Fixes
+
+* copy all public dir resources to build output ([caa36c7](https://github.com/dhis2/event-reports-app/commit/caa36c79721f64b752e412797c9dda9faedcc730))
+
 ## [33.3.1](https://github.com/dhis2/event-reports-app/compare/v33.3.0...v33.3.1) (2025-03-17)
 
 
