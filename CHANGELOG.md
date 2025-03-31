@@ -1,3 +1,10 @@
+## [33.3.4](https://github.com/dhis2/event-reports-app/compare/v33.3.3...v33.3.4) (2025-03-31)
+
+
+### Bug Fixes
+
+* add base target top ([#1386](https://github.com/dhis2/event-reports-app/issues/1386)) ([b3f0d5e](https://github.com/dhis2/event-reports-app/commit/b3f0d5e7f4d558d512d60ac1ad707b3344e551d9))
+
 ## [33.3.3](https://github.com/dhis2/event-reports-app/compare/v33.3.2...v33.3.3) (2025-03-18)
 
 
