@@ -1,3 +1,14 @@
+## [33.3.5](https://github.com/dhis2/event-reports-app/compare/v33.3.4...v33.3.5) (2026-09-30)
+
+
+### Bug Fixes
+
+* **ci:** sign commits in release job ([#1570](https://github.com/dhis2/event-reports-app/issues/1570)) ([ecd4ec3](https://github.com/dhis2/event-reports-app/commit/ecd4ec32725c89b87f997378e93a95d1af672c84))
+* bot signed commits ([#1569](https://github.com/dhis2/event-reports-app/issues/1569)) ([5b7a8b4](https://github.com/dhis2/event-reports-app/commit/5b7a8b4e9840245c24fee9d888741fe977da8610))
+* **ci:** pin @dhis2/cli-utils to 5.1.0 for release ([#1568](https://github.com/dhis2/event-reports-app/issues/1568)) ([4824216](https://github.com/dhis2/event-reports-app/commit/48242164058d9d2706860588fe844738f8fafbd7))
+* loading list of programs + axis dimension labels ([4795035](https://github.com/dhis2/event-reports-app/commit/479503552c5b5073fff66d4e49beb9c09abb0466))
+* orgunit tree loading ([#1567](https://github.com/dhis2/event-reports-app/issues/1567)) ([1500609](https://github.com/dhis2/event-reports-app/commit/1500609aef50307feaf44e3eec3daad16ac3e939))
+
 ## [33.3.4](https://github.com/dhis2/event-reports-app/compare/v33.3.3...v33.3.4) (2025-03-31)
 
 
