@@ -72,11 +72,6 @@ jobs:
               with:
                   token: ${{env.GH_TOKEN}}
 
-            - uses: dhis2/action-commit-signing@v1
-              with:
-                  ssh-signing-key: ${{ secrets.DHIS2_BOT_SSH_SIGNING_KEY }}
-                  ssh-signing-key-passphrase: ${{ secrets.DHIS2_BOT_SSH_SIGNING_PASSPHRASE }}
-
             - uses: actions/setup-node@v1
               with:
                   node-version: 12.x
@@ -102,6 +97,11 @@ jobs:
             - uses: actions/setup-node@v1
               with:
                   node-version: 12.x
+
+            - uses: dhis2/action-commit-signing@v1
+              with:
+                  ssh-signing-key: ${{ secrets.DHIS2_BOT_SSH_SIGNING_KEY }}
+                  ssh-signing-key-passphrase: ${{ secrets.DHIS2_BOT_SSH_SIGNING_PASSPHRASE }}
 
             - name: Publish release to GitHub
               run: npx @dhis2/cli-utils@5.1.0 release
